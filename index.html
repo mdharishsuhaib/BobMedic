@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorthShore Bank – Sign In</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      background: #f0f2f5;
+      color: #1f2328;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 0 32px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .bank-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    header .bank-tagline {
+      font-size: 12px;
+      color: #a8c4e0;
+      border-left: 1px solid #2e5a8a;
+      padding-left: 12px;
+      margin-left: 4px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .login-card {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 380px;
+      padding: 32px 36px;
+    }
+
+    .login-card h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .login-card .subtitle {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #fff;
+      transition: border-color 0.15s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #3b82d4;
+      box-shadow: 0 0 0 3px rgba(59,130,212,0.15);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-align: center;
+      text-decoration: none;
+    }
+    .btn.primary {
+      background: #1a3a5c;
+      color: #fff;
+      border-color: #1a3a5c;
+      width: 100%;
+      padding: 10px;
+    }
+    .btn.primary:hover { background: #15304d; }
+
+    .login-footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #57606a;
+      text-align: center;
+    }
+
+    footer {
+      background: #1a3a5c;
+      color: #a8c4e0;
+      text-align: center;
+      font-size: 12px;
+      padding: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="bank-logo">NorthShore Bank</span>
+    <span class="bank-tagline">Corporate Banking Portal</span>
+  </header>
+
+  <main>
+    <div class="login-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your corporate account</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username" placeholder="e.g. j.smith@company.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" />
+        </div>
+
+        <!-- login button container — may be moved by break toggle -->
+        <div id="btn-container-default">
+          <!-- button rendered by JS below -->
+        </div>
+      </form>
+      <div class="login-footer">
+        Forgot your password? <a href="#">Contact IT support</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 NorthShore Bank N.A. &nbsp;|&nbsp; Member FDIC &nbsp;|&nbsp;
+    <a href="break.html" style="color:#a8c4e0;text-decoration:none;">System</a>
+  </footer>
+
+  <script>
+    // --- Break state keys ---
+    const BREAK_ID       = localStorage.getItem('break_login_id')   === 'true';   // rename id
+    const BREAK_MOVE     = localStorage.getItem('break_login_move')  === 'true';   // move container
+    const BREAK_TEXT     = localStorage.getItem('break_login_text')  === 'true';   // change text
+
+    // Determine attributes
+    const btnId   = BREAK_ID   ? 'auth-submit-v2' : 'btn-login';
+    const btnText = BREAK_TEXT ? 'Login'           : 'Sign in';
+
+    // Build button element
+    const btn = document.createElement('button');
+    btn.id        = btnId;
+    btn.className = 'btn primary';
+    btn.type      = 'submit';
+    btn.textContent = btnText;
+
+    // Determine container
+    let targetContainer;
+    if (BREAK_MOVE) {
+      // Create a sibling div outside the form to simulate "moved" button
+      const altContainer = document.createElement('div');
+      altContainer.id = 'btn-container-alt';
+      altContainer.style.marginTop = '16px';
+      document.getElementById('login-form').insertAdjacentElement('afterend', altContainer);
+      targetContainer = altContainer;
+    } else {
+      targetContainer = document.getElementById('btn-container-default');
+    }
+    targetContainer.appendChild(btn);
+
+    // Form submit — any credentials work
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.location.href = 'invoices.html';
+    });
+    // Also handle button if it ended up outside the form
+    btn.addEventListener('click', function () {
+      window.location.href = 'invoices.html';
+    });
+  </script>
+</body>
+</html>
