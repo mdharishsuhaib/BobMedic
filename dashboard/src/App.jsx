@@ -149,7 +149,7 @@ export default function App() {
         <div className="mark">B</div>
         <div className="wordmark">
           BotMedic
-          <span>Self-healing RPA maintenance · NovaCorp environment</span>
+          <span>Self-healing RPA maintenance · NorthShore Bank environment</span>
         </div>
         <div className="header-right">
           {job.running && (

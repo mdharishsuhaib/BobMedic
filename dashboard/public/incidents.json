@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29T21:20:22+0300",
+  "generated_at": "2026-08-29T22:08:14+0300",
   "thresholds": {
     "confident": 0.85,
     "ambiguous": 0.55
@@ -10,27 +10,27 @@
     "awaiting_approval": 1,
     "escalated": 2,
     "avg_manual_min": 46.0,
-    "avg_auto_sec": 30.0,
+    "avg_auto_sec": 26.7,
     "bob_calls": 0
   },
   "bots": [
     {
       "bot_id": "invoice-extract",
-      "bot_name": "NovaCorp Invoice Exporter",
+      "bot_name": "NorthShore Invoice Exporter",
       "risk_tier": "read_only",
       "description": "Signs in and downloads the invoice CSV export. Reads only.",
       "wal": "rpa-bots/invoice-extract.wal"
     },
     {
       "bot_id": "invoice-entry",
-      "bot_name": "NovaCorp Invoice Filter Entry",
+      "bot_name": "NorthShore Invoice Filter Entry",
       "risk_tier": "reversible_write",
       "description": "Signs in and enters filter criteria. Writes draft state a human can undo.",
       "wal": "rpa-bots/invoice-entry.wal"
     },
     {
       "bot_id": "payment-submit",
-      "bot_name": "NovaCorp Payment Batch Submitter",
+      "bot_name": "NorthShore Payment Batch Submitter",
       "risk_tier": "irreversible",
       "description": "Signs in and submits a payment. Money leaves the ledger — never auto-patched.",
       "wal": "rpa-bots/payment-submit.wal"
@@ -40,12 +40,12 @@
     {
       "id": "run-0004",
       "bot_id": "invoice-extract",
-      "bot_name": "NovaCorp Invoice Exporter",
+      "bot_name": "NorthShore Invoice Exporter",
       "wal_file": "rpa-bots/invoice-extract.wal",
       "risk_tier": "read_only",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T18:20:14.680433+00:00",
+      "detected_at": "2026-08-29T19:05:12.986520+00:00",
       "page_html_ref": "snapshots/run-0004.html",
       "status": "escalated",
       "diff": [],
@@ -58,7 +58,7 @@
             "class": "btn primary",
             "type": "submit"
           },
-          "dom_path": "form#login-form > div.actions > button.btn.primary",
+          "dom_path": "div#btn-container-default > button.btn.primary",
           "score": 0.7667,
           "signals": {
             "text": 0.5,
@@ -70,74 +70,70 @@
         },
         {
           "tag": "input",
-          "text": "Enter your password",
+          "text": "e.g. j.smith@company.com",
           "attrs": {
-            "id": "password",
-            "type": "password",
-            "name": "password",
-            "placeholder": "Enter your password"
+            "id": "username",
+            "type": "text",
+            "name": "username",
+            "placeholder": "e.g. j.smith@company.com"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2106,
+          "score": 0.1442,
           "signals": {
-            "text": 0.0769,
+            "text": 0.1935,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.8061,
+            "dom_path": 0.0,
+            "geometry": 0.5743,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "Contact IT support",
+          "attrs": {
+            "href": "#"
+          },
+          "dom_path": "main > div.login-card > div.login-footer > a",
+          "score": 0.1365,
+          "signals": {
+            "text": 0.24,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4302,
             "tag": 0.0
           }
         },
         {
           "tag": "input",
-          "text": "Enter your username",
+          "text": "",
           "attrs": {
-            "id": "username",
-            "type": "text",
-            "name": "username",
-            "placeholder": "Enter your username"
+            "id": "password",
+            "type": "password",
+            "name": "password"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2,
+          "score": 0.1199,
+          "signals": {
+            "text": 0.0,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.7993,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "System",
+          "attrs": {
+            "href": "break.html"
+          },
+          "dom_path": "footer > a",
+          "score": 0.0789,
           "signals": {
             "text": 0.1538,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.5811,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "Forgot password?",
-          "attrs": {
-            "id": "link-forgot",
-            "class": "link-muted",
-            "href": "#"
-          },
-          "dom_path": "div#login-footer > a.link-muted",
-          "score": 0.1242,
-          "signals": {
-            "text": 0.087,
-            "attrs": 0.0,
             "dom_path": 0.0,
-            "geometry": 0.6537,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "UI change panel",
-          "attrs": {
-            "class": "link-muted",
-            "href": "break.html"
-          },
-          "dom_path": "div.login-wrapper > div.login-note > a.link-muted",
-          "score": 0.1175,
-          "signals": {
-            "text": 0.2727,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.2381,
+            "geometry": 0.2182,
             "tag": 0.0
           }
         }
@@ -151,7 +147,7 @@
         "available": false
       },
       "mttr_manual_min": 47,
-      "mttr_auto_sec": 18.7,
+      "mttr_auto_sec": 16.6,
       "proposal": {
         "run_id": "run-0004",
         "diagnosis": "Scoring was ambiguous and Bob declined to pick a candidate: Bob Shell executable 'bob' not found on PATH.",
@@ -172,19 +168,19 @@
       "verified": false,
       "action": "escalated_no_fix",
       "breaks": {
-        "rename_login_id": true,
-        "change_login_text": true
+        "break_login_id": true,
+        "break_login_text": true
       }
     },
     {
       "id": "run-0003",
       "bot_id": "payment-submit",
-      "bot_name": "NovaCorp Payment Batch Submitter",
+      "bot_name": "NorthShore Payment Batch Submitter",
       "wal_file": "rpa-bots/payment-submit.wal",
       "risk_tier": "irreversible",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T18:19:54.123541+00:00",
+      "detected_at": "2026-08-29T19:04:52.253853+00:00",
       "page_html_ref": "snapshots/run-0003.html",
       "status": "escalated",
       "diff": [],
@@ -197,7 +193,7 @@
             "class": "btn primary",
             "type": "submit"
           },
-          "dom_path": "form#login-form > div.actions > button.btn.primary",
+          "dom_path": "div#btn-container-default > button.btn.primary",
           "score": 0.9167,
           "signals": {
             "text": 1.0,
@@ -209,74 +205,70 @@
         },
         {
           "tag": "input",
-          "text": "Enter your password",
+          "text": "e.g. j.smith@company.com",
           "attrs": {
-            "id": "password",
-            "type": "password",
-            "name": "password",
-            "placeholder": "Enter your password"
+            "id": "username",
+            "type": "text",
+            "name": "username",
+            "placeholder": "e.g. j.smith@company.com"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2106,
+          "score": 0.1442,
           "signals": {
-            "text": 0.0769,
+            "text": 0.1935,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.8061,
+            "dom_path": 0.0,
+            "geometry": 0.5743,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "Contact IT support",
+          "attrs": {
+            "href": "#"
+          },
+          "dom_path": "main > div.login-card > div.login-footer > a",
+          "score": 0.1365,
+          "signals": {
+            "text": 0.24,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4302,
             "tag": 0.0
           }
         },
         {
           "tag": "input",
-          "text": "Enter your username",
+          "text": "",
           "attrs": {
-            "id": "username",
-            "type": "text",
-            "name": "username",
-            "placeholder": "Enter your username"
+            "id": "password",
+            "type": "password",
+            "name": "password"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2,
+          "score": 0.1199,
+          "signals": {
+            "text": 0.0,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.7993,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "System",
+          "attrs": {
+            "href": "break.html"
+          },
+          "dom_path": "footer > a",
+          "score": 0.0789,
           "signals": {
             "text": 0.1538,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.5811,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "Forgot password?",
-          "attrs": {
-            "id": "link-forgot",
-            "class": "link-muted",
-            "href": "#"
-          },
-          "dom_path": "div#login-footer > a.link-muted",
-          "score": 0.1242,
-          "signals": {
-            "text": 0.087,
-            "attrs": 0.0,
             "dom_path": 0.0,
-            "geometry": 0.6537,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "UI change panel",
-          "attrs": {
-            "class": "link-muted",
-            "href": "break.html"
-          },
-          "dom_path": "div.login-wrapper > div.login-note > a.link-muted",
-          "score": 0.1175,
-          "signals": {
-            "text": 0.2727,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.2381,
+            "geometry": 0.2182,
             "tag": 0.0
           }
         }
@@ -315,18 +307,18 @@
         "score": 0.9167
       },
       "breaks": {
-        "rename_login_id": true
+        "break_login_id": true
       }
     },
     {
       "id": "run-0002",
       "bot_id": "invoice-entry",
-      "bot_name": "NovaCorp Invoice Filter Entry",
+      "bot_name": "NorthShore Invoice Filter Entry",
       "wal_file": "rpa-bots/invoice-entry.wal",
       "risk_tier": "reversible_write",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T18:19:18.420149+00:00",
+      "detected_at": "2026-08-29T19:04:17.557720+00:00",
       "page_html_ref": "snapshots/run-0002.html",
       "status": "awaiting_approval",
       "diff": [
@@ -345,7 +337,7 @@
             "class": "btn primary",
             "type": "submit"
           },
-          "dom_path": "form#login-form > div.actions > button.btn.primary",
+          "dom_path": "div#btn-container-default > button.btn.primary",
           "score": 0.9167,
           "signals": {
             "text": 1.0,
@@ -357,88 +349,84 @@
         },
         {
           "tag": "input",
-          "text": "Enter your password",
+          "text": "e.g. j.smith@company.com",
           "attrs": {
-            "id": "password",
-            "type": "password",
-            "name": "password",
-            "placeholder": "Enter your password"
+            "id": "username",
+            "type": "text",
+            "name": "username",
+            "placeholder": "e.g. j.smith@company.com"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2106,
+          "score": 0.1442,
           "signals": {
-            "text": 0.0769,
+            "text": 0.1935,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.8061,
+            "dom_path": 0.0,
+            "geometry": 0.5743,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "Contact IT support",
+          "attrs": {
+            "href": "#"
+          },
+          "dom_path": "main > div.login-card > div.login-footer > a",
+          "score": 0.1365,
+          "signals": {
+            "text": 0.24,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4302,
             "tag": 0.0
           }
         },
         {
           "tag": "input",
-          "text": "Enter your username",
+          "text": "",
           "attrs": {
-            "id": "username",
-            "type": "text",
-            "name": "username",
-            "placeholder": "Enter your username"
+            "id": "password",
+            "type": "password",
+            "name": "password"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2,
+          "score": 0.1199,
+          "signals": {
+            "text": 0.0,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.7993,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "System",
+          "attrs": {
+            "href": "break.html"
+          },
+          "dom_path": "footer > a",
+          "score": 0.0789,
           "signals": {
             "text": 0.1538,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.5811,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "Forgot password?",
-          "attrs": {
-            "id": "link-forgot",
-            "class": "link-muted",
-            "href": "#"
-          },
-          "dom_path": "div#login-footer > a.link-muted",
-          "score": 0.1242,
-          "signals": {
-            "text": 0.087,
-            "attrs": 0.0,
             "dom_path": 0.0,
-            "geometry": 0.6537,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "UI change panel",
-          "attrs": {
-            "class": "link-muted",
-            "href": "break.html"
-          },
-          "dom_path": "div.login-wrapper > div.login-note > a.link-muted",
-          "score": 0.1175,
-          "signals": {
-            "text": 0.2727,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.2381,
+            "geometry": 0.2182,
             "tag": 0.0
           }
         }
       ],
       "run_result": {
         "success": true,
-        "duration_sec": 8.73,
+        "duration_sec": 7.92,
         "steps_run": 9,
         "failed_step": null,
         "error": null
       },
       "bob_response": null,
       "mttr_manual_min": 38,
-      "mttr_auto_sec": 33.3,
+      "mttr_auto_sec": 31.4,
       "proposal": {
         "run_id": "run-0002",
         "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -462,18 +450,18 @@
       "patched_wal": "patch-candidates/run-0002.invoice-entry.wal",
       "verification_attempts": 1,
       "breaks": {
-        "rename_login_id": true
+        "break_login_id": true
       }
     },
     {
       "id": "run-0001",
       "bot_id": "invoice-extract",
-      "bot_name": "NovaCorp Invoice Exporter",
+      "bot_name": "NorthShore Invoice Exporter",
       "wal_file": "rpa-bots/invoice-extract.wal",
       "risk_tier": "read_only",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T18:18:41.031172+00:00",
+      "detected_at": "2026-08-29T19:03:42.699479+00:00",
       "page_html_ref": "snapshots/run-0001.html",
       "status": "healed",
       "diff": [
@@ -492,7 +480,7 @@
             "class": "btn primary",
             "type": "submit"
           },
-          "dom_path": "form#login-form > div.actions > button.btn.primary",
+          "dom_path": "div#btn-container-default > button.btn.primary",
           "score": 0.9167,
           "signals": {
             "text": 1.0,
@@ -504,88 +492,84 @@
         },
         {
           "tag": "input",
-          "text": "Enter your password",
+          "text": "e.g. j.smith@company.com",
           "attrs": {
-            "id": "password",
-            "type": "password",
-            "name": "password",
-            "placeholder": "Enter your password"
+            "id": "username",
+            "type": "text",
+            "name": "username",
+            "placeholder": "e.g. j.smith@company.com"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2106,
+          "score": 0.1442,
           "signals": {
-            "text": 0.0769,
+            "text": 0.1935,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.8061,
+            "dom_path": 0.0,
+            "geometry": 0.5743,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "Contact IT support",
+          "attrs": {
+            "href": "#"
+          },
+          "dom_path": "main > div.login-card > div.login-footer > a",
+          "score": 0.1365,
+          "signals": {
+            "text": 0.24,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4302,
             "tag": 0.0
           }
         },
         {
           "tag": "input",
-          "text": "Enter your username",
+          "text": "",
           "attrs": {
-            "id": "username",
-            "type": "text",
-            "name": "username",
-            "placeholder": "Enter your username"
+            "id": "password",
+            "type": "password",
+            "name": "password"
           },
           "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.2,
+          "score": 0.1199,
+          "signals": {
+            "text": 0.0,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.7993,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "System",
+          "attrs": {
+            "href": "break.html"
+          },
+          "dom_path": "footer > a",
+          "score": 0.0789,
           "signals": {
             "text": 0.1538,
             "attrs": 0.0,
-            "dom_path": 0.3333,
-            "geometry": 0.5811,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "Forgot password?",
-          "attrs": {
-            "id": "link-forgot",
-            "class": "link-muted",
-            "href": "#"
-          },
-          "dom_path": "div#login-footer > a.link-muted",
-          "score": 0.1242,
-          "signals": {
-            "text": 0.087,
-            "attrs": 0.0,
             "dom_path": 0.0,
-            "geometry": 0.6537,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "UI change panel",
-          "attrs": {
-            "class": "link-muted",
-            "href": "break.html"
-          },
-          "dom_path": "div.login-wrapper > div.login-note > a.link-muted",
-          "score": 0.1175,
-          "signals": {
-            "text": 0.2727,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.2381,
+            "geometry": 0.2182,
             "tag": 0.0
           }
         }
       ],
       "run_result": {
         "success": true,
-        "duration_sec": 7.97,
+        "duration_sec": 8.48,
         "steps_run": 8,
         "failed_step": null,
         "error": null
       },
       "bob_response": null,
       "mttr_manual_min": 47,
-      "mttr_auto_sec": 38.0,
+      "mttr_auto_sec": 32.0,
       "proposal": {
         "run_id": "run-0001",
         "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -609,7 +593,7 @@
       "patched_wal": "patch-candidates/run-0001.invoice-extract.wal",
       "verification_attempts": 1,
       "breaks": {
-        "rename_login_id": true
+        "break_login_id": true
       }
     }
   ]

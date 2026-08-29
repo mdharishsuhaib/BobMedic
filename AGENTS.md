@@ -99,8 +99,17 @@ src/api.py          stdlib control API for the dashboard
 
 ## Rules
 
-- The target site is served over HTTP, not opened from disk: Chromium denies
-  localStorage to `file://` origins and the break panel needs it
+- `target-site/` is another team member's component, vendored in unmodified.
+  The engine adapts to it, never the reverse. It is a standalone frontend that
+  also works opened straight from `file://`; the bundled server exists to give
+  the bots and the browser one stable origin, not because it is required
+- The target app builds its buttons in inline JavaScript, so a saved snapshot
+  has its `<script>` blocks stripped. Otherwise re-opening a snapshot re-runs
+  those scripts, rebuilds the healthy page, and erases the break being
+  diagnosed
+- Break flags live in the target app's own localStorage keys —
+  `break_login_id`, `break_login_move`, `break_login_text`, `break_export_id`,
+  each holding the string `'true'` or `'false'`
 - The patcher always works on a copy; the original is touched only by an
   explicit commit, which first writes a `.bak`
 - A patch is written against the most stable signal available — visible text
@@ -108,6 +117,6 @@ src/api.py          stdlib control API for the dashboard
 - Bob Shell is called only in the ambiguous band; failures escalate rather
   than guess
 - No credentials, API keys or tokens in the repository
-- All demo data is synthetic; the institution (NovaCorp) is fictional
+- All demo data is synthetic; the institution (NorthShore Bank) is fictional
 - Everything in English: code, comments, docs, UI text
 - Strict JSON everywhere; free text breaks the dashboard

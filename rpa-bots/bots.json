@@ -1,6 +1,6 @@
 {
   "invoice-extract": {
-    "bot_name": "NovaCorp Invoice Exporter",
+    "bot_name": "NorthShore Invoice Exporter",
     "wal": "rpa-bots/invoice-extract.wal",
     "risk_tier": "read_only",
     "description": "Signs in and downloads the invoice CSV export. Reads only.",
@@ -14,7 +14,7 @@
     }
   },
   "invoice-entry": {
-    "bot_name": "NovaCorp Invoice Filter Entry",
+    "bot_name": "NorthShore Invoice Filter Entry",
     "wal": "rpa-bots/invoice-entry.wal",
     "risk_tier": "reversible_write",
     "description": "Signs in and enters filter criteria. Writes draft state a human can undo.",
@@ -29,7 +29,7 @@
     }
   },
   "payment-submit": {
-    "bot_name": "NovaCorp Payment Batch Submitter",
+    "bot_name": "NorthShore Payment Batch Submitter",
     "wal": "rpa-bots/payment-submit.wal",
     "risk_tier": "irreversible",
     "description": "Signs in and submits a payment. Money leaves the ledger — never auto-patched.",

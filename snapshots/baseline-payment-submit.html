@@ -1,58 +1,304 @@
 <!DOCTYPE html><html lang="en"><head><base href="http://127.0.0.1:8000">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NovaCorp — Payments</title>
-  <link rel="stylesheet" href="style.css">
+  <title>NorthShore Bank – New Payment</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      background: #f0f2f5;
+      color: #1f2328;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #1a3a5c;
+      color: #fff;
+      padding: 0 32px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    header .bank-logo { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    header nav { margin-left: auto; display: flex; gap: 6px; }
+    header nav a {
+      color: #a8c4e0;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    header nav a:hover, header nav a.active { background: rgba(255,255,255,0.12); color: #fff; }
+
+    .page-wrap { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 32px 24px; }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: #57606a;
+      margin-bottom: 20px;
+    }
+    .breadcrumb a { color: #3b82d4; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 28px 32px;
+    }
+    .card h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card .subtitle {
+      font-size: 13px;
+      color: #57606a;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eaecef;
+    }
+
+    .form-section { margin-bottom: 28px; }
+    .form-section h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #57606a;
+      margin-bottom: 16px;
+    }
+
+    .form-row { display: flex; gap: 16px; }
+    .form-group { margin-bottom: 16px; flex: 1; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    label .required { color: #c0392b; margin-left: 2px; }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #fff;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b82d4;
+      box-shadow: 0 0 0 3px rgba(59,130,212,0.15);
+    }
+    textarea { resize: vertical; min-height: 72px; }
+
+    .amount-wrap { position: relative; }
+    .amount-wrap .currency-prefix {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #57606a;
+      font-size: 14px;
+    }
+    .amount-wrap input { padding-left: 22px; }
+
+    .hint { font-size: 11px; color: #57606a; margin-top: 4px; }
+
+    .alert-box {
+      background: #fff8e1;
+      border: 1px solid #f0c040;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #7a5c00;
+      margin-bottom: 20px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      padding-top: 20px;
+      border-top: 1px solid #eaecef;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn.primary   { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
+    .btn.primary:hover { background: #15304d; }
+    .btn.secondary { background: #fff; color: #1f2328; border-color: #d0d7de; }
+    .btn.secondary:hover { background: #f6f8fa; }
+
+    .confirm-dialog {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .confirm-dialog.open { display: flex; }
+    .dialog-box {
+      background: #fff;
+      border-radius: 6px;
+      padding: 28px 32px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    .dialog-box h2 { font-size: 16px; margin-bottom: 10px; }
+    .dialog-box p { font-size: 13px; color: #57606a; margin-bottom: 20px; }
+    .dialog-box .dialog-actions { display: flex; gap: 10px; justify-content: center; }
+
+    footer {
+      background: #1a3a5c;
+      color: #a8c4e0;
+      text-align: center;
+      font-size: 12px;
+      padding: 14px;
+    }
+    footer a { color: #a8c4e0; }
+  </style>
 </head>
 <body>
 
-  <header class="app-header">
-    <div class="brand">NovaCorp</div>
-    <nav class="app-nav">
-      <a href="invoices.html" id="nav-invoices">Invoices</a>
-      <a href="payment.html" id="nav-payments" class="active">Payments</a>
+  <header>
+    <span class="bank-logo">NorthShore Bank</span>
+    <nav>
+      <a href="invoices.html">Invoices</a>
+      <a href="payment.html" class="active">Payments</a>
+      <a href="#">Accounts</a>
+      <a href="#">Reports</a>
     </nav>
-    <div class="header-right">
-      <span class="user" id="user-display">Welcome, operator</span>
-      <button class="btn ghost" id="btn-logout">Logout</button>
-    </div>
   </header>
 
-  <div class="page-content narrow">
-    <div class="page-title">Submit Payment</div>
-    <div class="page-sub">Payments leave the ledger immediately and cannot be recalled.</div>
+  <div class="page-wrap">
 
-    <form class="card form-card" id="payment-form" onsubmit="return false;">
-      <div class="form-group">
-        <label for="recipient">Recipient</label>
-        <input type="text" id="recipient" name="recipient" placeholder="Beneficiary account name">
+    <div class="breadcrumb">
+      <a href="invoices.html">Invoices</a>
+      <span>›</span>
+      New Payment
+    </div>
+
+    <div class="card">
+      <h1>Submit a Payment</h1>
+      <p class="subtitle">Funds will be processed within 1–2 business days. Review all details before submitting.</p>
+
+      <div class="alert-box">
+        ⚠ Payments over $25,000 require a secondary approval from your account manager.
       </div>
 
-      <div class="form-group">
-        <label for="amount">Amount (USD)</label>
-        <input type="text" id="amount" name="amount" placeholder="0.00">
-      </div>
+      <form id="payment-form">
 
-      <div class="form-group">
-        <label for="reference">Reference</label>
-        <input type="text" id="reference" name="reference" placeholder="Invoice reference">
-      </div>
+        <div class="form-section">
+          <h2>Recipient</h2>
+          <div class="form-group">
+            <label for="recipient">Recipient name or account number <span class="required">*</span></label>
+            <input type="text" id="recipient" name="recipient" placeholder="e.g. Meridian Logistics Ltd. or ACC-00291">
+            <div class="hint">Start typing to search registered payees, or enter a new account number.</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bank-code">Bank routing number</label>
+              <input type="text" id="bank-code" name="bank-code" placeholder="9-digit ABA number">
+            </div>
+            <div class="form-group">
+              <label for="account-num">Account number</label>
+              <input type="text" id="account-num" name="account-num" placeholder="10–12 digits">
+            </div>
+          </div>
+        </div>
 
-      <div class="irreversible-note">
-        This action is irreversible.
-      </div>
+        <div class="form-section">
+          <h2>Payment Details</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="amount">Amount <span class="required">*</span></label>
+              <div class="amount-wrap">
+                <span class="currency-prefix">$</span>
+                <input type="number" id="amount" name="amount" placeholder="0.00" min="0.01" step="0.01">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="USD" selected="">USD – US Dollar</option>
+                <option value="EUR">EUR – Euro</option>
+                <option value="GBP">GBP – British Pound</option>
+                <option value="CAD">CAD – Canadian Dollar</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pay-date">Payment date</label>
+              <input type="date" id="pay-date" name="pay-date">
+            </div>
+            <div class="form-group">
+              <label for="ref-invoice">Reference invoice</label>
+              <input type="text" id="ref-invoice" name="ref-invoice" placeholder="e.g. INV-2025-0848">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="memo">Memo / Notes</label>
+            <textarea id="memo" name="memo" placeholder="Optional internal note…"></textarea>
+          </div>
+        </div>
 
-      <div class="actions spread">
-        <button type="button" id="btn-cancel-payment" class="btn ghost">Cancel</button>
-        <button type="submit" id="btn-pay" class="btn danger">Submit payment</button>
-      </div>
-    </form>
+        <div class="form-actions">
+          <button id="btn-pay" class="btn primary" type="submit">Submit payment</button>
+          <a href="invoices.html" class="btn secondary">Cancel</a>
+          <span style="margin-left:auto;font-size:12px;color:#57606a;">All fields marked <span style="color:#c0392b;">*</span> are required</span>
+        </div>
 
-    <div class="payment-result ok" id="payment-result">Payment of $93200.00 to Delta Logistics Co. submitted (demo — nothing left this machine).</div>
+      </form>
+    </div>
   </div>
 
-  <script src="app.js"></script>
-  <script src="break.js"></script>
+  <!-- Confirmation dialog -->
+  <div class="confirm-dialog open" id="confirm-dialog">
+    <div class="dialog-box">
+      <h2>Payment submitted</h2>
+      <p>Your payment has been queued for processing. You will receive a confirmation email within 15 minutes.</p>
+      <div class="dialog-actions">
+        <a href="invoices.html" class="btn primary">Back to invoices</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 NorthShore Bank N.A. &nbsp;|&nbsp; Member FDIC &nbsp;|&nbsp;
+    <a href="break.html">System</a>
+  </footer>
+
+  
+
 
 
 </body></html>

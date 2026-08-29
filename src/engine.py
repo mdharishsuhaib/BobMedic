@@ -42,20 +42,20 @@ FEED_PATH = PROJECT_ROOT / "dashboard" / "public" / "incidents.json"
 # rename to reproduce the harder case in one run.
 BREAK_SCENARIOS = {
     "rename-login-id": {
-        "breaks": {"rename_login_id": True},
+        "breaks": {"break_login_id": True},
         "description": "The sign-in button id changes. Everything else stays put.",
     },
     "rename-export-id": {
-        "breaks": {"rename_export_id": True},
+        "breaks": {"break_export_id": True},
         "description": "The CSV export button id changes on the invoice page.",
     },
     "login-text-change": {
-        "breaks": {"rename_login_id": True, "change_login_text": True},
+        "breaks": {"break_login_id": True, "break_login_text": True},
         "description": "The button is renamed and its text becomes 'Login' - "
                        "the ambiguous case only meaning can settle.",
     },
     "login-moved": {
-        "breaks": {"rename_login_id": True, "move_login_button": True},
+        "breaks": {"break_login_id": True, "break_login_move": True},
         "description": "The button is renamed and moves into another container.",
     },
 }

@@ -1,20 +1,20 @@
 {
   "bot_id": "payment-submit",
-  "bot_name": "NovaCorp Payment Batch Submitter",
+  "bot_name": "NorthShore Payment Batch Submitter",
   "wal": "rpa-bots/payment-submit.wal",
   "risk_tier": "irreversible",
-  "recorded_at": "2026-08-29T21:18:02+0300",
+  "recorded_at": "2026-08-29T22:03:27+0300",
   "green_snapshot": "snapshots/baseline-payment-submit.html",
-  "duration_sec": 9.06,
+  "duration_sec": 8.98,
   "steps": {
     "login_username": {
       "tag": "input",
-      "text": "Enter your username",
+      "text": "e.g. j.smith@company.com",
       "attrs": {
         "id": "username",
         "type": "text",
         "name": "username",
-        "placeholder": "Enter your username"
+        "placeholder": "e.g. j.smith@company.com"
       },
       "dom_path": "form#login-form > div.form-group > input",
       "neighbors": {
@@ -22,10 +22,10 @@
         "parent_text": "Username"
       },
       "geometry": {
-        "x": 482,
-        "y": 287,
-        "w": 316,
-        "h": 39
+        "x": 487,
+        "y": 314,
+        "w": 306,
+        "h": 34
       },
       "visible": true,
       "step_id": "login_username",
@@ -36,12 +36,11 @@
     },
     "login_password": {
       "tag": "input",
-      "text": "Enter your password",
+      "text": "",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password",
-        "placeholder": "Enter your password"
+        "name": "password"
       },
       "dom_path": "form#login-form > div.form-group > input",
       "neighbors": {
@@ -49,10 +48,10 @@
         "parent_text": "Password"
       },
       "geometry": {
-        "x": 482,
-        "y": 366,
-        "w": 316,
-        "h": 39
+        "x": 487,
+        "y": 389,
+        "w": 306,
+        "h": 34
       },
       "visible": true,
       "step_id": "login_password",
@@ -69,16 +68,16 @@
         "class": "btn primary",
         "type": "submit"
       },
-      "dom_path": "form#login-form > div.actions > button.btn.primary",
+      "dom_path": "div#btn-container-default > button.btn.primary",
       "neighbors": {
         "prev_label": "",
         "parent_text": "Sign in"
       },
       "geometry": {
-        "x": 482,
-        "y": 423,
-        "w": 316,
-        "h": 37
+        "x": 487,
+        "y": 441,
+        "w": 306,
+        "h": 38
       },
       "visible": true,
       "step_id": "login_submit",
@@ -89,48 +88,45 @@
     },
     "invoices_table_ready": {
       "tag": "table",
-      "text": "INVOICE #\tCLIENT\tAMOUNT (USD)\tDUE DATE\tSTATUS\tACTION\nINV-2026-001\tApex Trading LLC\t$42,500.00\t2026-08-15\tPaid\t\nView\nDown",
-      "attrs": {
-        "id": "invoices-table",
-        "class": "invoices-table"
-      },
-      "dom_path": "div.page-content > table.invoices-table",
+      "text": "INVOICE #\tCLIENT\tAMOUNT\tISSUE DATE\tDUE DATE\tSTATUS\tACTIONS\n\tINV-2025-0841\tMeridian Logistics Ltd.\t$14,320.00\t2025-01-08\t",
+      "attrs": {},
+      "dom_path": "div.page-wrap > div.table-wrap > table",
       "neighbors": {
-        "prev_label": "All statuses\n          Paid\n          Pending\n          Over",
-        "parent_text": "Invoice Summary\n    Fiscal year 2026 · 8 open records\n\n    \n    \n      \n        "
+        "prev_label": "",
+        "parent_text": "Invoice #\n            Client\n            Amount\n            Issue Date\n         "
       },
       "geometry": {
-        "x": 128,
-        "y": 215,
-        "w": 1024,
-        "h": 431
+        "x": 125,
+        "y": 198,
+        "w": 1030,
+        "h": 412
       },
       "visible": true,
       "step_id": "invoices_table_ready",
       "step_key": "webwait#1",
-      "selector": "#invoices-table",
+      "selector": ".table-wrap table",
       "line_number": 11,
       "url": "http://127.0.0.1:8000/invoices.html"
     },
     "payment_recipient": {
       "tag": "input",
-      "text": "Beneficiary account name",
+      "text": "e.g. Meridian Logistics Ltd. or ACC-00291",
       "attrs": {
         "id": "recipient",
         "type": "text",
         "name": "recipient",
-        "placeholder": "Beneficiary account name"
+        "placeholder": "e.g. Meridian Logistics Ltd. or ACC-00291"
       },
-      "dom_path": "form#payment-form > div.form-group > input",
+      "dom_path": "form#payment-form > div.form-section > div.form-group > input",
       "neighbors": {
-        "prev_label": "Recipient",
-        "parent_text": "Recipient"
+        "prev_label": "Recipient name or account number *",
+        "parent_text": "Recipient name or account number *\n            \n            Start typing to sear"
       },
       "geometry": {
-        "x": 411,
-        "y": 205,
-        "w": 458,
-        "h": 39
+        "x": 347,
+        "y": 358,
+        "w": 586,
+        "h": 37
       },
       "visible": true,
       "step_id": "payment_recipient",
@@ -144,20 +140,20 @@
       "text": "0.00",
       "attrs": {
         "id": "amount",
-        "type": "text",
+        "type": "number",
         "name": "amount",
         "placeholder": "0.00"
       },
-      "dom_path": "form#payment-form > div.form-group > input",
+      "dom_path": "form#payment-form > div.form-section > div.form-row > div.form-group > div.amount-wrap > input",
       "neighbors": {
-        "prev_label": "Amount (USD)",
-        "parent_text": "Amount (USD)"
+        "prev_label": "Amount *",
+        "parent_text": "$"
       },
       "geometry": {
-        "x": 411,
-        "y": 284,
-        "w": 458,
-        "h": 39
+        "x": 347,
+        "y": 590,
+        "w": 285,
+        "h": 37
       },
       "visible": true,
       "step_id": "payment_amount",
@@ -171,19 +167,19 @@
       "text": "Submit payment",
       "attrs": {
         "id": "btn-pay",
-        "class": "btn danger",
+        "class": "btn primary",
         "type": "submit"
       },
-      "dom_path": "form#payment-form > div.actions.spread > button.btn.danger",
+      "dom_path": "form#payment-form > div.form-actions > button.btn.primary",
       "neighbors": {
-        "prev_label": "Cancel",
-        "parent_text": "Cancel\n        Submit payment"
+        "prev_label": "",
+        "parent_text": "Submit payment\n          Cancel\n          All fields marked * are required"
       },
       "geometry": {
-        "x": 738,
-        "y": 474,
-        "w": 131,
-        "h": 37
+        "x": 347,
+        "y": 873,
+        "w": 139,
+        "h": 34
       },
       "visible": true,
       "step_id": "payment_submit",

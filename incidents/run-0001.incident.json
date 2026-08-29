@@ -1,12 +1,12 @@
 {
   "id": "run-0001",
   "bot_id": "invoice-extract",
-  "bot_name": "NovaCorp Invoice Exporter",
+  "bot_name": "NorthShore Invoice Exporter",
   "wal_file": "rpa-bots/invoice-extract.wal",
   "risk_tier": "read_only",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T18:18:41.031172+00:00",
+  "detected_at": "2026-08-29T19:03:42.699479+00:00",
   "page_html_ref": "snapshots/run-0001.html",
   "status": "healed",
   "diff": [
@@ -25,7 +25,7 @@
         "class": "btn primary",
         "type": "submit"
       },
-      "dom_path": "form#login-form > div.actions > button.btn.primary",
+      "dom_path": "div#btn-container-default > button.btn.primary",
       "score": 0.9167,
       "signals": {
         "text": 1.0,
@@ -37,88 +37,84 @@
     },
     {
       "tag": "input",
-      "text": "Enter your password",
+      "text": "e.g. j.smith@company.com",
       "attrs": {
-        "id": "password",
-        "type": "password",
-        "name": "password",
-        "placeholder": "Enter your password"
+        "id": "username",
+        "type": "text",
+        "name": "username",
+        "placeholder": "e.g. j.smith@company.com"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.2106,
+      "score": 0.1442,
       "signals": {
-        "text": 0.0769,
+        "text": 0.1935,
         "attrs": 0.0,
-        "dom_path": 0.3333,
-        "geometry": 0.8061,
+        "dom_path": 0.0,
+        "geometry": 0.5743,
+        "tag": 0.0
+      }
+    },
+    {
+      "tag": "a",
+      "text": "Contact IT support",
+      "attrs": {
+        "href": "#"
+      },
+      "dom_path": "main > div.login-card > div.login-footer > a",
+      "score": 0.1365,
+      "signals": {
+        "text": 0.24,
+        "attrs": 0.0,
+        "dom_path": 0.0,
+        "geometry": 0.4302,
         "tag": 0.0
       }
     },
     {
       "tag": "input",
-      "text": "Enter your username",
+      "text": "",
       "attrs": {
-        "id": "username",
-        "type": "text",
-        "name": "username",
-        "placeholder": "Enter your username"
+        "id": "password",
+        "type": "password",
+        "name": "password"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.2,
+      "score": 0.1199,
+      "signals": {
+        "text": 0.0,
+        "attrs": 0.0,
+        "dom_path": 0.0,
+        "geometry": 0.7993,
+        "tag": 0.0
+      }
+    },
+    {
+      "tag": "a",
+      "text": "System",
+      "attrs": {
+        "href": "break.html"
+      },
+      "dom_path": "footer > a",
+      "score": 0.0789,
       "signals": {
         "text": 0.1538,
         "attrs": 0.0,
-        "dom_path": 0.3333,
-        "geometry": 0.5811,
-        "tag": 0.0
-      }
-    },
-    {
-      "tag": "a",
-      "text": "Forgot password?",
-      "attrs": {
-        "id": "link-forgot",
-        "class": "link-muted",
-        "href": "#"
-      },
-      "dom_path": "div#login-footer > a.link-muted",
-      "score": 0.1242,
-      "signals": {
-        "text": 0.087,
-        "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.6537,
-        "tag": 0.0
-      }
-    },
-    {
-      "tag": "a",
-      "text": "UI change panel",
-      "attrs": {
-        "class": "link-muted",
-        "href": "break.html"
-      },
-      "dom_path": "div.login-wrapper > div.login-note > a.link-muted",
-      "score": 0.1175,
-      "signals": {
-        "text": 0.2727,
-        "attrs": 0.0,
-        "dom_path": 0.0,
-        "geometry": 0.2381,
+        "geometry": 0.2182,
         "tag": 0.0
       }
     }
   ],
   "run_result": {
     "success": true,
-    "duration_sec": 7.97,
+    "duration_sec": 8.48,
     "steps_run": 8,
     "failed_step": null,
     "error": null
   },
   "bob_response": null,
   "mttr_manual_min": 47,
-  "mttr_auto_sec": 38.0,
+  "mttr_auto_sec": 32.0,
   "proposal": {
     "run_id": "run-0001",
     "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -142,6 +138,6 @@
   "patched_wal": "patch-candidates/run-0001.invoice-extract.wal",
   "verification_attempts": 1,
   "breaks": {
-    "rename_login_id": true
+    "break_login_id": true
   }
 }

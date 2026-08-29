@@ -11,6 +11,7 @@ the same way an unrelated statement would be irrelevant to a selector break.
 """
 
 import json
+import re
 import time
 from pathlib import Path
 from typing import Optional
@@ -23,7 +24,15 @@ from parser import parse_wal
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT_DIR = PROJECT_ROOT / "snapshots"
 
-BREAK_STORAGE_KEY = "botmedic_breaks"
+# The target site keeps one localStorage key per break, holding the string
+# 'true' or 'false'. That format belongs to the target app, not to us — the
+# engine writes what the site reads.
+BREAK_KEYS = (
+    "break_login_id",
+    "break_login_move",
+    "break_login_text",
+    "break_export_id",
+)
 DEFAULT_STEP_TIMEOUT_MS = 4000
 
 
@@ -41,24 +50,38 @@ def _timeout_ms(step, default=DEFAULT_STEP_TIMEOUT_MS) -> int:
 
 
 def _break_script(breaks: dict) -> str:
-    """Build an init script that pre-loads break flags into localStorage."""
-    literal = json.dumps(json.dumps(breaks or {}))
-    return (
-        f"try {{ localStorage.setItem('{BREAK_STORAGE_KEY}', {literal}); }} "
-        "catch (e) {}"
+    """
+    Build an init script that puts the break flags where the site looks.
+
+    Every known key is written on every run, so a break switched off in one run
+    is actually cleared rather than left over from the last one.
+    """
+    breaks = breaks or {}
+    sets = "".join(
+        f"localStorage.setItem({json.dumps(key)}, "
+        f"{json.dumps('true' if breaks.get(key) else 'false')});"
+        for key in BREAK_KEYS
     )
+    return f"try {{ {sets} }} catch (e) {{}}"
 
 
 def _save_snapshot(page, run_id: str, base_url: str) -> str:
     """
     Save the current DOM to snapshots/<run_id>.html.
 
-    A <base> tag is injected so the snapshot still resolves the site stylesheet
-    when it is re-opened for scoring — geometry signals are worthless against
-    an unstyled page.
+    Two things are done to the serialised DOM, and both matter:
+
+    * a <base> tag is injected, so the snapshot still resolves the site's own
+      stylesheet when it is re-opened for scoring — geometry signals are
+      worthless against an unstyled page;
+    * <script> blocks are removed. The snapshot is a record of the DOM at the
+      moment the bot failed, and the target app builds its buttons at runtime:
+      leaving the scripts in would let a re-opened snapshot rebuild itself into
+      the healthy page and quietly erase the very break being diagnosed.
     """
     SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
     html = page.content()
+    html = re.sub(r"<script[\s\S]*?</script>", "", html, flags=re.IGNORECASE)
     base_tag = f'<base href="{base_url}">'
     if "<head>" in html:
         html = html.replace("<head>", "<head>" + base_tag, 1)

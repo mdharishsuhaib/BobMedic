@@ -118,3 +118,12 @@ build/
 # DO NOT REMOVE ABOVE PATTERNS
 # Add project-specific patterns below
 # ============================================
+# ============================================
+# BotMedic project-specific
+# ============================================
+
+# Transient patch copies written during verification
+patch-candidates/
+
+# Script backups the patcher writes before committing a fix
+rpa-bots/*.wal.bak

@@ -80,7 +80,7 @@ python start.py
 
 | Service | URL |
 |---|---|
-| NovaCorp target site | http://127.0.0.1:8000 |
+| NorthShore Bank target site | http://127.0.0.1:8000 |
 | Break control panel | http://127.0.0.1:8000/break.html |
 | Control API | http://127.0.0.1:8100/api/feed |
 | Dashboard | http://127.0.0.1:3000 |
@@ -101,7 +101,10 @@ python src/engine.py reset                 # clear incidents and snapshots
 ```
 
 The break panel at `/break.html` applies the same changes by hand, so the site
-can be broken in a browser while someone watches.
+can be broken in a browser while someone watches. The target app is a
+standalone frontend — it also runs by opening `target-site/index.html`
+directly — but the bundled server gives the bots and the browser one stable
+origin to share.
 
 ## Bob at runtime
 
@@ -141,7 +144,7 @@ botmedic/
 │   ├── serve.py        static server for the target site
 │   └── api.py          control API behind the dashboard
 ├── dashboard/          React control centre (MTTR, incidents, approvals)
-├── target-site/        synthetic NovaCorp portal + break control panel
+├── target-site/        the team's target web app, vendored unmodified
 ├── rpa-bots/           three .wal bots, one per risk tier
 ├── fingerprints/       what each bot's elements looked like when healthy
 ├── snapshots/          DOM captured on every run
@@ -204,7 +207,7 @@ that matches exactly one element on the page wins:
 
 - No credentials, API keys or tokens anywhere in the repository
 - Model calls only in the ambiguous band; everything else is deterministic code
-- All demo data is synthetic and the institution (NovaCorp) is fictional
+- All demo data is synthetic and the institution (NorthShore Bank) is fictional
 - Strict JSON everywhere — the dashboard never parses free text
 
 ## License

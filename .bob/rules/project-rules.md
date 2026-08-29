@@ -3,7 +3,7 @@
 ## Identity
 - Hackathon: IBM TechXchange 2026 Pre-conference Dev Day
 - All code, comments, documentation and UI text in English
-- Fictional institution: NovaCorp. All demo data fully synthetic — no real
+- Fictional institution: NorthShore Bank. All demo data fully synthetic — no real
   usernames, passwords, client names or logs
 - No credentials, API keys or tokens anywhere in the repository, ever
 
@@ -17,8 +17,10 @@
   and the refusal is shown in the dashboard with the match that was withheld
 - The patcher works on a copy. The original script is touched only by an
   explicit commit, which writes a `.bak` first
-- The target site is served over HTTP, never opened from `file://` — Chromium
-  denies localStorage to file origins and the break panel needs it
+- `target-site/` is owned by another team member and vendored unmodified.
+  Adapt the engine to it; never edit it to suit the engine
+- Snapshots are saved with `<script>` blocks stripped: the target app renders
+  its buttons at runtime, and a live snapshot would heal itself on reload
 
 ## Thresholds and scoring
 - Defined once, in `src/contracts.py`. Do not restate them elsewhere in code
