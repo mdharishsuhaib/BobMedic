@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorthShore Bank – System Control Panel</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 0 28px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e6edf3;
+    }
+    header .env-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: #b91c1c;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    header .back-link {
+      margin-left: auto;
+      color: #8b949e;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    header .back-link:hover { color: #e6edf3; }
+
+    main {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .page-intro {
+      margin-bottom: 28px;
+      padding: 16px 20px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+    }
+    .page-intro h1 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .page-intro p  { font-size: 13px; color: #8b949e; line-height: 1.6; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #8b949e;
+      margin-bottom: 10px;
+      margin-top: 24px;
+    }
+
+    .toggle-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: border-color 0.15s;
+    }
+    .toggle-card:hover { border-color: #58a6ff44; }
+    .toggle-card.active { border-color: #f85149; background: #1a0b0b; }
+
+    .toggle-info { flex: 1; }
+    .toggle-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e6edf3;
+      margin-bottom: 4px;
+    }
+    .toggle-desc {
+      font-size: 12px;
+      color: #8b949e;
+      line-height: 1.5;
+    }
+    .toggle-desc code {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      color: #ff7b72;
+    }
+
+    /* Toggle switch */
+    .toggle-switch {
+      flex-shrink: 0;
+      margin-top: 2px;
+      position: relative;
+      width: 42px;
+      height: 22px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .toggle-switch .slider {
+      position: absolute;
+      inset: 0;
+      background: #30363d;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-switch .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      left: 3px; top: 3px;
+      background: #e6edf3;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle-switch input:checked + .slider { background: #f85149; }
+    .toggle-switch input:checked + .slider::before { transform: translateX(20px); }
+
+    .state-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .state-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #3fb950;
+      flex-shrink: 0;
+    }
+    .state-dot.broken { background: #f85149; }
+    .state-text { font-size: 11px; color: #8b949e; }
+
+    .reset-bar {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #21262d;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 7px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+    .btn.danger    { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+    .btn.danger:hover { background: #991b1b; }
+    .btn.neutral   { background: #21262d; color: #e6edf3; border-color: #30363d; }
+    .btn.neutral:hover { background: #30363d; }
+
+    .last-changed { font-size: 11px; color: #57606a; margin-left: auto; }
+
+    footer {
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      color: #57606a;
+      text-align: center;
+      font-size: 12px;
+      padding: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="title">NorthShore Bank</span>
+    <span class="env-badge">Internal</span>
+    <a href="index.html" class="back-link">← Back to portal</a>
+  </header>
+
+  <main>
+
+    <div class="page-intro">
+      <h1>🔧 UI Fault Injection Panel</h1>
+      <p>
+        Toggle switches below inject deliberate DOM mutations into the login and invoices pages.
+        State is persisted in <code>localStorage</code>. Reload the target pages after toggling.
+        These faults simulate real-world identifier drift that browser automation must handle gracefully.
+      </p>
+    </div>
+
+    <div class="section-label">Login page — index.html</div>
+
+    <!-- Toggle 1: Rename login button id -->
+    <div class="toggle-card" id="card-login-id">
+      <div class="toggle-info">
+        <div class="toggle-title">Rename login button ID</div>
+        <div class="toggle-desc">
+          Changes the button's <code>id</code> attribute from
+          <code>btn-login</code> → <code>auth-submit-v2</code>
+        </div>
+        <div class="state-indicator">
+          <div class="state-dot" id="dot-login-id"></div>
+          <span class="state-text" id="label-login-id">Normal</span>
+        </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-login-id" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Toggle 2: Move login button container -->
+    <div class="toggle-card" id="card-login-move">
+      <div class="toggle-info">
+        <div class="toggle-title">Move login button to alternate container</div>
+        <div class="toggle-desc">
+          Renders the button outside the <code>&lt;form&gt;</code> element,
+          inside a sibling <code>&lt;div id="btn-container-alt"&gt;</code>
+        </div>
+        <div class="state-indicator">
+          <div class="state-dot" id="dot-login-move"></div>
+          <span class="state-text" id="label-login-move">Normal</span>
+        </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-login-move" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Toggle 3: Change login button text -->
+    <div class="toggle-card" id="card-login-text">
+      <div class="toggle-info">
+        <div class="toggle-title">Change login button text</div>
+        <div class="toggle-desc">
+          Changes visible button label from <code>Sign in</code> → <code>Login</code>
+        </div>
+        <div class="state-indicator">
+          <div class="state-dot" id="dot-login-text"></div>
+          <span class="state-text" id="label-login-text">Normal</span>
+        </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-login-text" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="section-label">Invoices page — invoices.html</div>
+
+    <!-- Toggle 4: Rename export button id -->
+    <div class="toggle-card" id="card-export-id">
+      <div class="toggle-info">
+        <div class="toggle-title">Rename export button ID</div>
+        <div class="toggle-desc">
+          Changes the button's <code>id</code> attribute from
+          <code>btn-export</code> → <code>export-data-btn</code>
+        </div>
+        <div class="state-indicator">
+          <div class="state-dot" id="dot-export-id"></div>
+          <span class="state-text" id="label-export-id">Normal</span>
+        </div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-export-id" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="reset-bar">
+      <button class="btn danger" id="btn-reset-all">Reset all faults</button>
+      <a href="index.html" class="btn neutral">Open Login page</a>
+      <a href="invoices.html" class="btn neutral">Open Invoices page</a>
+      <span class="last-changed" id="last-changed-label"></span>
+    </div>
+
+  </main>
+
+  <footer>
+    NorthShore Bank &mdash; Internal tooling &mdash; Do not share this URL
+  </footer>
+
+  <script>
+    // ── localStorage key map ──────────────────────────────────────────────────
+    const TOGGLES = [
+      {
+        toggleId : 'toggle-login-id',
+        cardId   : 'card-login-id',
+        dotId    : 'dot-login-id',
+        labelId  : 'label-login-id',
+        storageKey: 'break_login_id',
+        offLabel : 'id = btn-login (normal)',
+        onLabel  : 'id = auth-submit-v2 (broken)'
+      },
+      {
+        toggleId : 'toggle-login-move',
+        cardId   : 'card-login-move',
+        dotId    : 'dot-login-move',
+        labelId  : 'label-login-move',
+        storageKey: 'break_login_move',
+        offLabel : 'Inside form container (normal)',
+        onLabel  : 'Outside form — in div#btn-container-alt (broken)'
+      },
+      {
+        toggleId : 'toggle-login-text',
+        cardId   : 'card-login-text',
+        dotId    : 'dot-login-text',
+        labelId  : 'label-login-text',
+        storageKey: 'break_login_text',
+        offLabel : 'Text = "Sign in" (normal)',
+        onLabel  : 'Text = "Login" (broken)'
+      },
+      {
+        toggleId : 'toggle-export-id',
+        cardId   : 'card-export-id',
+        dotId    : 'dot-export-id',
+        labelId  : 'label-export-id',
+        storageKey: 'break_export_id',
+        offLabel : 'id = btn-export (normal)',
+        onLabel  : 'id = export-data-btn (broken)'
+      }
+    ];
+
+    function applyToggleUI(cfg, isOn) {
+      var checkbox = document.getElementById(cfg.toggleId);
+      var card     = document.getElementById(cfg.cardId);
+      var dot      = document.getElementById(cfg.dotId);
+      var lbl      = document.getElementById(cfg.labelId);
+      checkbox.checked = isOn;
+      if (isOn) {
+        card.classList.add('active');
+        dot.classList.add('broken');
+        lbl.textContent = cfg.onLabel;
+      } else {
+        card.classList.remove('active');
+        dot.classList.remove('broken');
+        lbl.textContent = cfg.offLabel;
+      }
+    }
+
+    function stampLastChanged() {
+      var anyOn = TOGGLES.some(function (cfg) {
+        return localStorage.getItem(cfg.storageKey) === 'true';
+      });
+      var el = document.getElementById('last-changed-label');
+      if (anyOn) {
+        var now = new Date();
+        el.textContent = 'Last modified: ' + now.toLocaleTimeString();
+      } else {
+        el.textContent = 'All faults off';
+      }
+    }
+
+    // ── Init from localStorage ────────────────────────────────────────────────
+    TOGGLES.forEach(function (cfg) {
+      var current = localStorage.getItem(cfg.storageKey) === 'true';
+      applyToggleUI(cfg, current);
+
+      document.getElementById(cfg.toggleId).addEventListener('change', function () {
+        var newVal = this.checked;
+        localStorage.setItem(cfg.storageKey, newVal ? 'true' : 'false');
+        applyToggleUI(cfg, newVal);
+        stampLastChanged();
+      });
+    });
+
+    stampLastChanged();
+
+    // ── Reset all ─────────────────────────────────────────────────────────────
+    document.getElementById('btn-reset-all').addEventListener('click', function () {
+      TOGGLES.forEach(function (cfg) {
+        localStorage.setItem(cfg.storageKey, 'false');
+        applyToggleUI(cfg, false);
+      });
+      stampLastChanged();
+    });
+  </script>
+
+</body>
+</html>
