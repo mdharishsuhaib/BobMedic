@@ -6,7 +6,7 @@
   "risk_tier": "reversible_write",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T19:04:17.557720+00:00",
+  "detected_at": "2026-08-29T22:54:30.574520+00:00",
   "page_html_ref": "snapshots/run-0002.html",
   "status": "awaiting_approval",
   "diff": [
@@ -107,14 +107,14 @@
   ],
   "run_result": {
     "success": true,
-    "duration_sec": 7.92,
+    "duration_sec": 22.66,
     "steps_run": 9,
     "failed_step": null,
     "error": null
   },
   "bob_response": null,
   "mttr_manual_min": 38,
-  "mttr_auto_sec": 31.4,
+  "mttr_auto_sec": 61.6,
   "proposal": {
     "run_id": "run-0002",
     "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",

@@ -6,7 +6,7 @@
   "risk_tier": "irreversible",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T19:04:52.253853+00:00",
+  "detected_at": "2026-08-29T22:55:40.943157+00:00",
   "page_html_ref": "snapshots/run-0003.html",
   "status": "escalated",
   "diff": [],

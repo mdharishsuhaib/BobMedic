@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-30T01:22:14+0300",
+  "generated_at": "2026-08-30T02:00:49+0300",
   "thresholds": {
     "confident": 0.85,
     "ambiguous": 0.55
   },
   "summary": {
-    "incidents": 5,
-    "healed": 2,
+    "incidents": 4,
+    "healed": 1,
     "awaiting_approval": 1,
     "escalated": 2,
-    "avg_manual_min": 46.2,
-    "avg_auto_sec": 30.3,
+    "avg_manual_min": 46.0,
+    "avg_auto_sec": 41.6,
     "bob_calls": 0
   },
   "bots": [
@@ -45,149 +45,6 @@
   ],
   "incidents": [
     {
-      "id": "run-0005",
-      "bot_id": "bobmedic-login",
-      "bot_name": "NorthShore Login Bot (BobMedic)",
-      "wal_file": "BobMedic.wal",
-      "risk_tier": "read_only",
-      "failed_step": "login_submit",
-      "error": "ElementNotFound",
-      "detected_at": "2026-08-29T22:21:47.270839+00:00",
-      "page_html_ref": "snapshots/run-0005.html",
-      "status": "healed",
-      "diff": [
-        {
-          "line_number": 8,
-          "original": "webClick --selector \"CssSelector\" --css \"#btn-login\"",
-          "patched": "webClick --selector \"CssSelector\" --css \"button[type='submit']:has-text('Sign in')\""
-        }
-      ],
-      "candidates": [
-        {
-          "tag": "button",
-          "text": "Sign in",
-          "attrs": {
-            "id": "auth-submit-v2",
-            "class": "btn primary",
-            "type": "submit"
-          },
-          "dom_path": "div#btn-container-default > button.btn.primary",
-          "score": 0.9167,
-          "signals": {
-            "text": 1.0,
-            "attrs": 0.6667,
-            "dom_path": 1.0,
-            "geometry": 1.0,
-            "tag": 1.0
-          }
-        },
-        {
-          "tag": "input",
-          "text": "e.g. j.smith@company.com",
-          "attrs": {
-            "id": "username",
-            "type": "text",
-            "name": "username",
-            "placeholder": "e.g. j.smith@company.com"
-          },
-          "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.1442,
-          "signals": {
-            "text": 0.1935,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.5743,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "Contact IT support",
-          "attrs": {
-            "href": "#"
-          },
-          "dom_path": "main > div.login-card > div.login-footer > a",
-          "score": 0.1365,
-          "signals": {
-            "text": 0.24,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.4302,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "input",
-          "text": "",
-          "attrs": {
-            "id": "password",
-            "type": "password",
-            "name": "password"
-          },
-          "dom_path": "form#login-form > div.form-group > input",
-          "score": 0.1199,
-          "signals": {
-            "text": 0.0,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.7993,
-            "tag": 0.0
-          }
-        },
-        {
-          "tag": "a",
-          "text": "System",
-          "attrs": {
-            "href": "break.html"
-          },
-          "dom_path": "footer > a",
-          "score": 0.0789,
-          "signals": {
-            "text": 0.1538,
-            "attrs": 0.0,
-            "dom_path": 0.0,
-            "geometry": 0.2182,
-            "tag": 0.0
-          }
-        }
-      ],
-      "run_result": {
-        "success": true,
-        "duration_sec": 10.22,
-        "steps_run": 6,
-        "failed_step": null,
-        "error": null
-      },
-      "bob_response": null,
-      "mttr_manual_min": 47,
-      "mttr_auto_sec": 41.3,
-      "proposal": {
-        "run_id": "run-0005",
-        "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
-        "script_line": 8,
-        "old_selector": "#btn-login",
-        "new_selector": "button[type='submit']:has-text('Sign in')",
-        "confidence": 0.9167,
-        "resolved_by": "deterministic",
-        "verified": true,
-        "action": "auto_applied"
-      },
-      "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
-      "script_line": 8,
-      "old_selector": "#btn-login",
-      "new_selector": "button[type='submit']:has-text('Sign in')",
-      "confidence": 0.9167,
-      "resolved_by": "deterministic",
-      "verified": true,
-      "action": "auto_applied",
-      "selector_basis": "visible text plus element type — survives an id rename",
-      "patched_wal": "patch-candidates/run-0005.BobMedic.wal",
-      "verification_attempts": 1,
-      "breaks": {
-        "break_login_id": true
-      }
-    },
-    {
       "id": "run-0004",
       "bot_id": "invoice-extract",
       "bot_name": "NorthShore Invoice Exporter",
@@ -195,7 +52,7 @@
       "risk_tier": "read_only",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T19:05:12.986520+00:00",
+      "detected_at": "2026-08-29T22:56:10.605338+00:00",
       "page_html_ref": "snapshots/run-0004.html",
       "status": "escalated",
       "diff": [],
@@ -297,12 +154,12 @@
         "available": false
       },
       "mttr_manual_min": 47,
-      "mttr_auto_sec": 16.6,
+      "mttr_auto_sec": 24.3,
       "proposal": {
         "run_id": "run-0004",
         "diagnosis": "Scoring was ambiguous and Bob declined to pick a candidate: Bob Shell executable 'bob' not found on PATH.",
         "script_line": 8,
-        "old_selector": "button[type='submit']:has-text('Sign in')",
+        "old_selector": "#btn-login",
         "new_selector": null,
         "confidence": 0.7667,
         "resolved_by": null,
@@ -311,7 +168,7 @@
       },
       "diagnosis": "Scoring was ambiguous and Bob declined to pick a candidate: Bob Shell executable 'bob' not found on PATH.",
       "script_line": 8,
-      "old_selector": "button[type='submit']:has-text('Sign in')",
+      "old_selector": "#btn-login",
       "new_selector": null,
       "confidence": 0.7667,
       "resolved_by": null,
@@ -330,7 +187,7 @@
       "risk_tier": "irreversible",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T19:04:52.253853+00:00",
+      "detected_at": "2026-08-29T22:55:40.943157+00:00",
       "page_html_ref": "snapshots/run-0003.html",
       "status": "escalated",
       "diff": [],
@@ -468,7 +325,7 @@
       "risk_tier": "reversible_write",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T19:04:17.557720+00:00",
+      "detected_at": "2026-08-29T22:54:30.574520+00:00",
       "page_html_ref": "snapshots/run-0002.html",
       "status": "awaiting_approval",
       "diff": [
@@ -569,14 +426,14 @@
       ],
       "run_result": {
         "success": true,
-        "duration_sec": 7.92,
+        "duration_sec": 22.66,
         "steps_run": 9,
         "failed_step": null,
         "error": null
       },
       "bob_response": null,
       "mttr_manual_min": 38,
-      "mttr_auto_sec": 31.4,
+      "mttr_auto_sec": 61.6,
       "proposal": {
         "run_id": "run-0002",
         "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -605,13 +462,13 @@
     },
     {
       "id": "run-0001",
-      "bot_id": "invoice-extract",
-      "bot_name": "NorthShore Invoice Exporter",
-      "wal_file": "rpa-bots/invoice-extract.wal",
+      "bot_id": "bobmedic-login",
+      "bot_name": "NorthShore Login Bot (BobMedic)",
+      "wal_file": "BobMedic.wal",
       "risk_tier": "read_only",
       "failed_step": "login_submit",
       "error": "ElementNotFound",
-      "detected_at": "2026-08-29T19:03:42.699479+00:00",
+      "detected_at": "2026-08-29T22:53:46.083513+00:00",
       "page_html_ref": "snapshots/run-0001.html",
       "status": "healed",
       "diff": [
@@ -712,14 +569,14 @@
       ],
       "run_result": {
         "success": true,
-        "duration_sec": 8.48,
-        "steps_run": 8,
+        "duration_sec": 8.54,
+        "steps_run": 6,
         "failed_step": null,
         "error": null
       },
       "bob_response": null,
       "mttr_manual_min": 47,
-      "mttr_auto_sec": 32.0,
+      "mttr_auto_sec": 38.9,
       "proposal": {
         "run_id": "run-0001",
         "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -740,7 +597,7 @@
       "verified": true,
       "action": "auto_applied",
       "selector_basis": "visible text plus element type — survives an id rename",
-      "patched_wal": "patch-candidates/run-0001.invoice-extract.wal",
+      "patched_wal": "patch-candidates/run-0001.BobMedic.wal",
       "verification_attempts": 1,
       "breaks": {
         "break_login_id": true

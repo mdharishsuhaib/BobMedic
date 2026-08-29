@@ -3,9 +3,9 @@
   "bot_name": "NorthShore Payment Batch Submitter",
   "wal": "rpa-bots/payment-submit.wal",
   "risk_tier": "irreversible",
-  "recorded_at": "2026-08-29T22:03:27+0300",
+  "recorded_at": "2026-08-30T01:53:26+0300",
   "green_snapshot": "snapshots/baseline-payment-submit.html",
-  "duration_sec": 8.98,
+  "duration_sec": 12.91,
   "steps": {
     "login_username": {
       "tag": "input",

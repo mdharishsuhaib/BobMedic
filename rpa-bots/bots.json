@@ -8,7 +8,8 @@
     "steps": {
       "webset#1": "login_username",
       "webset#2": "login_password",
-      "webclick#1": "login_submit"
+      "webwaitelement#1": "login_submit",
+      "webclick#1": "login_submit_click"
     }
   },
   "invoice-extract": {

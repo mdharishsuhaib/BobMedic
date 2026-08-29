@@ -374,20 +374,45 @@
       }
     }
 
-    // ── Init from localStorage ────────────────────────────────────────────────
-    TOGGLES.forEach(function (cfg) {
-      var current = localStorage.getItem(cfg.storageKey) === 'true';
-      applyToggleUI(cfg, current);
-
-      document.getElementById(cfg.toggleId).addEventListener('change', function () {
-        var newVal = this.checked;
-        localStorage.setItem(cfg.storageKey, newVal ? 'true' : 'false');
-        applyToggleUI(cfg, newVal);
-        stampLastChanged();
+    // ── Sync helpers (server-side state so all Chrome instances see same DOM) ─
+    function pushToServer() {
+      var flags = {};
+      TOGGLES.forEach(function (cfg) {
+        flags[cfg.storageKey] = localStorage.getItem(cfg.storageKey) === 'true';
       });
-    });
+      fetch('/api/break', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(flags)
+      }).catch(function () {});
+    }
 
-    stampLastChanged();
+    function pullFromServer(callback) {
+      fetch('/api/break-state')
+        .then(function (r) { return r.json(); })
+        .then(callback)
+        .catch(function () { callback(null); });
+    }
+
+    // ── Init: pull server state first, fall back to localStorage ─────────────
+    pullFromServer(function (serverFlags) {
+      TOGGLES.forEach(function (cfg) {
+        var current = serverFlags
+          ? serverFlags[cfg.storageKey] === true
+          : localStorage.getItem(cfg.storageKey) === 'true';
+        localStorage.setItem(cfg.storageKey, current ? 'true' : 'false');
+        applyToggleUI(cfg, current);
+
+        document.getElementById(cfg.toggleId).addEventListener('change', function () {
+          var newVal = this.checked;
+          localStorage.setItem(cfg.storageKey, newVal ? 'true' : 'false');
+          applyToggleUI(cfg, newVal);
+          stampLastChanged();
+          pushToServer();
+        });
+      });
+      stampLastChanged();
+    });
 
     // ── Reset all ─────────────────────────────────────────────────────────────
     document.getElementById('btn-reset-all').addEventListener('click', function () {
@@ -396,6 +421,7 @@
         applyToggleUI(cfg, false);
       });
       stampLastChanged();
+      pushToServer();
     });
   </script>
 

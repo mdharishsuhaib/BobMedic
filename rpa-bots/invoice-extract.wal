@@ -5,7 +5,7 @@ webStart --name InvoiceBrowser --type "Chrome" --userprofilepreferences "Automat
 webNavigate --url "http://127.0.0.1:8000/index.html"
 webSet --value demo --selector "CssSelector" --css "#username" --timeout "00:00:05" username=value
 webSet --value demo --selector "CssSelector" --css "#password" --timeout "00:00:05" password=value
-webClick --selector "CssSelector" --css "button[type='submit']:has-text('Sign in')"
+webClick --selector "CssSelector" --css "#btn-login"
 webWait --selector "CssSelector" --css ".table-wrap table" --timeout "00:00:10"
 webClick --selector "CssSelector" --css "#btn-export"
 webClose --name InvoiceBrowser

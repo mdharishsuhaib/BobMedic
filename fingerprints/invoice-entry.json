@@ -3,9 +3,9 @@
   "bot_name": "NorthShore Invoice Filter Entry",
   "wal": "rpa-bots/invoice-entry.wal",
   "risk_tier": "reversible_write",
-  "recorded_at": "2026-08-29T22:03:18+0300",
+  "recorded_at": "2026-08-30T01:53:13+0300",
   "green_snapshot": "snapshots/baseline-invoice-entry.html",
-  "duration_sec": 7.98,
+  "duration_sec": 10.08,
   "steps": {
     "login_username": {
       "tag": "input",

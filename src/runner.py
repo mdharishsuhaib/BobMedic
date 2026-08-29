@@ -20,6 +20,7 @@ from playwright.sync_api import sync_playwright
 
 from fingerprint import DESCRIBE_JS, collect_candidates
 from parser import parse_wal
+from serve import BREAK_KEYS as SERVER_BREAK_KEYS, write_break_state
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT_DIR = PROJECT_ROOT / "snapshots"
@@ -115,7 +116,7 @@ def _execute_step(page, step, timeout: int):
         locator.wait_for(state="visible", timeout=timeout)
         locator.click()
         page.wait_for_timeout(200)
-    elif command in ("webwait", "webassert"):
+    elif command in ("webwait", "webwaitelement", "webassert"):
         locator.wait_for(state="visible", timeout=timeout)
     elif command == "webhover":
         locator.wait_for(state="visible", timeout=timeout)
@@ -178,6 +179,11 @@ def run_wal(
     step_names = step_names or {}
     steps = parse_wal(wal_path)
     started = time.time()
+
+    # The site server injects break state from disk into every page it serves,
+    # so that is where the flags have to be written. The init script below still
+    # matters for pages opened straight from a file, such as a saved snapshot.
+    write_break_state(breaks or {})
 
     results = []
     fingerprints = {}

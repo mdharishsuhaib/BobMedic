@@ -21,12 +21,12 @@ from typing import Optional
 # Commands the runner knows how to replay.
 WEB_COMMANDS = {
     "webstart", "webnavigate", "webset", "webclick", "webget",
-    "webwait", "webassert", "webhover", "webselect", "webclose",
+    "webwait", "webwaitelement", "webassert", "webhover", "webselect", "webclose",
 }
 
 # Commands that address an element and can therefore break.
 SELECTOR_COMMANDS = {
-    "webset", "webclick", "webget", "webwait", "webassert",
+    "webset", "webclick", "webget", "webwait", "webwaitelement", "webassert",
     "webhover", "webselect",
 }
 

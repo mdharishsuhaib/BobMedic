@@ -3,9 +3,9 @@
   "bot_name": "NorthShore Login Bot (BobMedic)",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T01:20:44+0300",
+  "recorded_at": "2026-08-30T01:52:49+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 16.12,
+  "duration_sec": 9.83,
   "steps": {
     "login_username": {
       "tag": "input",

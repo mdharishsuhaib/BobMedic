@@ -1,12 +1,12 @@
 {
   "id": "run-0001",
-  "bot_id": "invoice-extract",
-  "bot_name": "NorthShore Invoice Exporter",
-  "wal_file": "rpa-bots/invoice-extract.wal",
+  "bot_id": "bobmedic-login",
+  "bot_name": "NorthShore Login Bot (BobMedic)",
+  "wal_file": "BobMedic.wal",
   "risk_tier": "read_only",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T19:03:42.699479+00:00",
+  "detected_at": "2026-08-29T22:53:46.083513+00:00",
   "page_html_ref": "snapshots/run-0001.html",
   "status": "healed",
   "diff": [
@@ -107,14 +107,14 @@
   ],
   "run_result": {
     "success": true,
-    "duration_sec": 8.48,
-    "steps_run": 8,
+    "duration_sec": 8.54,
+    "steps_run": 6,
     "failed_step": null,
     "error": null
   },
   "bob_response": null,
   "mttr_manual_min": 47,
-  "mttr_auto_sec": 32.0,
+  "mttr_auto_sec": 38.9,
   "proposal": {
     "run_id": "run-0001",
     "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
@@ -135,7 +135,7 @@
   "verified": true,
   "action": "auto_applied",
   "selector_basis": "visible text plus element type — survives an id rename",
-  "patched_wal": "patch-candidates/run-0001.invoice-extract.wal",
+  "patched_wal": "patch-candidates/run-0001.BobMedic.wal",
   "verification_attempts": 1,
   "breaks": {
     "break_login_id": true

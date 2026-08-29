@@ -510,6 +510,25 @@ def _cmd_approve(args):
     print(f"[APPROVED] {incident['id']} -> {incident['status']}")
 
 
+def _cmd_restore(args):
+    """
+    Put healed bot scripts back to their pre-patch selectors.
+
+    Needed between demo runs: once a bot has been healed onto a text-based
+    selector, renaming the id no longer breaks it, and the same scenario would
+    correctly report that there is nothing to heal.
+    """
+    from patcher import revert_patch
+
+    targets = [args.bot] if args.bot else list(load_bots())
+    for bot_id in targets:
+        outcome = revert_patch(get_bot(bot_id))
+        if outcome.get("reverted"):
+            print(f"[RESTORE]  {bot_id}: {outcome['script']}")
+        else:
+            print(f"[SKIP]     {bot_id}: {outcome.get('reason', 'nothing to restore')}")
+
+
 def _cmd_feed(args):
     """Rewrite the dashboard feed from the incidents on disk."""
     print(f"[FEED]     {publish_feed()}")
@@ -560,6 +579,10 @@ def main(argv=None):
     approve_cmd.add_argument("--scenario", choices=list(BREAK_SCENARIOS),
                              help="break state to re-run against")
     approve_cmd.set_defaults(func=_cmd_approve)
+
+    restore = sub.add_parser("restore", help="undo applied patches on bot scripts")
+    restore.add_argument("bot", nargs="?", help="bot id (default: every bot)")
+    restore.set_defaults(func=_cmd_restore)
 
     feed = sub.add_parser("feed", help="rewrite the dashboard feed")
     feed.set_defaults(func=_cmd_feed)
