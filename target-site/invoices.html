@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — Invoices</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">NovaCorp</div>
+    <nav class="app-nav">
+      <a href="invoices.html" id="nav-invoices" class="active">Invoices</a>
+      <a href="payment.html" id="nav-payments">Payments</a>
+    </nav>
+    <div class="header-right">
+      <span class="user" id="user-display">Welcome, operator</span>
+      <button class="btn ghost" id="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="page-title">Invoice Summary</div>
+    <div class="page-sub">Fiscal year 2026 · 8 open records</div>
+
+    <!-- Deliberate competition for the ranking engine: several buttons that
+         look plausible next to the export button. -->
+    <div class="toolbar" id="invoice-toolbar">
+      <div class="toolbar-left">
+        <input type="text" id="search-invoices" name="search" placeholder="Search invoices" />
+        <select id="filter-status" name="status">
+          <option value="all">All statuses</option>
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+        <button type="button" id="btn-apply-filter" class="btn ghost">Apply filter</button>
+      </div>
+      <div class="toolbar-right">
+        <button type="button" id="btn-refresh" class="btn ghost">Refresh</button>
+        <button type="button" id="btn-print" class="btn ghost">Print list</button>
+        <button type="button" id="btn-export" class="btn primary">Download CSV</button>
+      </div>
+    </div>
+
+    <table class="invoices-table" id="invoices-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Client</th>
+          <th>Amount (USD)</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="invoices-body">
+        <!-- populated by app.js -->
+      </tbody>
+    </table>
+
+    <div class="table-footer">
+      <a href="#" class="link-muted" id="link-archive">View archived invoices</a>
+      <a href="break.html" class="link-muted" id="link-break-panel">UI change panel</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="break.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+{
+  "#username": {
+    "selector": "#username",
+    "tag": "input",
+    "text": "",
+    "attrs": {
+      "id": "username",
+      "type": "text",
+      "name": "username",
+      "placeholder": "Enter your username"
+    },
+    "dom_path": "input#username",
+    "neighbors": {
+      "prev_label": "Username"
+    },
+    "geometry": {
+      "x": 477,
+      "y": 331,
+      "w": 326,
+      "h": 36
+    },
+    "recorded_at": "2026-08-29T15:50:21.343167+00:00",
+    "url": "file:///D:/IBM%20BOb/BotMedic/target-site/index.html"
+  },
+  "#password": {
+    "selector": "#password",
+    "tag": "input",
+    "text": "",
+    "attrs": {
+      "id": "password",
+      "type": "password",
+      "name": "password",
+      "placeholder": "Enter your password"
+    },
+    "dom_path": "input#password",
+    "neighbors": {
+      "prev_label": "Password"
+    },
+    "geometry": {
+      "x": 477,
+      "y": 412,
+      "w": 326,
+      "h": 36
+    },
+    "recorded_at": "2026-08-29T15:50:21.343167+00:00",
+    "url": "file:///D:/IBM%20BOb/BotMedic/target-site/index.html"
+  },
+  "#btn-login": {
+    "selector": "#btn-login",
+    "tag": "button",
+    "text": "Login",
+    "attrs": {
+      "id": "btn-login",
+      "class": "btn-login",
+      "type": "submit"
+    },
+    "dom_path": "button#btn-login",
+    "neighbors": {
+      "prev_label": "Invalid username or password."
+    },
+    "geometry": {
+      "x": 477,
+      "y": 466,
+      "w": 326,
+      "h": 36
+    },
+    "recorded_at": "2026-08-29T15:50:21.343167+00:00",
+    "url": "file:///D:/IBM%20BOb/BotMedic/target-site/index.html"
+  }
+}
+

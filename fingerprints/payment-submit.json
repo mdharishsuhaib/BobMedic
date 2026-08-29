@@ -1,0 +1,196 @@
+{
+  "bot_id": "payment-submit",
+  "bot_name": "NovaCorp Payment Batch Submitter",
+  "wal": "rpa-bots/payment-submit.wal",
+  "risk_tier": "irreversible",
+  "recorded_at": "2026-08-29T21:18:02+0300",
+  "green_snapshot": "snapshots/baseline-payment-submit.html",
+  "duration_sec": 9.06,
+  "steps": {
+    "login_username": {
+      "tag": "input",
+      "text": "Enter your username",
+      "attrs": {
+        "id": "username",
+        "type": "text",
+        "name": "username",
+        "placeholder": "Enter your username"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Username",
+        "parent_text": "Username"
+      },
+      "geometry": {
+        "x": 482,
+        "y": 287,
+        "w": 316,
+        "h": 39
+      },
+      "visible": true,
+      "step_id": "login_username",
+      "step_key": "webset#1",
+      "selector": "#username",
+      "line_number": 8,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "login_password": {
+      "tag": "input",
+      "text": "Enter your password",
+      "attrs": {
+        "id": "password",
+        "type": "password",
+        "name": "password",
+        "placeholder": "Enter your password"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Password",
+        "parent_text": "Password"
+      },
+      "geometry": {
+        "x": 482,
+        "y": 366,
+        "w": 316,
+        "h": 39
+      },
+      "visible": true,
+      "step_id": "login_password",
+      "step_key": "webset#2",
+      "selector": "#password",
+      "line_number": 9,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "login_submit": {
+      "tag": "button",
+      "text": "Sign in",
+      "attrs": {
+        "id": "btn-login",
+        "class": "btn primary",
+        "type": "submit"
+      },
+      "dom_path": "form#login-form > div.actions > button.btn.primary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Sign in"
+      },
+      "geometry": {
+        "x": 482,
+        "y": 423,
+        "w": 316,
+        "h": 37
+      },
+      "visible": true,
+      "step_id": "login_submit",
+      "step_key": "webclick#1",
+      "selector": "#btn-login",
+      "line_number": 10,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "invoices_table_ready": {
+      "tag": "table",
+      "text": "INVOICE #\tCLIENT\tAMOUNT (USD)\tDUE DATE\tSTATUS\tACTION\nINV-2026-001\tApex Trading LLC\t$42,500.00\t2026-08-15\tPaid\t\nView\nDown",
+      "attrs": {
+        "id": "invoices-table",
+        "class": "invoices-table"
+      },
+      "dom_path": "div.page-content > table.invoices-table",
+      "neighbors": {
+        "prev_label": "All statuses\n          Paid\n          Pending\n          Over",
+        "parent_text": "Invoice Summary\n    Fiscal year 2026 · 8 open records\n\n    \n    \n      \n        "
+      },
+      "geometry": {
+        "x": 128,
+        "y": 215,
+        "w": 1024,
+        "h": 431
+      },
+      "visible": true,
+      "step_id": "invoices_table_ready",
+      "step_key": "webwait#1",
+      "selector": "#invoices-table",
+      "line_number": 11,
+      "url": "http://127.0.0.1:8000/invoices.html"
+    },
+    "payment_recipient": {
+      "tag": "input",
+      "text": "Beneficiary account name",
+      "attrs": {
+        "id": "recipient",
+        "type": "text",
+        "name": "recipient",
+        "placeholder": "Beneficiary account name"
+      },
+      "dom_path": "form#payment-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Recipient",
+        "parent_text": "Recipient"
+      },
+      "geometry": {
+        "x": 411,
+        "y": 205,
+        "w": 458,
+        "h": 39
+      },
+      "visible": true,
+      "step_id": "payment_recipient",
+      "step_key": "webset#3",
+      "selector": "#recipient",
+      "line_number": 13,
+      "url": "http://127.0.0.1:8000/payment.html"
+    },
+    "payment_amount": {
+      "tag": "input",
+      "text": "0.00",
+      "attrs": {
+        "id": "amount",
+        "type": "text",
+        "name": "amount",
+        "placeholder": "0.00"
+      },
+      "dom_path": "form#payment-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Amount (USD)",
+        "parent_text": "Amount (USD)"
+      },
+      "geometry": {
+        "x": 411,
+        "y": 284,
+        "w": 458,
+        "h": 39
+      },
+      "visible": true,
+      "step_id": "payment_amount",
+      "step_key": "webset#4",
+      "selector": "#amount",
+      "line_number": 14,
+      "url": "http://127.0.0.1:8000/payment.html"
+    },
+    "payment_submit": {
+      "tag": "button",
+      "text": "Submit payment",
+      "attrs": {
+        "id": "btn-pay",
+        "class": "btn danger",
+        "type": "submit"
+      },
+      "dom_path": "form#payment-form > div.actions.spread > button.btn.danger",
+      "neighbors": {
+        "prev_label": "Cancel",
+        "parent_text": "Cancel\n        Submit payment"
+      },
+      "geometry": {
+        "x": 738,
+        "y": 474,
+        "w": 131,
+        "h": 37
+      },
+      "visible": true,
+      "step_id": "payment_submit",
+      "step_key": "webclick#2",
+      "selector": "#btn-pay",
+      "line_number": 15,
+      "url": "http://127.0.0.1:8000/payment.html"
+    }
+  }
+}

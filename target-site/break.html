@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — UI Change Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">NovaCorp</div>
+    <nav class="app-nav">
+      <a href="index.html">Sign in</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="payment.html">Payments</a>
+    </nav>
+    <div class="header-right">
+      <span class="user">UI change panel</span>
+    </div>
+  </header>
+
+  <div class="page-content narrow">
+    <div class="page-title">Simulate a UI release</div>
+    <div class="page-sub">
+      Each toggle changes the portal the way a routine front-end release would.
+      State is stored in localStorage and applied by every page on load.
+    </div>
+
+    <div class="card break-list" id="break-list">
+      <!-- populated by break-panel.js -->
+    </div>
+
+    <div class="actions spread">
+      <button type="button" id="btn-clear-breaks" class="btn ghost">Reset portal</button>
+      <button type="button" id="btn-break-all" class="btn danger">Apply all changes</button>
+    </div>
+
+    <div class="break-state">
+      <div class="lbl">Current state</div>
+      <pre id="break-json">{}</pre>
+    </div>
+  </div>
+
+  <script src="break-panel.js"></script>
+</body>
+</html>

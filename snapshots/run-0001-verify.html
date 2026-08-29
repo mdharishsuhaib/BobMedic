@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><base href="http://127.0.0.1:8000">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — Invoices</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">NovaCorp</div>
+    <nav class="app-nav">
+      <a href="invoices.html" id="nav-invoices" class="active">Invoices</a>
+      <a href="payment.html" id="nav-payments">Payments</a>
+    </nav>
+    <div class="header-right">
+      <span class="user" id="user-display">Welcome, operator</span>
+      <button class="btn ghost" id="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="page-title">Invoice Summary</div>
+    <div class="page-sub">Fiscal year 2026 · 8 open records</div>
+
+    <!-- Deliberate competition for the ranking engine: several buttons that
+         look plausible next to the export button. -->
+    <div class="toolbar" id="invoice-toolbar">
+      <div class="toolbar-left">
+        <input type="text" id="search-invoices" name="search" placeholder="Search invoices">
+        <select id="filter-status" name="status">
+          <option value="all">All statuses</option>
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+        <button type="button" id="btn-apply-filter" class="btn ghost">Apply filter</button>
+      </div>
+      <div class="toolbar-right">
+        <button type="button" id="btn-refresh" class="btn ghost">Refresh</button>
+        <button type="button" id="btn-print" class="btn ghost">Print list</button>
+        <button type="button" id="btn-export" class="btn primary">Download CSV</button>
+      </div>
+    </div>
+
+    <table class="invoices-table" id="invoices-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Client</th>
+          <th>Amount (USD)</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="invoices-body"><tr data-invoice-id="INV-2026-001"><td class="mono">INV-2026-001</td><td>Apex Trading LLC</td><td class="mono">$42,500.00</td><td class="mono">2026-08-15</td><td><span class="badge badge-paid">paid</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-001">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-001">Download</button></td></tr><tr data-invoice-id="INV-2026-002"><td class="mono">INV-2026-002</td><td>Crescent Imports</td><td class="mono">$18,750.50</td><td class="mono">2026-08-22</td><td><span class="badge badge-pending">pending</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-002">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-002">Download</button></td></tr><tr data-invoice-id="INV-2026-003"><td class="mono">INV-2026-003</td><td>Delta Logistics Co.</td><td class="mono">$93,200.00</td><td class="mono">2026-07-30</td><td><span class="badge badge-overdue">overdue</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-003">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-003">Download</button></td></tr><tr data-invoice-id="INV-2026-004"><td class="mono">INV-2026-004</td><td>Horizon Group</td><td class="mono">$7,840.00</td><td class="mono">2026-09-01</td><td><span class="badge badge-pending">pending</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-004">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-004">Download</button></td></tr><tr data-invoice-id="INV-2026-005"><td class="mono">INV-2026-005</td><td>Summit Partners</td><td class="mono">$215,000.00</td><td class="mono">2026-08-18</td><td><span class="badge badge-paid">paid</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-005">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-005">Download</button></td></tr><tr data-invoice-id="INV-2026-006"><td class="mono">INV-2026-006</td><td>Riverstone Ltd.</td><td class="mono">$31,500.00</td><td class="mono">2026-08-10</td><td><span class="badge badge-overdue">overdue</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-006">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-006">Download</button></td></tr><tr data-invoice-id="INV-2026-007"><td class="mono">INV-2026-007</td><td>Kestrel Manufacturing</td><td class="mono">$64,300.75</td><td class="mono">2026-09-12</td><td><span class="badge badge-pending">pending</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-007">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-007">Download</button></td></tr><tr data-invoice-id="INV-2026-008"><td class="mono">INV-2026-008</td><td>Baltic Freight AS</td><td class="mono">$12,980.20</td><td class="mono">2026-08-29</td><td><span class="badge badge-paid">paid</span></td><td class="row-actions"><a href="#" class="link-muted row-view" data-id="INV-2026-008">View</a><button type="button" class="btn tiny row-download" data-id="INV-2026-008">Download</button></td></tr></tbody>
+    </table>
+
+    <div class="table-footer">
+      <a href="#" class="link-muted" id="link-archive">View archived invoices</a>
+      <a href="break.html" class="link-muted" id="link-break-panel">UI change panel</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="break.js"></script>
+
+
+<div class="break-flag">1 UI change(s) active</div><div id="toast" class="toast show">Exported 8 invoices to CSV (demo)</div></body></html>

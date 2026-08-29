@@ -1,0 +1,10 @@
+{
+  "run_id": "run-0003",
+  "bot_id": "payment-submit",
+  "risk_tier": "irreversible",
+  "failed_step": "login_submit",
+  "error": "ElementNotFound",
+  "script_line": 10,
+  "page_html_ref": "snapshots/run-0003.html",
+  "timestamp": "2026-08-29T18:19:54.123541+00:00"
+}

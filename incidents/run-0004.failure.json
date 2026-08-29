@@ -1,0 +1,10 @@
+{
+  "run_id": "run-0004",
+  "bot_id": "invoice-extract",
+  "risk_tier": "read_only",
+  "failed_step": "login_submit",
+  "error": "ElementNotFound",
+  "script_line": 8,
+  "page_html_ref": "snapshots/run-0004.html",
+  "timestamp": "2026-08-29T18:20:14.680433+00:00"
+}

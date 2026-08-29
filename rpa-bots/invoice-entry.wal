@@ -1,0 +1,13 @@
+defVar --name EntryBrowser --type Browser
+defVar --name username --type Boolean
+defVar --name password --type Boolean
+defVar --name searchTerm --type Boolean
+webStart --name EntryBrowser --type "Chrome" --userprofilepreferences "AutomationOptimized" EntryBrowser=value
+webNavigate --url "http://127.0.0.1:8000/index.html"
+webSet --value operator --selector "CssSelector" --css "#username" --timeout "00:00:05" username=value
+webSet --value nova2026 --selector "CssSelector" --css "#password" --timeout "00:00:05" password=value
+webClick --selector "CssSelector" --css "#btn-login"
+webWait --selector "CssSelector" --css "#invoices-table" --timeout "00:00:10"
+webSet --value overdue --selector "CssSelector" --css "#search-invoices" --timeout "00:00:05" searchTerm=value
+webClick --selector "CssSelector" --css "#btn-apply-filter"
+webClose --name EntryBrowser

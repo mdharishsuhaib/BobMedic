@@ -1,0 +1,47 @@
+{
+  "invoice-extract": {
+    "bot_name": "NovaCorp Invoice Exporter",
+    "wal": "rpa-bots/invoice-extract.wal",
+    "risk_tier": "read_only",
+    "description": "Signs in and downloads the invoice CSV export. Reads only.",
+    "mttr_manual_min": 47,
+    "steps": {
+      "webset#1": "login_username",
+      "webset#2": "login_password",
+      "webclick#1": "login_submit",
+      "webwait#1": "invoices_table_ready",
+      "webclick#2": "export_csv"
+    }
+  },
+  "invoice-entry": {
+    "bot_name": "NovaCorp Invoice Filter Entry",
+    "wal": "rpa-bots/invoice-entry.wal",
+    "risk_tier": "reversible_write",
+    "description": "Signs in and enters filter criteria. Writes draft state a human can undo.",
+    "mttr_manual_min": 38,
+    "steps": {
+      "webset#1": "login_username",
+      "webset#2": "login_password",
+      "webclick#1": "login_submit",
+      "webwait#1": "invoices_table_ready",
+      "webset#3": "filter_search_term",
+      "webclick#2": "apply_filter"
+    }
+  },
+  "payment-submit": {
+    "bot_name": "NovaCorp Payment Batch Submitter",
+    "wal": "rpa-bots/payment-submit.wal",
+    "risk_tier": "irreversible",
+    "description": "Signs in and submits a payment. Money leaves the ledger — never auto-patched.",
+    "mttr_manual_min": 52,
+    "steps": {
+      "webset#1": "login_username",
+      "webset#2": "login_password",
+      "webclick#1": "login_submit",
+      "webwait#1": "invoices_table_ready",
+      "webset#3": "payment_recipient",
+      "webset#4": "payment_amount",
+      "webclick#2": "payment_submit"
+    }
+  }
+}

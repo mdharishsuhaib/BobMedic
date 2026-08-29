@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — Payments</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">NovaCorp</div>
+    <nav class="app-nav">
+      <a href="invoices.html" id="nav-invoices">Invoices</a>
+      <a href="payment.html" id="nav-payments" class="active">Payments</a>
+    </nav>
+    <div class="header-right">
+      <span class="user" id="user-display">Welcome, operator</span>
+      <button class="btn ghost" id="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="page-content narrow">
+    <div class="page-title">Submit Payment</div>
+    <div class="page-sub">Payments leave the ledger immediately and cannot be recalled.</div>
+
+    <form class="card form-card" id="payment-form" onsubmit="return false;">
+      <div class="form-group">
+        <label for="recipient">Recipient</label>
+        <input type="text" id="recipient" name="recipient" placeholder="Beneficiary account name" />
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount (USD)</label>
+        <input type="text" id="amount" name="amount" placeholder="0.00" />
+      </div>
+
+      <div class="form-group">
+        <label for="reference">Reference</label>
+        <input type="text" id="reference" name="reference" placeholder="Invoice reference" />
+      </div>
+
+      <div class="irreversible-note">
+        This action is irreversible.
+      </div>
+
+      <div class="actions spread">
+        <button type="button" id="btn-cancel-payment" class="btn ghost">Cancel</button>
+        <button type="submit" id="btn-pay" class="btn danger">Submit payment</button>
+      </div>
+    </form>
+
+    <div class="payment-result" id="payment-result"></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="break.js"></script>
+</body>
+</html>

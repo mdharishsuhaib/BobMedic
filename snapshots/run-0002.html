@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><base href="http://127.0.0.1:8000">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCorp — Sign in</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="logo">NovaCorp</div>
+      <div class="tagline">Enterprise Finance Portal</div>
+
+      <form id="login-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password">
+        </div>
+
+        <div class="error-msg" id="error-msg">
+          Invalid username or password.
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="auth-submit-v2" class="btn primary">Sign in</button>
+        </div>
+
+        <div class="login-footer" id="login-footer">
+          <a href="#" class="link-muted" id="link-forgot">Forgot password?</a>
+          <a href="#" class="link-muted" id="link-support">Contact support</a>
+        </div>
+      </form>
+    </div>
+      <div class="login-note">
+      Demo environment · synthetic data only ·
+      <a href="break.html" class="link-muted">UI change panel</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="break.js"></script>
+
+
+<div class="break-flag">1 UI change(s) active</div></body></html>

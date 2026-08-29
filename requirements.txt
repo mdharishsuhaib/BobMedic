@@ -1,0 +1,8 @@
+﻿# BotMedic — Python dependencies
+#
+# The engine deliberately runs on the standard library plus one automation
+# driver. The control API, the target-site server and every JSON contract are
+# stdlib only, so there is nothing to install for them.
+
+playwright>=1.44
+
