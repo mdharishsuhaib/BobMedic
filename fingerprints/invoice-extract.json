@@ -3,9 +3,9 @@
   "bot_name": "NorthShore Invoice Exporter",
   "wal": "rpa-bots/invoice-extract.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-29T22:03:10+0300",
+  "recorded_at": "2026-08-30T01:10:16+0300",
   "green_snapshot": "snapshots/baseline-invoice-extract.html",
-  "duration_sec": 8.29,
+  "duration_sec": 10.88,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -82,7 +82,7 @@
       "visible": true,
       "step_id": "login_submit",
       "step_key": "webclick#1",
-      "selector": "#btn-login",
+      "selector": "button[type='submit']:has-text('Sign in')",
       "line_number": 8,
       "url": "http://127.0.0.1:8000/index.html"
     },

@@ -1,0 +1,9 @@
+defVar --name BobMedicBrawser --type Browser
+defVar --name username --type Boolean
+defVar --name password --type Boolean
+webStart --name BobMedicBrawser --type "Chrome" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\Users\\Ahmed Elshikh\\AppData\\Local\\IBM Robotic Process Automation\\downloads" BobMedicBrawser=value
+webNavigate --url "http://127.0.0.1:8000"
+webSet --value operator --selector "CssSelector" --css "#username" --timeout "00:00:01" username=value
+webSet --value nova2026 --selector "CssSelector" --css "#password" --timeout "00:00:01" password=value
+webClick --selector "CssSelector" --css "button[type='submit']:has-text('Sign in')"
+webClose --name BobMedicBrawser --leavebrowseropen *	23.0.19.0

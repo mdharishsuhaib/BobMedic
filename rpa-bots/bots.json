@@ -1,4 +1,16 @@
 {
+  "bobmedic-login": {
+    "bot_name": "NorthShore Login Bot (BobMedic)",
+    "wal": "BobMedic.wal",
+    "risk_tier": "read_only",
+    "description": "Signs in using id-based selector #btn-login. The demo bot — breaks when the button id changes.",
+    "mttr_manual_min": 47,
+    "steps": {
+      "webset#1": "login_username",
+      "webset#2": "login_password",
+      "webclick#1": "login_submit"
+    }
+  },
   "invoice-extract": {
     "bot_name": "NorthShore Invoice Exporter",
     "wal": "rpa-bots/invoice-extract.wal",

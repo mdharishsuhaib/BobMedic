@@ -1,4 +1,4 @@
-# Bob Madak — Project Context
+# BotMedic — Project Context
 
 Read this before writing any code. It defines what is being built, the
 contracts between components, and the constraints that are not negotiable.
@@ -6,7 +6,7 @@ contracts between components, and the constraints that are not negotiable.
 ## What this is
 
 Self-healing RPA maintenance. When an IBM RPA bot fails because a target web
-element changed, Bob Madak fingerprints, detects, ranks, verifies, checks the
+element changed, BotMedic fingerprints, detects, ranks, verifies, checks the
 risk tier, and presents a diff to a human. It edits source scripts with diffs
 and human review. It is not a production monitoring dashboard.
 

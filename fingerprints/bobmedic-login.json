@@ -1,0 +1,90 @@
+{
+  "bot_id": "bobmedic-login",
+  "bot_name": "NorthShore Login Bot (BobMedic)",
+  "wal": "BobMedic.wal",
+  "risk_tier": "read_only",
+  "recorded_at": "2026-08-30T01:20:44+0300",
+  "green_snapshot": "snapshots/baseline-bobmedic-login.html",
+  "duration_sec": 16.12,
+  "steps": {
+    "login_username": {
+      "tag": "input",
+      "text": "e.g. j.smith@company.com",
+      "attrs": {
+        "id": "username",
+        "type": "text",
+        "name": "username",
+        "placeholder": "e.g. j.smith@company.com"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Username",
+        "parent_text": "Username"
+      },
+      "geometry": {
+        "x": 487,
+        "y": 314,
+        "w": 306,
+        "h": 34
+      },
+      "visible": true,
+      "step_id": "login_username",
+      "step_key": "webset#1",
+      "selector": "#username",
+      "line_number": 6,
+      "url": "http://127.0.0.1:8000/"
+    },
+    "login_password": {
+      "tag": "input",
+      "text": "",
+      "attrs": {
+        "id": "password",
+        "type": "password",
+        "name": "password"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Password",
+        "parent_text": "Password"
+      },
+      "geometry": {
+        "x": 487,
+        "y": 389,
+        "w": 306,
+        "h": 34
+      },
+      "visible": true,
+      "step_id": "login_password",
+      "step_key": "webset#2",
+      "selector": "#password",
+      "line_number": 7,
+      "url": "http://127.0.0.1:8000/"
+    },
+    "login_submit": {
+      "tag": "button",
+      "text": "Sign in",
+      "attrs": {
+        "id": "btn-login",
+        "class": "btn primary",
+        "type": "submit"
+      },
+      "dom_path": "div#btn-container-default > button.btn.primary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Sign in"
+      },
+      "geometry": {
+        "x": 487,
+        "y": 441,
+        "w": 306,
+        "h": 38
+      },
+      "visible": true,
+      "step_id": "login_submit",
+      "step_key": "webclick#1",
+      "selector": "#btn-login",
+      "line_number": 8,
+      "url": "http://127.0.0.1:8000/"
+    }
+  }
+}

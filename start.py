@@ -22,7 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import engine  # noqa: E402 - after sys.path setup
-from api import API_HOST, API_PORT, BobMadakAPI  # noqa: E402
+from api import API_HOST, API_PORT, BotMedicAPI  # noqa: E402
 from http.server import ThreadingHTTPServer  # noqa: E402
 from serve import ensure_server  # noqa: E402
 
@@ -57,7 +57,7 @@ def main() -> int:
     site_url = ensure_server()
     engine.publish_feed()
 
-    api_server = ThreadingHTTPServer((API_HOST, API_PORT), BobMadakAPI)
+    api_server = ThreadingHTTPServer((API_HOST, API_PORT), BotMedicAPI)
     threading.Thread(target=api_server.serve_forever, daemon=True).start()
 
     dashboard = start_dashboard()
