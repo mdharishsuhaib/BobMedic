@@ -217,3 +217,59 @@ dashboard/public/incidents.json the feed the dashboard reads
 The original `.wal` is only ever overwritten by an explicit commit — an
 approval, or an automatic apply on a `read_only` bot — and a `.bak` is written
 first every time.
+
+---
+
+## 10. Healing a bot you ran from IBM RPA Studio
+
+The engine can only see bots it launched itself. When the bot is started from
+Studio — which is how the demo actually runs — the watcher below supplies the
+missing signal.
+
+Studio records every failed element lookup in its own log:
+
+```
+2026-08-30T04:34:32 WARN WebClickCommand Studio
+Control not found to Click on Css=#btn-login
+```
+
+Start the watcher in its own terminal and leave it running:
+
+```powershell
+python src/studio_watcher.py --bot bobmedic-login
+```
+
+Then run the demo the way an operator would:
+
+1. Open **http://127.0.0.1:8000/break.html** and switch on a fault
+2. Run the bot in IBM RPA Studio — it stops, exactly as it would in production
+3. The watcher picks the failure out of Studio's log, identifies which scripts
+   use that selector, diagnoses, verifies and patches
+4. Re-run the bot in Studio. It completes.
+
+Useful flags:
+
+```powershell
+python src/studio_watcher.py --replay      # heal from the last failure already logged
+python src/studio_watcher.py --from-start  # scan the whole log, not just new entries
+python src/studio_watcher.py --log <path>  # non-default Studio.log location
+```
+
+Without `--bot`, every registered script that uses the broken selector is
+healed — which is correct when a renamed id breaks four bots at once, and each
+one is still gated by its own risk tier.
+
+### Why the patch stays openable in Studio
+
+A `.wal` saved by Studio is not plain text. It is a small container:
+
+```
+0x12  <varint body length>  <script body>  0x2A 0x09 "23.0.19.0"
+```
+
+Patching it as text corrupts the header byte, leaves the length prefix
+disagreeing with the body, and drops the version trailer — Studio then rejects
+the file with *"Command not found on line 0"*. The patcher therefore edits
+bytes, recomputes the length prefix, and preserves the trailer. It also
+replaces the selector on **every** line that used it, because a renamed id
+breaks each reference, not only the one that happened to fail first.

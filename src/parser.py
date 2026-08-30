@@ -15,6 +15,7 @@ registry maps an ordinal key to a human step id (``login_submit``).
 
 import os
 import re
+from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -193,6 +194,74 @@ def find_step(wal_path: str, step_key: str) -> Optional[WalStep]:
     return None
 
 
+# ── WAL container format ──────────────────────────────────────────
+#
+# A .wal saved by IBM RPA Studio is not plain text. It is a small
+# protobuf-style container:
+#
+#     0x12  <varint: body length>  <script body>  0x2A 0x09 "23.0.19.0"
+#
+# Reading it as text and writing it back destroys three things at once: the
+# raw header byte becomes U+FFFD, the length prefix stops matching the body,
+# and the version trailer is dropped. Studio then refuses the file with
+# "Command not found on line 0". Patching therefore happens on bytes, and the
+# length prefix is recomputed.
+
+
+def _varint_decode(data: bytes, offset: int) -> tuple[int, int]:
+    """Decode a varint. Returns (value, bytes consumed)."""
+    value = shift = consumed = 0
+    while offset + consumed < len(data):
+        byte = data[offset + consumed]
+        value |= (byte & 0x7F) << shift
+        consumed += 1
+        if not byte & 0x80:
+            return value, consumed
+        shift += 7
+    raise ValueError("truncated varint in .wal header")
+
+
+def _varint_encode(value: int) -> bytes:
+    """Encode an integer as a varint."""
+    out = bytearray()
+    while True:
+        byte = value & 0x7F
+        value >>= 7
+        out.append(byte | (0x80 if value else 0))
+        if not value:
+            return bytes(out)
+
+
+def split_container(raw: bytes) -> tuple[bytes, bytes]:
+    """
+    Split a .wal into (script body, trailer).
+
+    A plain-text .wal — one written by hand rather than saved by Studio —
+    has no container, and is returned unchanged with an empty trailer.
+    """
+    if not raw.startswith(bytes((0x12,))):
+        return raw, b""
+    try:
+        length, consumed = _varint_decode(raw, 1)
+    except ValueError:
+        return raw, b""
+
+    start = 1 + consumed
+    end = start + length
+    if end > len(raw):
+        # Length prefix disagrees with the file: treat it as plain text rather
+        # than silently truncating someone's script.
+        return raw, b""
+    return raw[start:end], raw[end:]
+
+
+def build_container(body: bytes, trailer: bytes) -> bytes:
+    """Rebuild a Studio .wal around a modified body, with a correct length."""
+    if not trailer:
+        return body
+    return bytes((0x12,)) + _varint_encode(len(body)) + body + trailer
+
+
 def patch_wal(
     wal_path: str,
     line_number: int,
@@ -203,22 +272,27 @@ def patch_wal(
     """
     Write a patched COPY of a .wal file. The original is never modified.
 
-    Patches ALL lines that reference old_selector, not just the failing line.
-    This handles the common pattern where webWaitElement and webClick share the
-    same selector on consecutive lines — both must be updated together.
+    The edit is made on bytes so that a Studio-saved script keeps its container
+    header, its version trailer, and every byte on the lines that were not
+    touched. Only the length prefix is recomputed, because the body changed.
 
     Args:
         wal_path:     Path to the original .wal file.
-        line_number:  1-based line where the failure was detected (used for
-                      validation — at least this line must be patched).
-        old_selector: Selector value to replace everywhere in the file.
+        line_number:  1-based line to patch.
+        old_selector: Selector value currently on that line.
         new_selector: Replacement selector value.
         out_path:     Destination; defaults to ``<name>.patched.wal``.
 
     Returns:
         Path to the patched copy.
     """
-    header, lines = _read_wal_lines(wal_path)
+    raw = Path(wal_path).read_bytes()
+    body, trailer = split_container(raw)
+
+    crlf = bytes((13, 10))
+    newline = crlf if crlf in body else bytes((10,))
+
+    lines = body.split(newline)
 
     index = line_number - 1
     if index < 0 or index >= len(lines):
@@ -226,26 +300,92 @@ def patch_wal(
             f"Line {line_number} out of range (file has {len(lines)} lines)"
         )
 
-    # Patch every line that contains the broken selector
-    patched_lines = []
-    patched_count = 0
-    for i, line in enumerate(lines):
-        new_line = line.replace(f'"{old_selector}"', f'"{new_selector}"')
-        if new_line == line:
-            new_line = line.replace(old_selector, new_selector)
-        if new_line != line:
-            patched_count += 1
-        patched_lines.append(new_line)
+    original_line = lines[index]
+    old_bytes = old_selector.encode("utf-8")
+    new_bytes = new_selector.encode("utf-8")
 
-    if patched_count == 0:
-        raise ValueError(f"Selector {old_selector!r} not found anywhere in {wal_path}")
+    patched_line = original_line.replace(b'"' + old_bytes + b'"', b'"' + new_bytes + b'"')
+    if patched_line == original_line:
+        patched_line = original_line.replace(old_bytes, new_bytes)
+    if patched_line == original_line:
+        raise ValueError(f"Selector {old_selector!r} not found on line {line_number}")
+
+    lines[index] = patched_line
+    patched = build_container(newline.join(lines), trailer)
 
     if out_path is None:
         base, ext = os.path.splitext(wal_path)
         out_path = base + ".patched" + ext
 
-    _write_wal(out_path, header, patched_lines)
+    Path(out_path).write_bytes(patched)
     return out_path
+
+
+def patch_selector(
+    wal_path: str,
+    old_selector: str,
+    new_selector: str,
+    out_path: Optional[str] = None,
+) -> tuple[str, list[int]]:
+    """
+    Replace a selector everywhere it appears in a script, not just where it failed.
+
+    A renamed id breaks every line that referenced it. Patching only the failing
+    step leaves the next one pointing at the same dead selector, and the
+    verification re-run then fails a line later — which reads as "no fix found"
+    when the fix was simply incomplete.
+
+    Args:
+        wal_path:     Path to the original .wal file.
+        old_selector: Selector value to replace.
+        new_selector: Replacement selector value.
+        out_path:     Destination; defaults to ``<name>.patched.wal``.
+
+    Returns:
+        ``(path to the patched copy, line numbers changed)``.
+    """
+    targets = [
+        step.line_number
+        for step in parse_wal(wal_path)
+        if step.selector_value == old_selector
+    ]
+    if not targets:
+        raise ValueError(f"Selector {old_selector!r} appears on no step in {wal_path}")
+
+    raw = Path(wal_path).read_bytes()
+    body, trailer = split_container(raw)
+
+    crlf = bytes((13, 10))
+    newline = crlf if crlf in body else bytes((10,))
+    lines = body.split(newline)
+
+    old_bytes = old_selector.encode("utf-8")
+    new_bytes = new_selector.encode("utf-8")
+    quoted_old = bytes((34,)) + old_bytes + bytes((34,))
+    quoted_new = bytes((34,)) + new_bytes + bytes((34,))
+
+    changed = []
+    for line_number in targets:
+        index = line_number - 1
+        if index < 0 or index >= len(lines):
+            continue
+        original_line = lines[index]
+        patched_line = original_line.replace(quoted_old, quoted_new)
+        if patched_line == original_line:
+            patched_line = original_line.replace(old_bytes, new_bytes)
+        if patched_line != original_line:
+            lines[index] = patched_line
+            changed.append(line_number)
+
+    if not changed:
+        raise ValueError(f"Selector {old_selector!r} could not be replaced in {wal_path}")
+
+    if out_path is None:
+        base, ext = os.path.splitext(wal_path)
+        out_path = base + ".patched" + ext
+
+    Path(out_path).write_bytes(build_container(newline.join(lines), trailer))
+    return out_path, changed
 
 
 def diff_wal(original_path: str, patched_path: str) -> list[dict]:

@@ -1,0 +1,10 @@
+{
+  "run_id": "run-0007",
+  "bot_id": "bobmedic-login",
+  "risk_tier": "read_only",
+  "failed_step": "login_wait",
+  "error": "ElementNotFound",
+  "script_line": 10,
+  "page_html_ref": "snapshots/run-0007.html",
+  "timestamp": "2026-08-30T03:21:13.186892+00:00"
+}

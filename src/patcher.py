@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Optional
 
 from diagnoser import selector_options
-from parser import diff_wal, patch_wal
+from parser import diff_wal, patch_selector, patch_wal
 from registry import step_names
 from runner import count_matches, run_wal
 
@@ -72,13 +72,24 @@ def verify_patch(
     patched_path = CANDIDATE_DIR / f"{run_id}.{Path(bot['wal']).name}"
 
     try:
-        patch_wal(
-            bot["wal_path"],
-            line_number,
-            old_selector,
-            new_selector,
-            out_path=str(patched_path),
-        )
+        # Replace the selector on every line that used it. A renamed id breaks
+        # each reference, and patching only the failing step leaves the next one
+        # dead — the re-run then fails a line later and reads as "no fix found".
+        try:
+            patch_selector(
+                bot["wal_path"],
+                old_selector,
+                new_selector,
+                out_path=str(patched_path),
+            )
+        except ValueError:
+            patch_wal(
+                bot["wal_path"],
+                line_number,
+                old_selector,
+                new_selector,
+                out_path=str(patched_path),
+            )
     except ValueError as error:
         return {
             "patched_wal": None,
