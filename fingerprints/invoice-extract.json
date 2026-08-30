@@ -3,9 +3,9 @@
   "bot_name": "Invoice Exporter",
   "wal": "rpa-bots/invoice-extract.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T04:49:26+0300",
+  "recorded_at": "2026-08-30T06:57:53+0300",
   "green_snapshot": "snapshots/baseline-invoice-extract.html",
-  "duration_sec": 11.06,
+  "duration_sec": 12.25,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 284,
+        "y": 286,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_username",

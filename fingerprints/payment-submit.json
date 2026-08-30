@@ -3,9 +3,9 @@
   "bot_name": "Payment Batch Submitter",
   "wal": "rpa-bots/payment-submit.wal",
   "risk_tier": "irreversible",
-  "recorded_at": "2026-08-30T04:49:47+0300",
+  "recorded_at": "2026-08-30T06:58:24+0300",
   "green_snapshot": "snapshots/baseline-payment-submit.html",
-  "duration_sec": 10.94,
+  "duration_sec": 14.46,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 284,
+        "y": 286,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_username",

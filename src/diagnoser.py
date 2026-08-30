@@ -188,28 +188,43 @@ def _quote(value: str) -> str:
     return value.replace("\\", "\\\\").replace("'", "\\'")
 
 
+def _attr_value(value: str) -> str:
+    """
+    Render an attribute value for a CSS selector.
+
+    Left unquoted whenever CSS allows it. IBM RPA Studio reads the selector out
+    of the .wal line, and a quote inside that value throws its parser off: the
+    line is then reported as an invalid output expression and the script will
+    not load. Plain identifiers therefore stay bare.
+    """
+    if re.fullmatch(r"[A-Za-z_][\w-]*", value or ""):
+        return value
+    return chr(39) + _quote(value) + chr(39)
+
+
 def selector_options(candidate: dict) -> list[dict]:
     """
     Build replacement selectors for a candidate, most stable first.
 
-    Two constraints pull against each other and both are real:
+    Three constraints shape the order, and all three are real:
 
-    * the patched .wal has to run in IBM RPA Studio, which takes ordinary CSS
-      and has no `:has-text()` — that is a Playwright extension;
-    * a selector rebuilt from the id that just changed will break again on the
-      next release, which is the whole failure being healed.
+    * IBM RPA Studio must be able to load the patched script. It takes ordinary
+      CSS, has no `:has-text()` (a Playwright extension), and its line parser
+      is unhappy with quotes inside a selector value — so the plainest form of
+      a selector is preferred, and quotes are avoided where CSS permits.
+    * A selector rebuilt from the id that just changed will break again on the
+      next release, which is the failure being healed.
+    * Whatever is chosen has to match exactly one element, which the caller
+      checks against the live page.
 
-    So the ladder prefers selectors that are valid CSS *and* not id-bound, and
-    only falls back to the new id when nothing else identifies the element
-    uniquely:
-
-    1. data-testid   the app's own stable hook
-    2. name (+type)  stable form-field identity
-    3. aria-label    tied to meaning, not markup
-    4. type + class  valid CSS, survives both a rename and a move
-    5. structural    an ancestor id from the DOM path plus the leaf
-    6. new id        last resort in valid CSS
-    7. has-text      Playwright only; unusable in Studio, so truly last
+    1. data-testid       the app's own stable hook
+    2. type + class      plainest durable form: no brackets, no quotes
+    3. name              stable form-field identity
+    4. class + type      narrows when the class alone is ambiguous
+    5. aria-label        tied to meaning, but needs quoting
+    6. structural        an ancestor id from the DOM path plus the leaf
+    7. new id            last resort in valid CSS
+    8. has-text          Playwright only; unusable in Studio, so truly last
     """
     tag = candidate.get("tag", "*")
     attrs = candidate.get("attrs", {})
@@ -220,32 +235,40 @@ def selector_options(candidate: dict) -> list[dict]:
     testid = attrs.get("data-testid")
     if testid:
         options.append({
-            "selector": f"[data-testid='{_quote(testid)}']",
+            "selector": f"[data-testid={_attr_value(testid)}]",
             "basis": "data-testid attribute — the application's own stable hook",
+        })
+
+    classes = [part for part in (attrs.get("class") or "").split() if part]
+    class_part = "".join(f".{part}" for part in classes[:2])
+
+    # Plainest durable selector: nothing in it that a parser can trip over.
+    if classes:
+        options.append({
+            "selector": f"{tag}{class_part}",
+            "basis": "element type and class — plain CSS, nothing to misparse",
         })
 
     name = attrs.get("name")
     if name:
-        type_part = f"[type='{_quote(element_type)}']" if element_type else ""
+        type_part = f"[type={_attr_value(element_type)}]" if element_type else ""
         options.append({
-            "selector": f"{tag}[name='{_quote(name)}']{type_part}",
+            "selector": f"{tag}[name={_attr_value(name)}]{type_part}",
             "basis": "form field name — stable across markup refactors",
+        })
+
+    # Same as the class selector, narrowed, for pages where the class repeats.
+    if classes and element_type:
+        options.append({
+            "selector": f"{tag}{class_part}[type={_attr_value(element_type)}]",
+            "basis": "element type, class and input type — valid CSS, not id-bound",
         })
 
     aria = attrs.get("aria-label")
     if aria:
         options.append({
-            "selector": f"{tag}[aria-label='{_quote(aria)}']",
+            "selector": f"{tag}[aria-label={_attr_value(aria)}]",
             "basis": "accessible label — tied to meaning, not markup",
-        })
-
-    classes = [part for part in (attrs.get("class") or "").split() if part]
-    class_part = "".join(f".{part}" for part in classes[:2])
-    if classes:
-        type_part = f"[type='{_quote(element_type)}']" if element_type else ""
-        options.append({
-            "selector": f"{tag}{class_part}{type_part}",
-            "basis": "element type and class — valid CSS, not tied to the id",
         })
 
     # An ancestor id anchors the element without depending on its own id.
@@ -265,11 +288,11 @@ def selector_options(candidate: dict) -> list[dict]:
             "basis": "the new element id — last resort; it may change again",
         })
 
-    # has-text last — Playwright-only, not supported by IBM RPA Studio
+    # has-text last: Playwright only, and IBM RPA Studio cannot run it.
     if text and tag in ("button", "a"):
-        base = f"{tag}[type='{_quote(element_type)}']" if element_type else tag
+        base = f"{tag}[type={_attr_value(element_type)}]" if element_type else tag
         options.append({
-            "selector": f"{base}:has-text('{_quote(text)}')",
+            "selector": base + ":has-text(" + chr(39) + _quote(text) + chr(39) + ")",
             "basis": "visible text plus element type — Playwright only",
         })
 

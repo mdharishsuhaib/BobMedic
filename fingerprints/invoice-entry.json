@@ -3,9 +3,9 @@
   "bot_name": "Invoice Filter Entry",
   "wal": "rpa-bots/invoice-entry.wal",
   "risk_tier": "reversible_write",
-  "recorded_at": "2026-08-30T04:49:36+0300",
+  "recorded_at": "2026-08-30T06:58:09+0300",
   "green_snapshot": "snapshots/baseline-invoice-entry.html",
-  "duration_sec": 10.27,
+  "duration_sec": 15.92,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 284,
+        "y": 286,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_username",
@@ -52,7 +52,7 @@
         "x": 774,
         "y": 363,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_password",
@@ -76,7 +76,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 452,
+        "y": 450,
         "w": 372,
         "h": 43
       },
@@ -147,7 +147,7 @@
         "parent_text": "Status:\n      \n        All\n        Paid\n        Pending\n        Overdue\n      \n "
       },
       "geometry": {
-        "x": 856,
+        "x": 850,
         "y": 313,
         "w": 64,
         "h": 33

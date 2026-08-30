@@ -3,9 +3,9 @@
   "bot_name": "Portal Login Bot",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T04:49:15+0300",
+  "recorded_at": "2026-08-30T06:57:41+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 12.12,
+  "duration_sec": 10.58,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 284,
+        "y": 286,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_username",
@@ -52,7 +52,7 @@
         "x": 774,
         "y": 363,
         "w": 372,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "login_password",
@@ -76,7 +76,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 452,
+        "y": 450,
         "w": 372,
         "h": 43
       },
@@ -102,7 +102,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 452,
+        "y": 450,
         "w": 372,
         "h": 43
       },
