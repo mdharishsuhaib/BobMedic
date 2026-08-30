@@ -273,3 +273,22 @@ the file with *"Command not found on line 0"*. The patcher therefore edits
 bytes, recomputes the length prefix, and preserves the trailer. It also
 replaces the selector on **every** line that used it, because a renamed id
 breaks each reference, not only the one that happened to fail first.
+
+### Two triggers, because Studio's log is slow
+
+Studio flushes its log in 8 KB blocks, so a failure it recorded at 07:18:26 was
+not on disk until 07:18:44 — eighteen seconds of nothing, which is too slow to
+stand in front of. The watcher therefore listens for two things:
+
+| Signal | Latency | What it gives |
+|---|---|---|
+| `DefaultDebuggingState.bin` is touched | ~1 second | a Studio run just ended |
+| `Studio.log` gains a "Control not found" record | up to a minute | the exact selector |
+
+The fast signal only says *a run finished*. That is enough, because the engine
+re-runs the bot itself and establishes what broke — Studio never had to tell
+us. When the log block finally arrives the watcher notes it and does not
+diagnose the same run twice.
+
+The fast trigger needs `--bot`, since "some run ended" does not say which
+script it was. Without `--bot` the watcher falls back to the log alone.

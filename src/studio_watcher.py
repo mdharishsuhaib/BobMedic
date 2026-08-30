@@ -53,7 +53,19 @@ FAILURE_PATTERN = re.compile(
 # The ISO timestamp Studio writes immediately before the level and category.
 TIMESTAMP_PATTERN = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[+\-]\d{2}:\d{2})")
 
-POLL_SECONDS = 2.0
+# Studio flushes its log in 8 KB blocks, so a failure can sit unwritten for
+# tens of seconds — too slow to demo. It touches this file the moment a
+# debugging session ends, which is a signal we get within a second.
+RUN_MARKER = (
+    Path(os.environ.get("LOCALAPPDATA", ""))
+    / "IBM Robotic Process Automation"
+    / "DefaultDebuggingState.bin"
+)
+
+POLL_SECONDS = 1.0
+
+# Never start a second diagnosis while the last one is still recent.
+HEAL_DEBOUNCE_SECONDS = 25.0
 
 
 def find_log(explicit: str | None = None) -> Path:
@@ -188,6 +200,30 @@ def handle_failure(failure: dict, only: str | None = None, headless: bool = True
     return incidents
 
 
+def _marker_mtime() -> float | None:
+    """When Studio last ended a debugging session, if it records that at all."""
+    try:
+        return RUN_MARKER.stat().st_mtime
+    except OSError:
+        return None
+
+
+def heal_bot(bot_id: str, headless: bool = True) -> dict:
+    """
+    Re-run one bot and heal it if it breaks.
+
+    The engine finds the failing step itself, so this works whether or not
+    Studio has flushed its log yet: Studio tells us a run just ended, and our
+    own run establishes what broke.
+    """
+    incident = engine.heal(bot_id, breaks=None, headless=headless)
+    if incident.get("status") == "green":
+        print(f"[STUDIO]   {bot_id} completed here — nothing to heal.")
+    else:
+        print(f"[STUDIO]   {incident['id']}: {incident['status']} / {incident['action']}")
+    return incident
+
+
 def watch(
     log_path: Path,
     *,
@@ -204,14 +240,38 @@ def watch(
 
     ensure_server()
 
+    marker_seen = _marker_mtime()
+    last_heal = 0.0
+
     print(f"[WATCH]    Following {log_path}")
     print(f"[WATCH]    Bots: {only or 'all registered'}")
     print(f"[WATCH]    Reading from byte {offset:,}")
+    if only and marker_seen is not None:
+        print(f"[WATCH]    Also watching {RUN_MARKER.name} for the end of a Studio run")
     print("[WATCH]    Break the site, run the bot in Studio. Ctrl+C to stop.\n")
 
     seen: set[tuple] = set()
     try:
         while True:
+            # Fast path: Studio touches its debugging-state file as soon as a
+            # run ends, well before the log block is flushed. Our own re-run
+            # then establishes what actually broke.
+            if only:
+                marker_now = _marker_mtime()
+                if (
+                    marker_now is not None
+                    and marker_seen is not None
+                    and marker_now > marker_seen
+                    and time.time() - last_heal > HEAL_DEBOUNCE_SECONDS
+                ):
+                    marker_seen = marker_now
+                    last_heal = time.time()
+                    print(f"\n[STUDIO]   A Studio run just finished — checking {only}")
+                    heal_bot(only, headless=headless)
+                    print("\n[WATCH]    Listening again...")
+                elif marker_now is not None:
+                    marker_seen = max(marker_seen or 0, marker_now)
+
             text, offset = read_new_text(log_path, offset)
             if text:
                 for failure in find_failures(text):
@@ -224,6 +284,16 @@ def watch(
                     if key in seen:
                         continue
                     seen.add(key)
+
+                    # The same run reaches us twice: the marker fires when it
+                    # ends, then the log block is flushed some seconds later.
+                    # Record the failure, but do not diagnose it again.
+                    if time.time() - last_heal < HEAL_DEBOUNCE_SECONDS:
+                        print(f"[STUDIO]   Log confirms: {failure['selector']} "
+                              "(already diagnosed)")
+                        continue
+
+                    last_heal = time.time()
                     handle_failure(failure, only=only, headless=headless)
                     print("\n[WATCH]    Listening again...")
             time.sleep(POLL_SECONDS)
