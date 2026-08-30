@@ -3,13 +3,13 @@
     "bot_name": "Portal Login Bot",
     "wal": "BobMedic.wal",
     "risk_tier": "read_only",
-    "description": "Signs in using id-based selector #btn-login. The demo bot — breaks when the button id changes.",
+    "description": "Signs in using #btn-login. Demo bot — breaks when button id is renamed to auth-submit-v2.",
     "mttr_manual_min": 47,
     "steps": {
-      "webset#1": "login_username",
-      "webset#2": "login_password",
-      "webwaitelement#1": "login_wait",
-      "webclick#1": "login_submit"
+      "webset#1":        "login_username",
+      "webset#2":        "login_password",
+      "webwaitelement#1":"login_wait",
+      "webclick#1":      "login_submit"
     }
   },
   "invoice-extract": {

@@ -127,3 +127,10 @@ patch-candidates/
 
 # Script backups the patcher writes before committing a fix
 rpa-bots/*.wal.bak
+
+# Runtime artifacts — generated on every run
+incidents/
+snapshots/
+
+# Vite internal cache
+dashboard/.vite/
