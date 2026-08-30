@@ -1,7 +1,6 @@
 # Submission copy — Team BobVanta
 
-Paste these into the submission form. Word counts checked against the limits
-stated in the deliverables.
+The text submitted for each deliverable, kept here for reference.
 
 ---
 
@@ -104,12 +103,12 @@ We did not use watsonx.ai or watsonx Orchestrate.
 
 ---
 
-## Deliverable 4 — Repository checklist
+## Deliverable 4 — Repository
 
-- [ ] **Repository is public** — it is currently private, which fails the
-      "must be publicly accessible" requirement
-- [ ] **IBM Bob task session summary screenshots from every team member**, in
-      `docs/bob-sessions/` — see the README there
+- [x] Public repository
+- [x] `BOB-SESSION-REPORT.md` at the root — 6 sessions, 671 messages, 57
+      prompts, 366 tool calls, exported from the local Bob database
+- [x] `docs/bob-sessions/` — per-member Bob session material
 - [x] Working code, runnable with `npm run start:all`
 - [x] `.gitignore` and `.bobignore` from the hackathon template, no credentials
 
