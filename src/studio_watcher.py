@@ -45,8 +45,14 @@ DEFAULT_LOG = (
 )
 
 # "Control not found to Click on Css=#btn-login"
+#
+# The selector runs to the end of the record, spaces included: a descendant
+# combinator like "#toolbar > a" is one selector, and stopping at the first
+# space would truncate it to "#toolbar" and match no bot at all. Control
+# characters end it, and _clean_selector strips the exception type Studio
+# appends when there is no newline between them.
 FAILURE_PATTERN = re.compile(
-    r"Control not found to (?P<action>\w+) on (?P<kind>Css|Xpath)=(?P<selector>[^\s\x00-\x1f]+)",
+    r"Control not found to (?P<action>\w+) on (?P<kind>Css|Xpath)=(?P<selector>[^\x00-\x1f]+)",
     re.IGNORECASE,
 )
 
@@ -269,19 +275,18 @@ def watch(
             # then establishes what actually broke.
             if only:
                 marker_now = _marker_mtime()
-                if (
-                    marker_now is not None
-                    and marker_seen is not None
-                    and marker_now > marker_seen
-                    and time.time() - last_heal > HEAL_DEBOUNCE_SECONDS
-                ):
+                if marker_seen is None:
                     marker_seen = marker_now
-                    last_heal = time.time()
-                    print(f"\n[STUDIO]   A Studio run just finished — checking {only}")
-                    heal_bot(only, headless=headless)
-                    print("\n[WATCH]    Listening again...")
-                elif marker_now is not None:
-                    marker_seen = max(marker_seen or 0, marker_now)
+                elif marker_now is not None and marker_now > marker_seen:
+                    # Hold the event until the debounce clears rather than
+                    # marking it seen, or a run that lands just after another
+                    # would be dropped and never diagnosed.
+                    if time.time() - last_heal > HEAL_DEBOUNCE_SECONDS:
+                        marker_seen = marker_now
+                        last_heal = time.time()
+                        print(f"\n[STUDIO]   A Studio run just finished — checking {only}")
+                        heal_bot(only, headless=headless)
+                        print("\n[WATCH]    Listening again...")
 
             text, offset = read_new_text(log_path, offset)
             if text:

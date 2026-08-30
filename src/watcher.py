@@ -16,7 +16,7 @@ from pathlib import Path
 from contracts import FailureEvent, read_json, write_json
 from registry import get_bot, step_names
 from runner import apply_breaks, run_wal
-from serve import ensure_server
+from serve import ensure_server, read_break_state
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 FINGERPRINT_DIR = PROJECT_ROOT / "fingerprints"
@@ -155,12 +155,24 @@ def watch_run(bot_id: str, *, breaks: dict | None = None, headless: bool = True)
 
 def outcome_should_fingerprint(breaks: dict | None) -> bool:
     """
-    Fingerprint only runs expected to be green.
+    Fingerprint only runs made against a healthy page.
 
-    Recording against a page that is already broken would poison the baseline
-    with the very state the engine is meant to detect.
+    The caller's ``breaks`` is not enough to decide this. A run started from
+    Studio passes none at all, while the site may still be carrying a fault an
+    operator switched on in the panel — and a bot that has already been healed
+    will sail through that page and refresh the baseline with the broken
+    element as though it were normal. The next diagnosis then compares broken
+    against broken and scores a meaningless 1.00.
+
+    So the live server-side state decides, and the caller's breaks only add to
+    it.
     """
-    return not any((breaks or {}).values())
+    if any((breaks or {}).values()):
+        return False
+    try:
+        return not any(read_break_state().values())
+    except Exception:  # noqa: BLE001 - a missing state file means no faults
+        return True
 
 
 if __name__ == "__main__":
