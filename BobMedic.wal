@@ -7,11 +7,11 @@ webStart --name BobMedicBrawser --type "Chrome" --userprofilepreferences "Automa
 webNavigate --url "http://127.0.0.1:8000"
 webSet --value operator --selector "CssSelector" --css "#username" --timeout "00:00:01" username=value
 webSet --value nova2026 --selector "CssSelector" --css "#password" --timeout "00:00:01" password=value
-webWaitElement --selector "CssSelector" --css "#btn-login" --timeout "00:00:03" loginButtom=value
+webWaitElement --selector "CssSelector" --css "button.btn.primary" --timeout "00:00:03" loginButtom=value
 logMessage --message "loginButtom : ${loginButtom}\r\n" --type "Info"
-webGet --selector "CssSelector" --css "#btn-login" loginButtom1=value
+webGet --selector "CssSelector" --css "button.btn.primary" loginButtom1=value
 logMessage --message "loginButtom : ${loginButtom1}\r\n" --type "Info"
-webClick --selector "CssSelector" --css "#btn-login"
+webClick --selector "CssSelector" --css "button.btn.primary"
 delay --timeout "00:00:05"
 webClick --selector "CssSelector" --css "#toolbar > a"
 webClose --name BobMedicBrawser --leavebrowseropen
