@@ -216,11 +216,22 @@ def heal_bot(bot_id: str, headless: bool = True) -> dict:
     Studio has flushed its log yet: Studio tells us a run just ended, and our
     own run establishes what broke.
     """
-    incident = engine.heal(bot_id, breaks=None, headless=headless)
+    print("[STUDIO]   Diagnosing. This opens a browser twice — scoring the "
+          "changed page, then proving the patch — so give it about a minute.")
+    started = time.time()
+    try:
+        incident = engine.heal(bot_id, breaks=None, headless=headless)
+    except KeyboardInterrupt:
+        print()
+        print("[STUDIO]   Interrupted mid-diagnosis. Nothing was patched.")
+        raise
+
+    elapsed = time.time() - started
     if incident.get("status") == "green":
-        print(f"[STUDIO]   {bot_id} completed here — nothing to heal.")
+        print(f"[STUDIO]   {bot_id} completed here — nothing to heal. ({elapsed:.0f}s)")
     else:
-        print(f"[STUDIO]   {incident['id']}: {incident['status']} / {incident['action']}")
+        print(f"[STUDIO]   {incident['id']}: {incident['status']} / "
+              f"{incident['action']}  ({elapsed:.0f}s)")
     return incident
 
 

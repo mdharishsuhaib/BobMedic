@@ -218,7 +218,7 @@ def heal(bot_id: str, breaks: dict | None = None, *, headless: bool = True) -> d
         print("[ESCALATE] No candidate is good enough to propose.")
         return save_incident(_with_breaks(_escalated_incident(bot, failure, result, started), breaks))
 
-    print("[VERIFY]   Patching a copy and re-running the bot...")
+    print("[VERIFY]   Patching a copy and re-running the bot to prove it works...")
     # The chosen match is tried first — it may be Bob's pick rather than the
     # top-scored one. The runner-up is the fallback the spec asks for.
     attempt_order = [result["match"]] + [

@@ -173,9 +173,10 @@ def ensure_server(host: str = DEFAULT_HOST, port: int = DEFAULT_PORT) -> str:
     if is_running(host, port):
         return base_url
 
-    # reset break state on fresh start
-    write_break_state({k: False for k in BREAK_KEYS})
-
+    # Break state is deliberately left alone here. It lives on disk precisely so
+    # it survives a restart, and clearing it on start meant that toggling a
+    # fault and then starting the server silently undid the fault. `engine.py
+    # baseline` clears it explicitly, which is where that belongs.
     _server = ThreadingHTTPServer((host, port), _SiteHandler)
     thread  = threading.Thread(target=_server.serve_forever, daemon=True)
     thread.start()
