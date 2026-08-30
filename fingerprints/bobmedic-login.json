@@ -3,9 +3,9 @@
   "bot_name": "Portal Login Bot",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T08:48:08+0300",
+  "recorded_at": "2026-08-30T09:21:12+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 9.67,
+  "duration_sec": 11.1,
   "steps": {
     "login_username": {
       "tag": "input",

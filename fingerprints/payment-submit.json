@@ -3,9 +3,9 @@
   "bot_name": "Payment Batch Submitter",
   "wal": "rpa-bots/payment-submit.wal",
   "risk_tier": "irreversible",
-  "recorded_at": "2026-08-30T06:58:24+0300",
+  "recorded_at": "2026-08-30T09:22:04+0300",
   "green_snapshot": "snapshots/baseline-payment-submit.html",
-  "duration_sec": 14.46,
+  "duration_sec": 15.23,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 286,
+        "y": 284,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_username",
@@ -52,7 +52,7 @@
         "x": 774,
         "y": 363,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_password",
@@ -76,7 +76,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 450,
+        "y": 452,
         "w": 372,
         "h": 43
       },
@@ -98,7 +98,7 @@
       },
       "geometry": {
         "x": 59,
-        "y": 359,
+        "y": 360,
         "w": 1162,
         "h": 444
       },
@@ -127,7 +127,7 @@
         "x": 263,
         "y": 373,
         "w": 754,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "payment_recipient",
@@ -152,9 +152,9 @@
       },
       "geometry": {
         "x": 263,
-        "y": 636,
+        "y": 640,
         "w": 368,
-        "h": 36
+        "h": 34
       },
       "visible": true,
       "step_id": "payment_amount",
@@ -178,8 +178,8 @@
       },
       "geometry": {
         "x": 263,
-        "y": 931,
-        "w": 137,
+        "y": 934,
+        "w": 133,
         "h": 36
       },
       "visible": true,

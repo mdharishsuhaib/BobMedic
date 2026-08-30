@@ -3,9 +3,9 @@
   "bot_name": "Invoice Filter Entry",
   "wal": "rpa-bots/invoice-entry.wal",
   "risk_tier": "reversible_write",
-  "recorded_at": "2026-08-30T06:58:09+0300",
+  "recorded_at": "2026-08-30T09:21:48+0300",
   "green_snapshot": "snapshots/baseline-invoice-entry.html",
-  "duration_sec": 15.92,
+  "duration_sec": 13.19,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 286,
+        "y": 284,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_username",
@@ -52,7 +52,7 @@
         "x": 774,
         "y": 363,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_password",
@@ -76,7 +76,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 450,
+        "y": 452,
         "w": 372,
         "h": 43
       },
@@ -98,7 +98,7 @@
       },
       "geometry": {
         "x": 59,
-        "y": 359,
+        "y": 360,
         "w": 1162,
         "h": 444
       },
@@ -122,10 +122,10 @@
         "parent_text": "Status:\n      \n        All\n        Paid\n        Pending\n        Overdue\n      \n "
       },
       "geometry": {
-        "x": 278,
-        "y": 315,
+        "x": 271,
+        "y": 314,
         "w": 180,
-        "h": 29
+        "h": 31
       },
       "visible": true,
       "step_id": "filter_search_term",
@@ -147,9 +147,9 @@
         "parent_text": "Status:\n      \n        All\n        Paid\n        Pending\n        Overdue\n      \n "
       },
       "geometry": {
-        "x": 850,
+        "x": 841,
         "y": 313,
-        "w": 64,
+        "w": 62,
         "h": 33
       },
       "visible": true,

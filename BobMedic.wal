@@ -1,4 +1,4 @@
-Ê
+ï¿½
 defVar --name BobMedicBrawser --type Browser
 defVar --name username --type Boolean
 defVar --name password --type Boolean

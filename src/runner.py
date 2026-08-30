@@ -34,18 +34,30 @@ BREAK_KEYS = (
     "break_login_text",
     "break_export_id",
 )
-DEFAULT_STEP_TIMEOUT_MS = 4000
+DEFAULT_STEP_TIMEOUT_MS = 6000
+
+# No element lookup is given less than this, whatever the script says.
+MIN_STEP_TIMEOUT_MS = 6000
 
 
 def _timeout_ms(step, default=DEFAULT_STEP_TIMEOUT_MS) -> int:
-    """Convert a WAL ``--timeout "00:00:05"`` argument to milliseconds."""
+    """
+    Convert a WAL ``--timeout "00:00:05"`` argument to milliseconds.
+
+    A floor is applied. Scripts routinely carry ``00:00:01`` — an authoring
+    habit rather than a claim that the element must appear inside a second —
+    and IBM RPA itself retries a lookup five times before giving up. Honouring
+    one second literally turns ordinary page-load jitter into ElementNotFound,
+    which is exactly the failure this engine exists to diagnose: the loop then
+    chases a step that was never broken.
+    """
     raw = step.args.get("timeout")
     if not raw:
         return default
     try:
         hours, minutes, seconds = (int(part) for part in raw.split(":"))
         total = (hours * 3600 + minutes * 60 + seconds) * 1000
-        return total or default
+        return max(total, MIN_STEP_TIMEOUT_MS) or default
     except ValueError:
         return default
 
@@ -128,7 +140,15 @@ def _execute_step(page, step, timeout: int):
     elif command == "webclick":
         locator.wait_for(state="visible", timeout=timeout)
         locator.click()
-        page.wait_for_timeout(200)
+        # A click that navigates leaves the next step racing the new document,
+        # which shows up as an intermittent ElementNotFound on a step that is
+        # perfectly fine. Not every click navigates, so a timeout here is not
+        # an error.
+        try:
+            page.wait_for_load_state("domcontentloaded", timeout=timeout)
+        except Exception:  # noqa: BLE001
+            pass
+        page.wait_for_timeout(250)
     elif command in ("webwait", "webwaitelement", "webassert"):
         locator.wait_for(state="visible", timeout=timeout)
     elif command == "webhover":

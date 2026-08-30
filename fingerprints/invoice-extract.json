@@ -3,9 +3,9 @@
   "bot_name": "Invoice Exporter",
   "wal": "rpa-bots/invoice-extract.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T06:57:53+0300",
+  "recorded_at": "2026-08-30T09:21:35+0300",
   "green_snapshot": "snapshots/baseline-invoice-extract.html",
-  "duration_sec": 12.25,
+  "duration_sec": 22.66,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -23,9 +23,9 @@
       },
       "geometry": {
         "x": 774,
-        "y": 286,
+        "y": 284,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_username",
@@ -52,7 +52,7 @@
         "x": 774,
         "y": 363,
         "w": 372,
-        "h": 34
+        "h": 36
       },
       "visible": true,
       "step_id": "login_password",
@@ -76,7 +76,7 @@
       },
       "geometry": {
         "x": 774,
-        "y": 450,
+        "y": 452,
         "w": 372,
         "h": 43
       },
@@ -98,7 +98,7 @@
       },
       "geometry": {
         "x": 59,
-        "y": 359,
+        "y": 360,
         "w": 1162,
         "h": 444
       },
@@ -123,9 +123,9 @@
         "parent_text": "Download CSV\n        \n        Bulk actions ▾\n        New payment"
       },
       "geometry": {
-        "x": 836,
+        "x": 845,
         "y": 97,
-        "w": 126,
+        "w": 123,
         "h": 36
       },
       "visible": true,
