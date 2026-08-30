@@ -29,6 +29,25 @@ docs/bob-sessions/ammar-01.png
 
 The hackathon guide has the capture steps.
 
+## Out of Bobcoins? You can still do this
+
+Exporting your history costs nothing. Bobcoins are spent on Bob's AI
+interactions; reading back sessions you already had is not one. Two ways:
+
+**Export the full report** — `tools/export-bob-report.py` reads your own local
+Bob database at `~/.bob/db/bob.db` and writes an HTML report. It never contacts
+Bob's service, so an empty balance makes no difference:
+
+```powershell
+python tools/export-bob-report.py --all --out docs/bob-sessions/bob-session-report-<your-name>.html
+```
+
+Run it on your own machine — it can only see your sessions, which is exactly
+why every member has to run it themselves.
+
+**Screenshots** — opening Bob and looking at a task session summary spends
+nothing either. Screenshot what is already there.
+
 Include both forms if you have them:
 
 - **Screenshots** — named explicitly in the deliverables, and the automated
