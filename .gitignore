@@ -134,3 +134,14 @@ snapshots/
 
 # Vite internal cache
 dashboard/.vite/
+
+# Site request log used by the watcher
+logs/
+
+# Timestamped script backups written by demo-reset
+BobMedic.bak.*.wal
+
+# Scratch helper that rewrites .wal files as plain text, stripping the
+# Studio container header. Kept out of the repo so it is not run by mistake.
+_fix_wal.py
+BobMedic.original.wad

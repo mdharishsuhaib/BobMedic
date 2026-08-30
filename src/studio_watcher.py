@@ -206,6 +206,43 @@ def handle_failure(failure: dict, only: str | None = None, headless: bool = True
     return incidents
 
 
+ACCESS_LOG = PROJECT_ROOT / "logs" / "site-access.log"
+
+# How long a sign-in page may sit without the bot reaching the invoice page
+# before the run is treated as failed.
+RUN_SETTLE_SECONDS = 7.0
+
+
+def read_access(offset: int) -> tuple[list[tuple[float, str]], int]:
+    """
+    Read new page requests recorded by the site server.
+
+    This is the trigger that does not rely on Studio: the portal is asked for
+    the sign-in page the moment a bot starts, whoever started it.
+    """
+    if not ACCESS_LOG.exists():
+        return [], offset
+    with open(ACCESS_LOG, "rb") as handle:
+        handle.seek(0, os.SEEK_END)
+        size = handle.tell()
+        if size < offset:
+            offset = 0
+        if size == offset:
+            return [], offset
+        handle.seek(offset)
+        chunk = handle.read(size - offset)
+
+    entries = []
+    for line in chunk.decode("utf-8", errors="replace").splitlines():
+        parts = line.split()
+        if len(parts) == 2:
+            try:
+                entries.append((float(parts[0]), parts[1]))
+            except ValueError:
+                continue
+    return entries, size
+
+
 def _marker_mtime() -> float | None:
     """When Studio last ended a debugging session, if it records that at all."""
     try:
@@ -259,6 +296,8 @@ def watch(
 
     marker_seen = _marker_mtime()
     last_heal = 0.0
+    _, access_offset = read_access(0)
+    pending_signin: float | None = None
 
     print(f"[WATCH]    Following {log_path}")
     print(f"[WATCH]    Bots: {only or 'all registered'}")
@@ -273,6 +312,32 @@ def watch(
             # Fast path: Studio touches its debugging-state file as soon as a
             # run ends, well before the log block is flushed. Our own re-run
             # then establishes what actually broke.
+            # Most reliable trigger: the portal itself. A bot run asks for the
+            # sign-in page, and a run that works goes on to the invoice page
+            # seconds later. A sign-in that is never followed by one is a bot
+            # that stopped — and this arrives immediately, whether or not
+            # Studio has flushed anything.
+            if only:
+                events, access_offset = read_access(access_offset)
+                for when, page in events:
+                    if page == "index.html":
+                        pending_signin = when
+                    elif page in ("invoices.html", "payment.html"):
+                        pending_signin = None
+
+                if (
+                    pending_signin is not None
+                    and time.time() - pending_signin > RUN_SETTLE_SECONDS
+                    and time.time() - last_heal > HEAL_DEBOUNCE_SECONDS
+                ):
+                    pending_signin = None
+                    last_heal = time.time()
+                    print(f"\n[SITE]     A bot opened the sign-in page and never "
+                          f"reached the invoice page — checking {only}")
+                    heal_bot(only, headless=headless)
+                    print("\n[WATCH]    Listening again...")
+                    continue
+
             if only:
                 marker_now = _marker_mtime()
                 if marker_seen is None:

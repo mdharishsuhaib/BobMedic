@@ -13,6 +13,7 @@ so no page code needed to change.
 
 import json
 import socket
+import time
 import threading
 from functools import partial
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -21,6 +22,17 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SITE_DIR     = PROJECT_ROOT / "target-site"
 STATE_FILE   = SITE_DIR / "break-state.json"
+
+# Every page the portal serves to a real browser is recorded here. It is the
+# only signal about a bot run that does not depend on IBM RPA Studio flushing
+# its own log, and it arrives the instant the page is requested.
+ACCESS_LOG   = PROJECT_ROOT / "logs" / "site-access.log"
+
+# The engine's own browser identifies itself so its verification runs are not
+# mistaken for an operator running a bot from Studio.
+ENGINE_HEADER = "X-BotMedic"
+
+TRACKED_PAGES = ("index.html", "invoices.html", "payment.html")
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
@@ -93,6 +105,24 @@ class _SiteHandler(BaseHTTPRequestHandler):
         except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             pass  # client closed the connection before we finished — harmless
 
+    def _record_access(self, path: str) -> None:
+        """
+        Note that a browser asked for one of the portal's pages.
+
+        Requests from the engine's own browser are skipped: it is here to
+        verify a patch, and counting those would have the watcher chasing its
+        own runs.
+        """
+        if self.headers.get(ENGINE_HEADER):
+            return
+        try:
+            ACCESS_LOG.parent.mkdir(parents=True, exist_ok=True)
+            with open(ACCESS_LOG, "a", encoding="utf-8") as handle:
+                handle.write("%.3f %s\n" % (time.time(), path))
+                handle.flush()
+        except OSError:
+            pass
+
     def do_GET(self) -> None:  # noqa: N802
         path = self.path.split("?")[0].lstrip("/") or "index.html"
 
@@ -110,7 +140,9 @@ class _SiteHandler(BaseHTTPRequestHandler):
         content = file_path.read_bytes()
 
         # inject break state into HTML pages
-        if path in ("index.html", "invoices.html", "payment.html"):
+        if path in TRACKED_PAGES:
+            self._record_access(path)
+        if path in TRACKED_PAGES:
             flags = read_break_state()
             content = _inject_script(content.decode("utf-8", errors="replace"), flags)
             self._send(200, "text/html; charset=utf-8", content)

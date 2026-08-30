@@ -226,7 +226,7 @@ def run_wal(
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)
-        context = browser.new_context()
+        context = browser.new_context(extra_http_headers={"X-BotMedic": "engine"})
         # Always sync localStorage from the server-side state file,
         # not from the breaks parameter — so the panel and the runner agree.
         from serve import read_break_state
@@ -307,7 +307,7 @@ def count_matches(
     counts = {}
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)
-        context = browser.new_context()
+        context = browser.new_context(extra_http_headers={"X-BotMedic": "engine"})
         context.add_init_script(_break_script(breaks))
         page = context.new_page()
         page.goto(url, wait_until="domcontentloaded")
@@ -329,7 +329,7 @@ def scan_page(url: str, *, breaks: Optional[dict] = None, headless: bool = True)
     """
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)
-        context = browser.new_context()
+        context = browser.new_context(extra_http_headers={"X-BotMedic": "engine"})
         context.add_init_script(_break_script(breaks))
         page = context.new_page()
         page.goto(url, wait_until="domcontentloaded")
