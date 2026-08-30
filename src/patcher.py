@@ -194,8 +194,12 @@ def commit_patch(bot: dict, patched_wal: str) -> dict:
     if not patched.exists():
         raise FileNotFoundError(f"Patched script not found: {patched}")
 
-    if not backup.exists():
-        shutil.copy2(original, backup)
+    # Refresh the backup on every commit. Keeping only the first one means the
+    # .bak drifts further from the script with each edit its author makes, and
+    # `restore` then silently rolls their work back to a version from hours
+    # ago. The backup must always be the script as it was immediately before
+    # this patch.
+    shutil.copy2(original, backup)
     shutil.copy2(patched, original)
 
     return {

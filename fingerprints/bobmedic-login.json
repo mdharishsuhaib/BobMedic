@@ -3,9 +3,9 @@
   "bot_name": "Portal Login Bot",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T09:21:12+0300",
+  "recorded_at": "2026-08-30T09:25:54+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 11.1,
+  "duration_sec": 11.72,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -87,6 +87,32 @@
       "line_number": 10,
       "url": "http://127.0.0.1:8000/"
     },
+    "webget#1": {
+      "tag": "button",
+      "text": "Sign in",
+      "attrs": {
+        "id": "btn-login",
+        "class": "btn primary",
+        "type": "submit"
+      },
+      "dom_path": "div#btn-container-default > button.btn.primary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Sign in"
+      },
+      "geometry": {
+        "x": 774,
+        "y": 452,
+        "w": 372,
+        "h": 43
+      },
+      "visible": true,
+      "step_id": "webget#1",
+      "step_key": "webget#1",
+      "selector": "#btn-login",
+      "line_number": 12,
+      "url": "http://127.0.0.1:8000/"
+    },
     "login_submit": {
       "tag": "button",
       "text": "Sign in",
@@ -110,8 +136,33 @@
       "step_id": "login_submit",
       "step_key": "webclick#1",
       "selector": "#btn-login",
-      "line_number": 11,
+      "line_number": 14,
       "url": "http://127.0.0.1:8000/"
+    },
+    "webclick#2": {
+      "tag": "a",
+      "text": "New payment",
+      "attrs": {
+        "class": "btn primary",
+        "href": "payment.html"
+      },
+      "dom_path": "div#toolbar > a.btn.primary",
+      "neighbors": {
+        "prev_label": "Bulk actions ▾",
+        "parent_text": "Download CSV\n        \n        Bulk actions ▾\n        New payment"
+      },
+      "geometry": {
+        "x": 1105,
+        "y": 97,
+        "w": 117,
+        "h": 36
+      },
+      "visible": true,
+      "step_id": "webclick#2",
+      "step_key": "webclick#2",
+      "selector": "#toolbar > a",
+      "line_number": 16,
+      "url": "http://127.0.0.1:8000/invoices.html"
     }
   }
 }
