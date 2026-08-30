@@ -232,6 +232,26 @@ def _varint_encode(value: int) -> bytes:
             return bytes(out)
 
 
+def find_version_trailer(raw: bytes) -> int | None:
+    """
+    Locate the version trailer a Studio .wal ends with: 0x2A <len> "23.0.19.0".
+
+    Used to recognise a script whose container header has been stripped —
+    by an editor that saved it as text, say — so the next patch can put the
+    header back rather than faithfully preserving the damage.
+    """
+    marker = raw.rfind(bytes((0x2A,)), max(0, len(raw) - 40))
+    if marker == -1 or marker + 1 >= len(raw):
+        return None
+    length = raw[marker + 1]
+    if marker + 2 + length != len(raw):
+        return None
+    version = raw[marker + 2:]
+    if version and all(chr(byte) in "0123456789." for byte in version):
+        return marker
+    return None
+
+
 def split_container(raw: bytes) -> tuple[bytes, bytes]:
     """
     Split a .wal into (script body, trailer).
@@ -240,6 +260,12 @@ def split_container(raw: bytes) -> tuple[bytes, bytes]:
     has no container, and is returned unchanged with an empty trailer.
     """
     if not raw.startswith(bytes((0x12,))):
+        # No header. If the version trailer is still there, the header was
+        # stripped rather than absent, and rebuilding restores a file Studio
+        # can open again.
+        marker = find_version_trailer(raw)
+        if marker is not None:
+            return raw[:marker], raw[marker:]
         return raw, b""
     try:
         length, consumed = _varint_decode(raw, 1)

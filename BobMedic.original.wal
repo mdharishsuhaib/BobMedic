@@ -1,4 +1,4 @@
-defVar --name BobMedicBrawser --type Browser
+ÁdefVar --name BobMedicBrawser --type Browser
 defVar --name username --type Boolean
 defVar --name password --type Boolean
 defVar --name loginButtom --type Boolean
@@ -8,4 +8,4 @@ webSet --value operator --selector "CssSelector" --css "#username" --timeout "00
 webSet --value nova2026 --selector "CssSelector" --css "#password" --timeout "00:00:01" password=value
 webWaitElement --selector "CssSelector" --css "#btn-login" --timeout "00:00:03" loginButtom=value
 webClick --selector "CssSelector" --css "#btn-login"
-webClose --name BobMedicBrawser --leavebrowseropen
+webClose --name BobMedicBrawser --leavebrowseropen*	23.0.19.0
