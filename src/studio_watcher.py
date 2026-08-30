@@ -76,19 +76,39 @@ def read_new_text(path: Path, offset: int) -> tuple[str, int]:
     """
     Read whatever has been appended since ``offset``.
 
+    The size is measured by opening the file and seeking to its end, not with
+    stat(). Windows serves stat() from the directory entry, which another
+    process's open write handle does not refresh — Studio can append for
+    minutes while stat() still reports the size the file had when the watcher
+    started, and a tail built on stat() would sit there seeing nothing.
+
     Returns the decoded text and the new offset. A file that shrank was
     rotated, so reading restarts from the beginning.
     """
-    size = path.stat().st_size
-    if size < offset:
-        offset = 0
-    if size == offset:
-        return "", offset
-
     with open(path, "rb") as handle:
+        handle.seek(0, os.SEEK_END)
+        size = handle.tell()
+
+        if size < offset:
+            offset = 0
+        if size == offset:
+            return "", offset
+
         handle.seek(offset)
         chunk = handle.read(size - offset)
+
     return _decode(chunk), size
+
+
+def _parse_stamp(value: str | None) -> float | None:
+    """Turn Studio's ISO timestamp into a comparable epoch value."""
+    if not value:
+        return None
+    try:
+        from datetime import datetime
+        return datetime.fromisoformat(value).timestamp()
+    except ValueError:
+        return None
 
 
 # Studio writes the exception type directly after the selector with no
@@ -176,11 +196,17 @@ def watch(
     headless: bool = True,
 ) -> None:
     """Follow Studio's log and heal whatever it reports as broken."""
-    offset = 0 if from_start else log_path.stat().st_size
+    # Measure through an open handle, for the same reason read_new_text does.
+    _, offset = read_new_text(log_path, 0)
+    if from_start:
+        offset = 0
+    started_at = time.time()
+
     ensure_server()
 
     print(f"[WATCH]    Following {log_path}")
     print(f"[WATCH]    Bots: {only or 'all registered'}")
+    print(f"[WATCH]    Reading from byte {offset:,}")
     print("[WATCH]    Break the site, run the bot in Studio. Ctrl+C to stop.\n")
 
     seen: set[tuple] = set()
@@ -189,6 +215,11 @@ def watch(
             text, offset = read_new_text(log_path, offset)
             if text:
                 for failure in find_failures(text):
+                    # Studio's log carries every failure it has ever recorded.
+                    # Only act on ones that happened after this watch began.
+                    stamp = _parse_stamp(failure["timestamp"])
+                    if not from_start and stamp is not None and stamp < started_at - 5:
+                        continue
                     key = (failure["timestamp"], failure["selector"])
                     if key in seen:
                         continue
@@ -214,7 +245,9 @@ def replay_last(log_path: Path, *, only: str | None = None, headless: bool = Tru
 def main(argv=None) -> int:
     """Command line entry point."""
     try:
-        sys.stdout.reconfigure(encoding="utf-8")
+        # Line buffering matters here: this runs for the length of a demo and
+        # its output is the only sign it is alive.
+        sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
     except (AttributeError, OSError):
         pass
 
