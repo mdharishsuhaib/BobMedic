@@ -137,10 +137,15 @@ def patch_wal(
     """
     Write a patched COPY of a .wal file. The original is never modified.
 
+    Patches ALL lines that reference old_selector, not just the failing line.
+    This handles the common pattern where webWaitElement and webClick share the
+    same selector on consecutive lines — both must be updated together.
+
     Args:
         wal_path:     Path to the original .wal file.
-        line_number:  1-based line to patch.
-        old_selector: Selector value currently on that line.
+        line_number:  1-based line where the failure was detected (used for
+                      validation — at least this line must be patched).
+        old_selector: Selector value to replace everywhere in the file.
         new_selector: Replacement selector value.
         out_path:     Destination; defaults to ``<name>.patched.wal``.
 
@@ -156,21 +161,26 @@ def patch_wal(
             f"Line {line_number} out of range (file has {len(lines)} lines)"
         )
 
-    original_line = lines[index]
-    patched_line = original_line.replace(f'"{old_selector}"', f'"{new_selector}"')
-    if patched_line == original_line:
-        patched_line = original_line.replace(old_selector, new_selector)
-    if patched_line == original_line:
-        raise ValueError(f"Selector {old_selector!r} not found on line {line_number}")
+    # Patch every line that contains the broken selector
+    patched_lines = []
+    patched_count = 0
+    for i, line in enumerate(lines):
+        new_line = line.replace(f'"{old_selector}"', f'"{new_selector}"')
+        if new_line == line:
+            new_line = line.replace(old_selector, new_selector)
+        if new_line != line:
+            patched_count += 1
+        patched_lines.append(new_line)
 
-    lines[index] = patched_line
+    if patched_count == 0:
+        raise ValueError(f"Selector {old_selector!r} not found anywhere in {wal_path}")
 
     if out_path is None:
         base, ext = os.path.splitext(wal_path)
         out_path = base + ".patched" + ext
 
     with open(out_path, "w", encoding="utf-8") as handle:
-        handle.writelines(lines)
+        handle.writelines(patched_lines)
 
     return out_path
 

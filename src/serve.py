@@ -1,5 +1,5 @@
 """
-serve.py — static file server for the NorthShore Bank target site.
+serve.py — static file server for the demo target site.
 
 Break state is stored server-side in target-site/break-state.json so that
 every browser — including the isolated Chrome instance IBM RPA Studio opens —
@@ -187,7 +187,7 @@ def stop_server() -> None:
 
 if __name__ == "__main__":
     url = ensure_server()
-    print(f"NorthShore Bank target site: {url}")
+    print(f"Target site: {url}")
     print(f"  login      {url}/index.html")
     print(f"  invoices   {url}/invoices.html")
     print(f"  break      {url}/break.html")

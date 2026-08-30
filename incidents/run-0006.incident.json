@@ -1,0 +1,40 @@
+{
+  "id": "run-0006",
+  "bot_id": "bobmedic-login",
+  "bot_name": "NorthShore Login Bot (BobMedic)",
+  "wal_file": "BobMedic.wal",
+  "risk_tier": "read_only",
+  "failed_step": "login_submit",
+  "error": "ElementNotFound",
+  "detected_at": "2026-08-29T23:23:35.584977+00:00",
+  "page_html_ref": "snapshots/run-0006.html",
+  "status": "escalated",
+  "diff": [],
+  "candidates": [],
+  "run_result": null,
+  "bob_response": null,
+  "mttr_manual_min": 47,
+  "mttr_auto_sec": 22.7,
+  "proposal": {
+    "run_id": "run-0006",
+    "diagnosis": "No fingerprint on file for step 'login_submit'. The bot has never completed a green run, so there is nothing to compare the changed page against. Record a baseline first.",
+    "script_line": 9,
+    "old_selector": null,
+    "new_selector": null,
+    "confidence": 0.0,
+    "resolved_by": null,
+    "verified": false,
+    "action": "escalated_no_fix"
+  },
+  "diagnosis": "No fingerprint on file for step 'login_submit'. The bot has never completed a green run, so there is nothing to compare the changed page against. Record a baseline first.",
+  "script_line": 9,
+  "old_selector": null,
+  "new_selector": null,
+  "confidence": 0.0,
+  "resolved_by": null,
+  "verified": false,
+  "action": "escalated_no_fix",
+  "breaks": {
+    "break_login_id": true
+  }
+}

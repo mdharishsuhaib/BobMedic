@@ -1,5 +1,7 @@
 # BotMedic
 
+**Team BobVanta** · IBM TechXchange 2026 Pre-conference Dev Day
+
 > Self-healing RPA maintenance. When a target application changes its UI and an
 > IBM RPA bot breaks, BotMedic diagnoses the break, writes a verified patch to
 > the `.wal` script, and hands a human the diff — except where it is not allowed
@@ -80,7 +82,7 @@ python start.py
 
 | Service | URL |
 |---|---|
-| NorthShore Bank target site | http://127.0.0.1:8000 |
+| Target site (demo application) | http://127.0.0.1:8000 |
 | Break control panel | http://127.0.0.1:8000/break.html |
 | Control API | http://127.0.0.1:8100/api/feed |
 | Dashboard | http://127.0.0.1:3000 |
@@ -207,7 +209,7 @@ that matches exactly one element on the page wins:
 
 - No credentials, API keys or tokens anywhere in the repository
 - Model calls only in the ambiguous band; everything else is deterministic code
-- All demo data is synthetic and the institution (NorthShore Bank) is fictional
+- All demo data is synthetic and the demo institution is fictional
 - Strict JSON everywhere — the dashboard never parses free text
 
 ## License

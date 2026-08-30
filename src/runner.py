@@ -66,6 +66,19 @@ def _break_script(breaks: dict) -> str:
     return f"try {{ {sets} }} catch (e) {{}}"
 
 
+def apply_breaks(breaks: dict) -> None:
+    """
+    Write break flags to the server-side state file AND localStorage script.
+    This ensures every browser — including IBM RPA Studio's isolated Chrome —
+    sees the same DOM mutations on the next page load.
+    """
+    try:
+        from serve import write_break_state
+        write_break_state(breaks or {})
+    except Exception:
+        pass
+
+
 def _save_snapshot(page, run_id: str, base_url: str) -> str:
     """
     Save the current DOM to snapshots/<run_id>.html.
@@ -180,10 +193,11 @@ def run_wal(
     steps = parse_wal(wal_path)
     started = time.time()
 
-    # The site server injects break state from disk into every page it serves,
-    # so that is where the flags have to be written. The init script below still
-    # matters for pages opened straight from a file, such as a saved snapshot.
-    write_break_state(breaks or {})
+    # The site server injects break state from disk into every page it serves.
+    # Only overwrite the state file when breaks are explicitly provided — do NOT
+    # clear it when breaks={}, so a break set from the panel stays active.
+    if breaks:
+        write_break_state(breaks)
 
     results = []
     fingerprints = {}
@@ -193,7 +207,10 @@ def run_wal(
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)
         context = browser.new_context()
-        context.add_init_script(_break_script(breaks))
+        # Always sync localStorage from the server-side state file,
+        # not from the breaks parameter — so the panel and the runner agree.
+        from serve import read_break_state
+        context.add_init_script(_break_script(read_break_state()))
         page = context.new_page()
 
         for step in steps:

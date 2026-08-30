@@ -1,5 +1,7 @@
 # BotMedic — Runbook
 
+**Team BobVanta**
+
 Everything from a fresh clone to a finished demo. Commands are written for
 PowerShell on Windows and run from the `botmedic/` folder.
 
@@ -53,7 +55,7 @@ python start.py
 
 | What | Where |
 |---|---|
-| NorthShore Bank target site | http://127.0.0.1:8000 |
+| Target site (demo application) | http://127.0.0.1:8000 |
 | Break control panel | http://127.0.0.1:8000/break.html |
 | Control API | http://127.0.0.1:8100/api/feed |
 | Dashboard | **http://localhost:3000** |

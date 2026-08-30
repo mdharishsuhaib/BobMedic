@@ -3,9 +3,9 @@
   "bot_name": "NorthShore Login Bot (BobMedic)",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T01:52:49+0300",
+  "recorded_at": "2026-08-30T03:42:08+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 9.83,
+  "duration_sec": 9.81,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -31,7 +31,7 @@
       "step_id": "login_username",
       "step_key": "webset#1",
       "selector": "#username",
-      "line_number": 6,
+      "line_number": 7,
       "url": "http://127.0.0.1:8000/"
     },
     "login_password": {
@@ -57,7 +57,33 @@
       "step_id": "login_password",
       "step_key": "webset#2",
       "selector": "#password",
-      "line_number": 7,
+      "line_number": 8,
+      "url": "http://127.0.0.1:8000/"
+    },
+    "login_wait": {
+      "tag": "button",
+      "text": "Sign in",
+      "attrs": {
+        "id": "btn-login",
+        "class": "btn primary",
+        "type": "submit"
+      },
+      "dom_path": "div#btn-container-default > button.btn.primary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Sign in"
+      },
+      "geometry": {
+        "x": 487,
+        "y": 441,
+        "w": 306,
+        "h": 38
+      },
+      "visible": true,
+      "step_id": "login_wait",
+      "step_key": "webwaitelement#1",
+      "selector": "#btn-login",
+      "line_number": 9,
       "url": "http://127.0.0.1:8000/"
     },
     "login_submit": {
@@ -83,7 +109,7 @@
       "step_id": "login_submit",
       "step_key": "webclick#1",
       "selector": "#btn-login",
-      "line_number": 8,
+      "line_number": 10,
       "url": "http://127.0.0.1:8000/"
     }
   }

@@ -3,7 +3,8 @@
 ## Identity
 - Hackathon: IBM TechXchange 2026 Pre-conference Dev Day
 - All code, comments, documentation and UI text in English
-- Fictional institution: NorthShore Bank. All demo data fully synthetic — no real
+- Team: BobVanta. The demo institution is fictional and all demo data is
+  fully synthetic — no real
   usernames, passwords, client names or logs
 - No credentials, API keys or tokens anywhere in the repository, ever
 

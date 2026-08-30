@@ -101,6 +101,11 @@ def watch_run(bot_id: str, *, breaks: dict | None = None, headless: bool = True)
     base_url = ensure_server()
     run_id = new_run_id()
 
+    # Write break state to disk BEFORE running so every browser sees the same DOM
+    if breaks:
+        from runner import apply_breaks
+        apply_breaks(breaks)
+
     outcome = run_wal(
         bot["wal_path"],
         run_id=run_id,

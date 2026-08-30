@@ -1,6 +1,6 @@
 {
-  "break_login_id": false,
+  "break_login_id": true,
   "break_login_move": false,
-  "break_login_text": true,
+  "break_login_text": false,
   "break_export_id": false
 }

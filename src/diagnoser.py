@@ -192,13 +192,21 @@ def selector_options(candidate: dict) -> list[dict]:
     """
     Build replacement selectors for a candidate, most stable first.
 
-    An id is offered last and only as a fallback. Patching a fresh id back into
-    the script just queues up the same break for the next release; the visible
-    text plus element type is what actually survives a UI refresh.
+    Priority order:
+    1. data-testid  — the app's own stable hook
+    2. new id       — standard CSS, works in IBM RPA Studio directly
+    3. name attr    — stable form field selector
+    4. aria-label   — accessible label
+    5. class        — weaker, markup-dependent
+    6. has-text     — Playwright-only, not supported by IBM RPA Studio
+
+    The new id is promoted above has-text so the patched .wal remains
+    runnable in IBM RPA Studio without manual editing.
     """
     tag = candidate.get("tag", "*")
     attrs = candidate.get("attrs", {})
     text = (candidate.get("text") or "").strip()
+    element_type = attrs.get("type")
     options: list[dict] = []
 
     testid = attrs.get("data-testid")
@@ -208,12 +216,12 @@ def selector_options(candidate: dict) -> list[dict]:
             "basis": "data-testid attribute — the application's own stable hook",
         })
 
-    element_type = attrs.get("type")
-    if text and tag in ("button", "a"):
-        base = f"{tag}[type='{_quote(element_type)}']" if element_type else tag
+    # New id first — standard CSS that runs in IBM RPA Studio
+    element_id = attrs.get("id")
+    if element_id:
         options.append({
-            "selector": f"{base}:has-text('{_quote(text)}')",
-            "basis": "visible text plus element type — survives an id rename",
+            "selector": f"#{element_id}",
+            "basis": "new element id — standard CSS selector",
         })
 
     name = attrs.get("name")
@@ -238,11 +246,12 @@ def selector_options(candidate: dict) -> list[dict]:
             "basis": "element type plus class — weaker, but not id-bound",
         })
 
-    element_id = attrs.get("id")
-    if element_id:
+    # has-text last — Playwright-only, not supported by IBM RPA Studio
+    if text and tag in ("button", "a"):
+        base = f"{tag}[type='{_quote(element_type)}']" if element_type else tag
         options.append({
-            "selector": f"#{element_id}",
-            "basis": "new id — last resort; likely to change again",
+            "selector": f"{base}:has-text('{_quote(text)}')",
+            "basis": "visible text plus element type — Playwright only",
         })
 
     return options

@@ -1,6 +1,6 @@
 {
   "bobmedic-login": {
-    "bot_name": "NorthShore Login Bot (BobMedic)",
+    "bot_name": "Portal Login Bot",
     "wal": "BobMedic.wal",
     "risk_tier": "read_only",
     "description": "Signs in using id-based selector #btn-login. The demo bot — breaks when the button id changes.",
@@ -8,12 +8,12 @@
     "steps": {
       "webset#1": "login_username",
       "webset#2": "login_password",
-      "webwaitelement#1": "login_submit",
-      "webclick#1": "login_submit_click"
+      "webwaitelement#1": "login_wait",
+      "webclick#1": "login_submit"
     }
   },
   "invoice-extract": {
-    "bot_name": "NorthShore Invoice Exporter",
+    "bot_name": "Invoice Exporter",
     "wal": "rpa-bots/invoice-extract.wal",
     "risk_tier": "read_only",
     "description": "Signs in and downloads the invoice CSV export. Reads only.",
@@ -27,7 +27,7 @@
     }
   },
   "invoice-entry": {
-    "bot_name": "NorthShore Invoice Filter Entry",
+    "bot_name": "Invoice Filter Entry",
     "wal": "rpa-bots/invoice-entry.wal",
     "risk_tier": "reversible_write",
     "description": "Signs in and enters filter criteria. Writes draft state a human can undo.",
@@ -42,7 +42,7 @@
     }
   },
   "payment-submit": {
-    "bot_name": "NorthShore Payment Batch Submitter",
+    "bot_name": "Payment Batch Submitter",
     "wal": "rpa-bots/payment-submit.wal",
     "risk_tier": "irreversible",
     "description": "Signs in and submits a payment. Money leaves the ledger — never auto-patched.",

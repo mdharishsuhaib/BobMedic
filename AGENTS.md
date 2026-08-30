@@ -1,5 +1,7 @@
 # BotMedic — Project Context
 
+Built by **Team BobVanta**.
+
 Read this before writing any code. It defines what is being built, the
 contracts between components, and the constraints that are not negotiable.
 
@@ -117,6 +119,6 @@ src/api.py          stdlib control API for the dashboard
 - Bob Shell is called only in the ambiguous band; failures escalate rather
   than guess
 - No credentials, API keys or tokens in the repository
-- All demo data is synthetic; the institution (NorthShore Bank) is fictional
+- All demo data is synthetic; the demo institution is fictional
 - Everything in English: code, comments, docs, UI text
 - Strict JSON everywhere; free text breaks the dashboard
