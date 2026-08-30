@@ -50,8 +50,11 @@ normal".
 ## 3. Start everything
 
 ```powershell
-python start.py
+npm run start:all
 ```
+
+`python start.py` does the same thing; the npm script exists because the
+project's own startup requirement names it.
 
 | What | Where |
 |---|---|

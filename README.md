@@ -77,7 +77,7 @@ cd dashboard && npm install && cd ..
 python src/engine.py baseline
 
 # bring the site, the API and the dashboard up together
-python start.py
+npm run start:all
 ```
 
 | Service | URL |

@@ -1,0 +1,19 @@
+{
+  "name": "botmedic",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-healing RPA maintenance. Diagnoses a broken bot selector, patches the .wal against the signals that survive a UI release, proves the fix by re-running the bot, and refuses to touch anything a risk tier forbids.",
+  "scripts": {
+    "start:all": "python start.py",
+    "start": "python start.py",
+    "watch:studio": "python src/studio_watcher.py --bot bobmedic-login",
+    "baseline": "python src/engine.py baseline",
+    "demo": "python src/engine.py demo bobmedic-login rename-login-id",
+    "restore": "python src/engine.py restore",
+    "reset": "python src/engine.py reset",
+    "setup": "pip install -r requirements.txt && python -m playwright install chromium && npm --prefix dashboard install"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-08-30T12:27:28+0300",
+  "generated_at": "2026-08-30T13:22:39+0300",
   "thresholds": {
     "confident": 0.85,
     "ambiguous": 0.55
   },
   "summary": {
-    "incidents": 1,
-    "healed": 1,
+    "incidents": 2,
+    "healed": 2,
     "awaiting_approval": 0,
     "escalated": 0,
     "avg_manual_min": 47.0,
-    "avg_auto_sec": 187.2,
+    "avg_auto_sec": 114.0,
     "bob_calls": 0
   },
   "bots": [
@@ -44,6 +44,153 @@
     }
   ],
   "incidents": [
+    {
+      "id": "run-0002",
+      "bot_id": "bobmedic-login",
+      "bot_name": "Portal Login Bot",
+      "wal_file": "BobMedic.wal",
+      "risk_tier": "read_only",
+      "failed_step": "login_wait",
+      "error": "ElementNotFound",
+      "detected_at": "2026-08-30T10:22:13.561557+00:00",
+      "page_html_ref": "snapshots/run-0002.html",
+      "status": "healed",
+      "diff": [
+        {
+          "line_number": 9,
+          "original": "webWaitElement --selector \"CssSelector\" --css \"#auth-submit-v2\" --timeout \"00:00:03\" loginButtom=value\r",
+          "patched": "webWaitElement --selector \"CssSelector\" --css \"#btn-login\" --timeout \"00:00:03\" loginButtom=value\r"
+        },
+        {
+          "line_number": 10,
+          "original": "webClick --selector \"CssSelector\" --css \"#auth-submit-v2\"\r",
+          "patched": "webClick --selector \"CssSelector\" --css \"#btn-login\"\r"
+        }
+      ],
+      "candidates": [
+        {
+          "tag": "button",
+          "text": "Sign in",
+          "attrs": {
+            "id": "btn-login",
+            "class": "btn primary",
+            "type": "submit"
+          },
+          "dom_path": "div#btn-container-default > button.btn.primary",
+          "score": 1.0,
+          "signals": {
+            "text": 1.0,
+            "attrs": 1.0,
+            "dom_path": 1.0,
+            "geometry": 1.0,
+            "tag": 1.0
+          }
+        },
+        {
+          "tag": "input",
+          "text": "e.g. j.smith@company.com",
+          "attrs": {
+            "id": "username",
+            "type": "text",
+            "name": "username",
+            "placeholder": "e.g. j.smith@company.com"
+          },
+          "dom_path": "form#login-form > div.form-group > input",
+          "score": 0.1431,
+          "signals": {
+            "text": 0.1935,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.5672,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "Contact IT support",
+          "attrs": {
+            "href": "#"
+          },
+          "dom_path": "div.auth > main.auth-form > div.login-card > div.login-footer > a",
+          "score": 0.1349,
+          "signals": {
+            "text": 0.24,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4196,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "input",
+          "text": "••••••••••",
+          "attrs": {
+            "id": "password",
+            "type": "password",
+            "name": "password",
+            "placeholder": "••••••••••"
+          },
+          "dom_path": "form#login-form > div.form-group > input",
+          "score": 0.1188,
+          "signals": {
+            "text": 0.0,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.7922,
+            "tag": 0.0
+          }
+        },
+        {
+          "tag": "a",
+          "text": "System",
+          "attrs": {
+            "href": "break.html"
+          },
+          "dom_path": "footer > a",
+          "score": 0.1065,
+          "signals": {
+            "text": 0.1538,
+            "attrs": 0.0,
+            "dom_path": 0.0,
+            "geometry": 0.4026,
+            "tag": 0.0
+          }
+        }
+      ],
+      "run_result": {
+        "success": true,
+        "duration_sec": 9.65,
+        "steps_run": 7,
+        "failed_step": null,
+        "error": null
+      },
+      "bob_response": null,
+      "mttr_manual_min": 47,
+      "mttr_auto_sec": 40.8,
+      "proposal": {
+        "run_id": "run-0002",
+        "diagnosis": "The selector no longer resolves, though every recorded signal matches. Stable signals: text, attrs, dom_path, geometry, tag.",
+        "script_line": 9,
+        "old_selector": "#auth-submit-v2",
+        "new_selector": "#btn-login",
+        "confidence": 1.0,
+        "resolved_by": "deterministic",
+        "verified": true,
+        "action": "auto_applied"
+      },
+      "diagnosis": "The selector no longer resolves, though every recorded signal matches. Stable signals: text, attrs, dom_path, geometry, tag.",
+      "script_line": 9,
+      "old_selector": "#auth-submit-v2",
+      "new_selector": "#btn-login",
+      "confidence": 1.0,
+      "resolved_by": "deterministic",
+      "verified": true,
+      "action": "auto_applied",
+      "selector_basis": "new element id — standard CSS selector, unique on the page",
+      "patched_wal": "patch-candidates/run-0002.BobMedic.wal",
+      "verification_attempts": 1,
+      "breaks": {}
+    },
     {
       "id": "run-0001",
       "bot_id": "bobmedic-login",
