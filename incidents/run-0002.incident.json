@@ -1,19 +1,19 @@
 {
   "id": "run-0002",
   "bot_id": "invoice-entry",
-  "bot_name": "NorthShore Invoice Filter Entry",
+  "bot_name": "Invoice Filter Entry",
   "wal_file": "rpa-bots/invoice-entry.wal",
   "risk_tier": "reversible_write",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T22:54:30.574520+00:00",
+  "detected_at": "2026-08-30T01:51:35.962590+00:00",
   "page_html_ref": "snapshots/run-0002.html",
   "status": "awaiting_approval",
   "diff": [
     {
       "line_number": 9,
       "original": "webClick --selector \"CssSelector\" --css \"#btn-login\"",
-      "patched": "webClick --selector \"CssSelector\" --css \"button[type='submit']:has-text('Sign in')\""
+      "patched": "webClick --selector \"CssSelector\" --css \"button.btn.primary[type='submit']\""
     }
   ],
   "candidates": [
@@ -45,12 +45,12 @@
         "placeholder": "e.g. j.smith@company.com"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1442,
+      "score": 0.1431,
       "signals": {
         "text": 0.1935,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.5743,
+        "geometry": 0.5672,
         "tag": 0.0
       }
     },
@@ -60,31 +60,32 @@
       "attrs": {
         "href": "#"
       },
-      "dom_path": "main > div.login-card > div.login-footer > a",
-      "score": 0.1365,
+      "dom_path": "div.auth > main.auth-form > div.login-card > div.login-footer > a",
+      "score": 0.1349,
       "signals": {
         "text": 0.24,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.4302,
+        "geometry": 0.4196,
         "tag": 0.0
       }
     },
     {
       "tag": "input",
-      "text": "",
+      "text": "••••••••••",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password"
+        "name": "password",
+        "placeholder": "••••••••••"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1199,
+      "score": 0.1188,
       "signals": {
         "text": 0.0,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.7993,
+        "geometry": 0.7922,
         "tag": 0.0
       }
     },
@@ -95,32 +96,32 @@
         "href": "break.html"
       },
       "dom_path": "footer > a",
-      "score": 0.0789,
+      "score": 0.1065,
       "signals": {
         "text": 0.1538,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.2182,
+        "geometry": 0.4026,
         "tag": 0.0
       }
     }
   ],
   "run_result": {
     "success": true,
-    "duration_sec": 22.66,
+    "duration_sec": 11.9,
     "steps_run": 9,
     "failed_step": null,
     "error": null
   },
   "bob_response": null,
   "mttr_manual_min": 38,
-  "mttr_auto_sec": 61.6,
+  "mttr_auto_sec": 37.1,
   "proposal": {
     "run_id": "run-0002",
     "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
     "script_line": 9,
     "old_selector": "#btn-login",
-    "new_selector": "button[type='submit']:has-text('Sign in')",
+    "new_selector": "button.btn.primary[type='submit']",
     "confidence": 0.9167,
     "resolved_by": "deterministic",
     "verified": true,
@@ -129,12 +130,12 @@
   "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
   "script_line": 9,
   "old_selector": "#btn-login",
-  "new_selector": "button[type='submit']:has-text('Sign in')",
+  "new_selector": "button.btn.primary[type='submit']",
   "confidence": 0.9167,
   "resolved_by": "deterministic",
   "verified": true,
   "action": "await_approval",
-  "selector_basis": "visible text plus element type — survives an id rename",
+  "selector_basis": "element type and class — valid CSS, not tied to the id",
   "patched_wal": "patch-candidates/run-0002.invoice-entry.wal",
   "verification_attempts": 1,
   "breaks": {

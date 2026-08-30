@@ -1,12 +1,12 @@
 {
   "id": "run-0003",
   "bot_id": "payment-submit",
-  "bot_name": "NorthShore Payment Batch Submitter",
+  "bot_name": "Payment Batch Submitter",
   "wal_file": "rpa-bots/payment-submit.wal",
   "risk_tier": "irreversible",
   "failed_step": "login_submit",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T22:55:40.943157+00:00",
+  "detected_at": "2026-08-30T01:52:22.249919+00:00",
   "page_html_ref": "snapshots/run-0003.html",
   "status": "escalated",
   "diff": [],
@@ -39,12 +39,12 @@
         "placeholder": "e.g. j.smith@company.com"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1442,
+      "score": 0.1431,
       "signals": {
         "text": 0.1935,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.5743,
+        "geometry": 0.5672,
         "tag": 0.0
       }
     },
@@ -54,31 +54,32 @@
       "attrs": {
         "href": "#"
       },
-      "dom_path": "main > div.login-card > div.login-footer > a",
-      "score": 0.1365,
+      "dom_path": "div.auth > main.auth-form > div.login-card > div.login-footer > a",
+      "score": 0.1349,
       "signals": {
         "text": 0.24,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.4302,
+        "geometry": 0.4196,
         "tag": 0.0
       }
     },
     {
       "tag": "input",
-      "text": "",
+      "text": "••••••••••",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password"
+        "name": "password",
+        "placeholder": "••••••••••"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1199,
+      "score": 0.1188,
       "signals": {
         "text": 0.0,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.7993,
+        "geometry": 0.7922,
         "tag": 0.0
       }
     },
@@ -89,12 +90,12 @@
         "href": "break.html"
       },
       "dom_path": "footer > a",
-      "score": 0.0789,
+      "score": 0.1065,
       "signals": {
         "text": 0.1538,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.2182,
+        "geometry": 0.4026,
         "tag": 0.0
       }
     }

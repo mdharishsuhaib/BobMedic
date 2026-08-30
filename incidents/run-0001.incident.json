@@ -1,19 +1,24 @@
 {
   "id": "run-0001",
   "bot_id": "bobmedic-login",
-  "bot_name": "NorthShore Login Bot (BobMedic)",
+  "bot_name": "Portal Login Bot",
   "wal_file": "BobMedic.wal",
   "risk_tier": "read_only",
-  "failed_step": "login_submit",
+  "failed_step": "login_wait",
   "error": "ElementNotFound",
-  "detected_at": "2026-08-29T22:53:46.083513+00:00",
+  "detected_at": "2026-08-30T01:50:47.016654+00:00",
   "page_html_ref": "snapshots/run-0001.html",
   "status": "healed",
   "diff": [
     {
-      "line_number": 8,
-      "original": "webClick --selector \"CssSelector\" --css \"#btn-login\"",
-      "patched": "webClick --selector \"CssSelector\" --css \"button[type='submit']:has-text('Sign in')\""
+      "line_number": 10,
+      "original": "webWaitElement --selector \"CssSelector\" --css \"#btn-login\" --timeout \"00:00:03\" loginButtom=value\r",
+      "patched": "webWaitElement --selector \"CssSelector\" --css \"button.btn.primary[type='submit']\" --timeout \"00:00:03\" loginButtom=value\r"
+    },
+    {
+      "line_number": 11,
+      "original": "webClick --selector \"CssSelector\" --css \"#btn-login\"\r",
+      "patched": "webClick --selector \"CssSelector\" --css \"button.btn.primary[type='submit']\"\r"
     }
   ],
   "candidates": [
@@ -45,12 +50,12 @@
         "placeholder": "e.g. j.smith@company.com"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1442,
+      "score": 0.1431,
       "signals": {
         "text": 0.1935,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.5743,
+        "geometry": 0.5672,
         "tag": 0.0
       }
     },
@@ -60,31 +65,32 @@
       "attrs": {
         "href": "#"
       },
-      "dom_path": "main > div.login-card > div.login-footer > a",
-      "score": 0.1365,
+      "dom_path": "div.auth > main.auth-form > div.login-card > div.login-footer > a",
+      "score": 0.1349,
       "signals": {
         "text": 0.24,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.4302,
+        "geometry": 0.4196,
         "tag": 0.0
       }
     },
     {
       "tag": "input",
-      "text": "",
+      "text": "••••••••••",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password"
+        "name": "password",
+        "placeholder": "••••••••••"
       },
       "dom_path": "form#login-form > div.form-group > input",
-      "score": 0.1199,
+      "score": 0.1188,
       "signals": {
         "text": 0.0,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.7993,
+        "geometry": 0.7922,
         "tag": 0.0
       }
     },
@@ -95,46 +101,46 @@
         "href": "break.html"
       },
       "dom_path": "footer > a",
-      "score": 0.0789,
+      "score": 0.1065,
       "signals": {
         "text": 0.1538,
         "attrs": 0.0,
         "dom_path": 0.0,
-        "geometry": 0.2182,
+        "geometry": 0.4026,
         "tag": 0.0
       }
     }
   ],
   "run_result": {
     "success": true,
-    "duration_sec": 8.54,
-    "steps_run": 6,
+    "duration_sec": 9.45,
+    "steps_run": 7,
     "failed_step": null,
     "error": null
   },
   "bob_response": null,
   "mttr_manual_min": 47,
-  "mttr_auto_sec": 38.9,
+  "mttr_auto_sec": 40.5,
   "proposal": {
     "run_id": "run-0001",
     "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
-    "script_line": 8,
+    "script_line": 10,
     "old_selector": "#btn-login",
-    "new_selector": "button[type='submit']:has-text('Sign in')",
+    "new_selector": "button.btn.primary[type='submit']",
     "confidence": 0.9167,
     "resolved_by": "deterministic",
     "verified": true,
     "action": "auto_applied"
   },
   "diagnosis": "Id changed from 'btn-login' to 'auth-submit-v2'; attributes were refactored. Stable signals: text, dom_path, geometry, tag.",
-  "script_line": 8,
+  "script_line": 10,
   "old_selector": "#btn-login",
-  "new_selector": "button[type='submit']:has-text('Sign in')",
+  "new_selector": "button.btn.primary[type='submit']",
   "confidence": 0.9167,
   "resolved_by": "deterministic",
   "verified": true,
   "action": "auto_applied",
-  "selector_basis": "visible text plus element type — survives an id rename",
+  "selector_basis": "element type and class — valid CSS, not tied to the id",
   "patched_wal": "patch-candidates/run-0001.BobMedic.wal",
   "verification_attempts": 1,
   "breaks": {

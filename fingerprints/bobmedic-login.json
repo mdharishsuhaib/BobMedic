@@ -1,11 +1,11 @@
 {
   "bot_id": "bobmedic-login",
-  "bot_name": "NorthShore Login Bot (BobMedic)",
+  "bot_name": "Portal Login Bot",
   "wal": "BobMedic.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T03:42:08+0300",
+  "recorded_at": "2026-08-30T04:49:15+0300",
   "green_snapshot": "snapshots/baseline-bobmedic-login.html",
-  "duration_sec": 9.81,
+  "duration_sec": 12.12,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -22,25 +22,26 @@
         "parent_text": "Username"
       },
       "geometry": {
-        "x": 487,
-        "y": 314,
-        "w": 306,
-        "h": 34
+        "x": 774,
+        "y": 284,
+        "w": 372,
+        "h": 36
       },
       "visible": true,
       "step_id": "login_username",
       "step_key": "webset#1",
       "selector": "#username",
-      "line_number": 7,
+      "line_number": 8,
       "url": "http://127.0.0.1:8000/"
     },
     "login_password": {
       "tag": "input",
-      "text": "",
+      "text": "••••••••••",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password"
+        "name": "password",
+        "placeholder": "••••••••••"
       },
       "dom_path": "form#login-form > div.form-group > input",
       "neighbors": {
@@ -48,16 +49,16 @@
         "parent_text": "Password"
       },
       "geometry": {
-        "x": 487,
-        "y": 389,
-        "w": 306,
-        "h": 34
+        "x": 774,
+        "y": 363,
+        "w": 372,
+        "h": 36
       },
       "visible": true,
       "step_id": "login_password",
       "step_key": "webset#2",
       "selector": "#password",
-      "line_number": 8,
+      "line_number": 9,
       "url": "http://127.0.0.1:8000/"
     },
     "login_wait": {
@@ -74,16 +75,16 @@
         "parent_text": "Sign in"
       },
       "geometry": {
-        "x": 487,
-        "y": 441,
-        "w": 306,
-        "h": 38
+        "x": 774,
+        "y": 452,
+        "w": 372,
+        "h": 43
       },
       "visible": true,
       "step_id": "login_wait",
       "step_key": "webwaitelement#1",
       "selector": "#btn-login",
-      "line_number": 9,
+      "line_number": 10,
       "url": "http://127.0.0.1:8000/"
     },
     "login_submit": {
@@ -100,16 +101,16 @@
         "parent_text": "Sign in"
       },
       "geometry": {
-        "x": 487,
-        "y": 441,
-        "w": 306,
-        "h": 38
+        "x": 774,
+        "y": 452,
+        "w": 372,
+        "h": 43
       },
       "visible": true,
       "step_id": "login_submit",
       "step_key": "webclick#1",
       "selector": "#btn-login",
-      "line_number": 10,
+      "line_number": 11,
       "url": "http://127.0.0.1:8000/"
     }
   }

@@ -15,7 +15,7 @@ from pathlib import Path
 
 from contracts import FailureEvent, read_json, write_json
 from registry import get_bot, step_names
-from runner import run_wal
+from runner import apply_breaks, run_wal
 from serve import ensure_server
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -56,6 +56,12 @@ def record_baseline(bot_id: str, *, headless: bool = True) -> dict:
     bot = get_bot(bot_id)
     base_url = ensure_server()
     run_id = f"baseline-{bot_id}"
+
+    # A baseline records what healthy looks like, so the site has to actually be
+    # healthy. Running with breaks={} is not enough: the runner deliberately
+    # leaves the state file alone when no breaks are given, so that a fault set
+    # by hand in the break panel survives a plain `run`. Clear it explicitly.
+    apply_breaks({})
 
     outcome = run_wal(
         bot["wal_path"],

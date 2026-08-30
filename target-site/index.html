@@ -4,165 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NorthShore Bank – Sign In</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-      font-size: 14px;
-      background: #f0f2f5;
-      color: #1f2328;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background: #1a3a5c;
-      color: #fff;
-      padding: 0 32px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    header .bank-logo {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-    header .bank-tagline {
-      font-size: 12px;
-      color: #a8c4e0;
-      border-left: 1px solid #2e5a8a;
-      padding-left: 12px;
-      margin-left: 4px;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 16px;
-    }
-
-    .login-card {
-      background: #fff;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      width: 100%;
-      max-width: 380px;
-      padding: 32px 36px;
-    }
-
-    .login-card h1 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .login-card .subtitle {
-      font-size: 13px;
-      color: #57606a;
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-    label {
-      display: block;
-      font-weight: 500;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #d0d7de;
-      border-radius: 4px;
-      font-size: 14px;
-      background: #fff;
-      transition: border-color 0.15s;
-    }
-    input:focus {
-      outline: none;
-      border-color: #3b82d4;
-      box-shadow: 0 0 0 3px rgba(59,130,212,0.15);
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 8px 18px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid transparent;
-      text-align: center;
-      text-decoration: none;
-    }
-    .btn.primary {
-      background: #1a3a5c;
-      color: #fff;
-      border-color: #1a3a5c;
-      width: 100%;
-      padding: 10px;
-    }
-    .btn.primary:hover { background: #15304d; }
-
-    .login-footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #57606a;
-      text-align: center;
-    }
-
-    footer {
-      background: #1a3a5c;
-      color: #a8c4e0;
-      text-align: center;
-      font-size: 12px;
-      padding: 14px;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="portal.css" />
 </head>
 <body>
+
   <header>
     <span class="bank-logo">NorthShore Bank</span>
     <span class="bank-tagline">Corporate Banking Portal</span>
+    <div class="session">
+      <span>Secure session</span>
+    </div>
   </header>
 
-  <main>
-    <div class="login-card">
-      <h1>Welcome back</h1>
-      <p class="subtitle">Sign in to your corporate account</p>
+  <div class="auth">
 
-      <form id="login-form">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" autocomplete="username" placeholder="e.g. j.smith@company.com" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" autocomplete="current-password" />
-        </div>
+    <section class="auth-panel">
+      <h2>Treasury operations, in one place.</h2>
+      <p>
+        Reconcile receivables, release payment runs and pull statements for every
+        entity you hold with NorthShore.
+      </p>
+      <ul>
+        <li>Consolidated invoice ledger across all registered entities</li>
+        <li>Dual-approval payment release above $25,000</li>
+        <li>Exports in CSV, OFX and ISO 20022 formats</li>
+      </ul>
+      <p class="notice">
+        Access is monitored and logged. Unauthorised use of this system is
+        prohibited and may be subject to civil and criminal penalties.
+      </p>
+    </section>
 
-        <!-- login button container — may be moved by break toggle -->
-        <div id="btn-container-default">
-          <!-- button rendered by JS below -->
+    <main class="auth-form">
+      <div class="login-card">
+        <h1>Welcome back</h1>
+        <p class="subtitle">Sign in to your corporate account</p>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autocomplete="username" placeholder="e.g. j.smith@company.com" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••••" />
+          </div>
+
+          <div class="row-between">
+            <label><input type="checkbox" /> Keep me signed in</label>
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <!-- login button container — may be moved by break toggle -->
+          <div id="btn-container-default">
+            <!-- button rendered by JS below -->
+          </div>
+        </form>
+
+        <div class="login-footer">
+          Trouble signing in? <a href="#">Contact IT support</a>
         </div>
-      </form>
-      <div class="login-footer">
-        Forgot your password? <a href="#">Contact IT support</a>
       </div>
-    </div>
-  </main>
+    </main>
+
+  </div>
 
   <footer>
-    &copy; 2025 NorthShore Bank N.A. &nbsp;|&nbsp; Member FDIC &nbsp;|&nbsp;
-    <a href="break.html" style="color:#a8c4e0;text-decoration:none;">System</a>
+    <span>&copy; 2025 NorthShore Bank N.A.</span>
+    <span>·</span>
+    <span>Member FDIC</span>
+    <span>·</span>
+    <span>Equal Housing Lender</span>
+    <span>·</span>
+    <a href="break.html">System</a>
   </footer>
 
   <script>

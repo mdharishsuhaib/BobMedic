@@ -1,11 +1,11 @@
 {
   "bot_id": "invoice-extract",
-  "bot_name": "NorthShore Invoice Exporter",
+  "bot_name": "Invoice Exporter",
   "wal": "rpa-bots/invoice-extract.wal",
   "risk_tier": "read_only",
-  "recorded_at": "2026-08-30T01:53:02+0300",
+  "recorded_at": "2026-08-30T04:49:26+0300",
   "green_snapshot": "snapshots/baseline-invoice-extract.html",
-  "duration_sec": 13.18,
+  "duration_sec": 11.06,
   "steps": {
     "login_username": {
       "tag": "input",
@@ -22,10 +22,10 @@
         "parent_text": "Username"
       },
       "geometry": {
-        "x": 487,
-        "y": 314,
-        "w": 306,
-        "h": 34
+        "x": 774,
+        "y": 284,
+        "w": 372,
+        "h": 36
       },
       "visible": true,
       "step_id": "login_username",
@@ -36,11 +36,12 @@
     },
     "login_password": {
       "tag": "input",
-      "text": "",
+      "text": "••••••••••",
       "attrs": {
         "id": "password",
         "type": "password",
-        "name": "password"
+        "name": "password",
+        "placeholder": "••••••••••"
       },
       "dom_path": "form#login-form > div.form-group > input",
       "neighbors": {
@@ -48,9 +49,9 @@
         "parent_text": "Password"
       },
       "geometry": {
-        "x": 487,
-        "y": 389,
-        "w": 306,
+        "x": 774,
+        "y": 363,
+        "w": 372,
         "h": 34
       },
       "visible": true,
@@ -74,10 +75,10 @@
         "parent_text": "Sign in"
       },
       "geometry": {
-        "x": 487,
-        "y": 441,
-        "w": 306,
-        "h": 38
+        "x": 774,
+        "y": 450,
+        "w": 372,
+        "h": 43
       },
       "visible": true,
       "step_id": "login_submit",
@@ -96,10 +97,10 @@
         "parent_text": "Invoice #\n            Client\n            Amount\n            Issue Date\n         "
       },
       "geometry": {
-        "x": 125,
-        "y": 198,
-        "w": 1030,
-        "h": 412
+        "x": 59,
+        "y": 359,
+        "w": 1162,
+        "h": 444
       },
       "visible": true,
       "step_id": "invoices_table_ready",
@@ -122,10 +123,10 @@
         "parent_text": "Download CSV\n        \n        Bulk actions ▾\n        New payment"
       },
       "geometry": {
-        "x": 795,
-        "y": 86,
-        "w": 118,
-        "h": 33
+        "x": 836,
+        "y": 97,
+        "w": 126,
+        "h": 36
       },
       "visible": true,
       "step_id": "export_csv",

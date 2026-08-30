@@ -1,4 +1,4 @@
-Ê
+ï¿½
 defVar --name BobMedicBrawser --type Browser
 defVar --name username --type Boolean
 defVar --name password --type Boolean
@@ -7,6 +7,6 @@ webStart --name BobMedicBrawser --type "Chrome" --userprofilepreferences "Automa
 webNavigate --url "http://127.0.0.1:8000"
 webSet --value operator --selector "CssSelector" --css "#username" --timeout "00:00:01" username=value
 webSet --value nova2026 --selector "CssSelector" --css "#password" --timeout "00:00:01" password=value
-webWaitElement --selector "CssSelector" --css "#btn-login" --timeout "00:00:03" loginButtom=value
-webClick --selector "CssSelector" --css "#btn-login"
+webWaitElement --selector "CssSelector" --css "button.btn.primary[type='submit']" --timeout "00:00:03" loginButtom=value
+webClick --selector "CssSelector" --css "button.btn.primary[type='submit']"
 webClose --name BobMedicBrawser --leavebrowseropen *	23.0.19.0

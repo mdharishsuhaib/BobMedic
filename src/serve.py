@@ -79,13 +79,19 @@ class _SiteHandler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # noqa: A003
         pass  # silence per-request noise
 
+    def log_error(self, fmt, *args):  # noqa: A003
+        pass  # suppress ConnectionAbortedError tracebacks (normal on Windows)
+
     def _send(self, code: int, content_type: str, body: bytes) -> None:
         self.send_response(code)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-cache")
         self.end_headers()
-        self.wfile.write(body)
+        try:
+            self.wfile.write(body)
+        except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
+            pass  # client closed the connection before we finished — harmless
 
     def do_GET(self) -> None:  # noqa: N802
         path = self.path.split("?")[0].lstrip("/") or "index.html"

@@ -2,9 +2,9 @@
   "run_id": "run-0006",
   "bot_id": "bobmedic-login",
   "risk_tier": "read_only",
-  "failed_step": "login_submit",
+  "failed_step": "login_wait",
   "error": "ElementNotFound",
-  "script_line": 9,
+  "script_line": 10,
   "page_html_ref": "snapshots/run-0006.html",
-  "timestamp": "2026-08-29T23:23:35.584977+00:00"
+  "timestamp": "2026-08-30T01:59:24.166498+00:00"
 }

@@ -192,16 +192,24 @@ def selector_options(candidate: dict) -> list[dict]:
     """
     Build replacement selectors for a candidate, most stable first.
 
-    Priority order:
-    1. data-testid  — the app's own stable hook
-    2. new id       — standard CSS, works in IBM RPA Studio directly
-    3. name attr    — stable form field selector
-    4. aria-label   — accessible label
-    5. class        — weaker, markup-dependent
-    6. has-text     — Playwright-only, not supported by IBM RPA Studio
+    Two constraints pull against each other and both are real:
 
-    The new id is promoted above has-text so the patched .wal remains
-    runnable in IBM RPA Studio without manual editing.
+    * the patched .wal has to run in IBM RPA Studio, which takes ordinary CSS
+      and has no `:has-text()` — that is a Playwright extension;
+    * a selector rebuilt from the id that just changed will break again on the
+      next release, which is the whole failure being healed.
+
+    So the ladder prefers selectors that are valid CSS *and* not id-bound, and
+    only falls back to the new id when nothing else identifies the element
+    uniquely:
+
+    1. data-testid   the app's own stable hook
+    2. name (+type)  stable form-field identity
+    3. aria-label    tied to meaning, not markup
+    4. type + class  valid CSS, survives both a rename and a move
+    5. structural    an ancestor id from the DOM path plus the leaf
+    6. new id        last resort in valid CSS
+    7. has-text      Playwright only; unusable in Studio, so truly last
     """
     tag = candidate.get("tag", "*")
     attrs = candidate.get("attrs", {})
@@ -214,14 +222,6 @@ def selector_options(candidate: dict) -> list[dict]:
         options.append({
             "selector": f"[data-testid='{_quote(testid)}']",
             "basis": "data-testid attribute — the application's own stable hook",
-        })
-
-    # New id first — standard CSS that runs in IBM RPA Studio
-    element_id = attrs.get("id")
-    if element_id:
-        options.append({
-            "selector": f"#{element_id}",
-            "basis": "new element id — standard CSS selector",
         })
 
     name = attrs.get("name")
@@ -240,10 +240,29 @@ def selector_options(candidate: dict) -> list[dict]:
         })
 
     classes = [part for part in (attrs.get("class") or "").split() if part]
+    class_part = "".join(f".{part}" for part in classes[:2])
     if classes:
+        type_part = f"[type='{_quote(element_type)}']" if element_type else ""
         options.append({
-            "selector": tag + "".join(f".{part}" for part in classes[:2]),
-            "basis": "element type plus class — weaker, but not id-bound",
+            "selector": f"{tag}{class_part}{type_part}",
+            "basis": "element type and class — valid CSS, not tied to the id",
+        })
+
+    # An ancestor id anchors the element without depending on its own id.
+    dom_path = candidate.get("dom_path") or ""
+    segments = [seg.strip() for seg in dom_path.split(">") if seg.strip()]
+    if len(segments) > 1 and "#" in segments[0]:
+        leaf = f"{tag}{class_part}" if classes else tag
+        options.append({
+            "selector": f"{segments[0]} {leaf}",
+            "basis": "position under a stable ancestor id — valid CSS",
+        })
+
+    element_id = attrs.get("id")
+    if element_id:
+        options.append({
+            "selector": f"#{element_id}",
+            "basis": "the new element id — last resort; it may change again",
         })
 
     # has-text last — Playwright-only, not supported by IBM RPA Studio

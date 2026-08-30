@@ -58,6 +58,73 @@ def _arg(line: str, name: str) -> Optional[str]:
     return bare.group(1) if bare else None
 
 
+def _read_wal_lines(wal_path: str) -> tuple[bytes, list[str]]:
+    """
+    Read an IBM RPA .wal file.
+
+    IBM RPA Studio writes .wal files as:
+        0x12  <varint: content length>  <UTF-8 content>
+
+    Returns:
+        (header_bytes, lines) where header_bytes is the raw prefix that must
+        be preserved when writing back, and lines is the text content split
+        into lines (with line endings).
+    """
+    with open(wal_path, "rb") as fh:
+        raw = fh.read()
+
+    # Detect IBM RPA binary format: magic byte 0x12 followed by a varint length
+    if raw and raw[0] == 0x12:
+        pos = 1
+        result = 0
+        shift = 0
+        while pos < len(raw):
+            b = raw[pos]; pos += 1
+            result |= (b & 0x7f) << shift
+            if not (b & 0x80):
+                break
+            shift += 7
+        header = raw[:pos]
+        content = raw[pos:].decode("utf-8", errors="ignore")
+    else:
+        # Plain-text .wal (e.g. written by older patcher or test fixtures)
+        header = b""
+        content = raw.decode("utf-8", errors="ignore")
+
+    lines = content.splitlines(keepends=True)
+    # splitlines drops a trailing newline — restore it if the content ended with one
+    if content and content[-1] in ("\n", "\r"):
+        lines.append("")
+    return header, lines
+
+
+def _encode_varint(n: int) -> bytes:
+    """Encode a non-negative integer as a protobuf-style varint."""
+    out = []
+    while True:
+        b = n & 0x7f
+        n >>= 7
+        if n:
+            out.append(b | 0x80)
+        else:
+            out.append(b)
+            break
+    return bytes(out)
+
+
+def _write_wal(out_path: str, header: bytes, lines: list[str]) -> None:
+    """Write lines back to a .wal file, re-encoding the length varint."""
+    content_bytes = "".join(lines).encode("utf-8")
+    if header:
+        # header[0] == 0x12 (magic), rest is the old varint — rebuild with new length
+        new_header = bytes([0x12]) + _encode_varint(len(content_bytes))
+        raw = new_header + content_bytes
+    else:
+        raw = content_bytes
+    with open(out_path, "wb") as fh:
+        fh.write(raw)
+
+
 def parse_wal(wal_path: str) -> list[WalStep]:
     """
     Parse a .wal file into ordered executable steps.
@@ -71,11 +138,10 @@ def parse_wal(wal_path: str) -> list[WalStep]:
     steps: list[WalStep] = []
     counters: dict[str, int] = {}
 
-    with open(wal_path, "r", encoding="utf-8", errors="ignore") as handle:
-        lines = handle.readlines()
+    _header, lines = _read_wal_lines(wal_path)
 
     for line_number, raw_line in enumerate(lines, start=1):
-        line = raw_line.strip().lstrip("﻿\x00 ")
+        line = raw_line.strip().lstrip("\ufeff\x00 ")
         if not line or line.startswith("//"):
             continue
 
@@ -152,8 +218,7 @@ def patch_wal(
     Returns:
         Path to the patched copy.
     """
-    with open(wal_path, "r", encoding="utf-8", errors="ignore") as handle:
-        lines = handle.readlines()
+    header, lines = _read_wal_lines(wal_path)
 
     index = line_number - 1
     if index < 0 or index >= len(lines):
@@ -179,9 +244,7 @@ def patch_wal(
         base, ext = os.path.splitext(wal_path)
         out_path = base + ".patched" + ext
 
-    with open(out_path, "w", encoding="utf-8") as handle:
-        handle.writelines(patched_lines)
-
+    _write_wal(out_path, header, patched_lines)
     return out_path
 
 
@@ -192,10 +255,8 @@ def diff_wal(original_path: str, patched_path: str) -> list[dict]:
     Returns:
         List of ``{line_number, original, patched}`` for each changed line.
     """
-    with open(original_path, "r", encoding="utf-8", errors="ignore") as handle:
-        original_lines = handle.readlines()
-    with open(patched_path, "r", encoding="utf-8", errors="ignore") as handle:
-        patched_lines = handle.readlines()
+    _h1, original_lines = _read_wal_lines(original_path)
+    _h2, patched_lines  = _read_wal_lines(patched_path)
 
     diffs = []
     for line_number, (before, after) in enumerate(
