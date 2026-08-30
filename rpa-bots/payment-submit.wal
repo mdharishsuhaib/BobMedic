@@ -1,0 +1,16 @@
+defVar --name PaymentBrowser --type Browser
+defVar --name username --type Boolean
+defVar --name password --type Boolean
+defVar --name recipient --type Boolean
+defVar --name amount --type Boolean
+webStart --name PaymentBrowser --type "Chrome" --userprofilepreferences "AutomationOptimized" PaymentBrowser=value
+webNavigate --url "http://127.0.0.1:8000/index.html"
+webSet --value demo --selector "CssSelector" --css "#username" --timeout "00:00:05" username=value
+webSet --value demo --selector "CssSelector" --css "#password" --timeout "00:00:05" password=value
+webClick --selector "CssSelector" --css "#btn-login"
+webWait --selector "CssSelector" --css ".table-wrap table" --timeout "00:00:10"
+webNavigate --url "http://127.0.0.1:8000/payment.html"
+webSet --value "Northwind Trading Ltd" --selector "CssSelector" --css "#recipient" --timeout "00:00:05" recipient=value
+webSet --value 4200.00 --selector "CssSelector" --css "#amount" --timeout "00:00:05" amount=value
+webClick --selector "CssSelector" --css "#btn-pay"
+webClose --name PaymentBrowser

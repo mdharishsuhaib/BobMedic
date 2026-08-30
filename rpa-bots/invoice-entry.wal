@@ -1,0 +1,13 @@
+defVar --name EntryBrowser --type Browser
+defVar --name username --type Boolean
+defVar --name password --type Boolean
+defVar --name searchTerm --type Boolean
+webStart --name EntryBrowser --type "Chrome" --userprofilepreferences "AutomationOptimized" EntryBrowser=value
+webNavigate --url "http://127.0.0.1:8000/index.html"
+webSet --value demo --selector "CssSelector" --css "#username" --timeout "00:00:05" username=value
+webSet --value demo --selector "CssSelector" --css "#password" --timeout "00:00:05" password=value
+webClick --selector "CssSelector" --css "#btn-login"
+webWait --selector "CssSelector" --css ".table-wrap table" --timeout "00:00:10"
+webSet --value Northwind --selector "CssSelector" --css ".filter-bar input[type='text']" --timeout "00:00:05" searchTerm=value
+webClick --selector "CssSelector" --css ".filter-bar button:has-text('Apply')"
+webClose --name EntryBrowser

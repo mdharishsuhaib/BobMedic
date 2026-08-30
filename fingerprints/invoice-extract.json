@@ -1,0 +1,139 @@
+{
+  "bot_id": "invoice-extract",
+  "bot_name": "Invoice Exporter",
+  "wal": "rpa-bots/invoice-extract.wal",
+  "risk_tier": "read_only",
+  "recorded_at": "2026-08-30T09:21:35+0300",
+  "green_snapshot": "snapshots/baseline-invoice-extract.html",
+  "duration_sec": 22.66,
+  "steps": {
+    "login_username": {
+      "tag": "input",
+      "text": "e.g. j.smith@company.com",
+      "attrs": {
+        "id": "username",
+        "type": "text",
+        "name": "username",
+        "placeholder": "e.g. j.smith@company.com"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Username",
+        "parent_text": "Username"
+      },
+      "geometry": {
+        "x": 774,
+        "y": 284,
+        "w": 372,
+        "h": 36
+      },
+      "visible": true,
+      "step_id": "login_username",
+      "step_key": "webset#1",
+      "selector": "#username",
+      "line_number": 6,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "login_password": {
+      "tag": "input",
+      "text": "••••••••••",
+      "attrs": {
+        "id": "password",
+        "type": "password",
+        "name": "password",
+        "placeholder": "••••••••••"
+      },
+      "dom_path": "form#login-form > div.form-group > input",
+      "neighbors": {
+        "prev_label": "Password",
+        "parent_text": "Password"
+      },
+      "geometry": {
+        "x": 774,
+        "y": 363,
+        "w": 372,
+        "h": 36
+      },
+      "visible": true,
+      "step_id": "login_password",
+      "step_key": "webset#2",
+      "selector": "#password",
+      "line_number": 7,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "login_submit": {
+      "tag": "button",
+      "text": "Sign in",
+      "attrs": {
+        "id": "btn-login",
+        "class": "btn primary",
+        "type": "submit"
+      },
+      "dom_path": "div#btn-container-default > button.btn.primary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Sign in"
+      },
+      "geometry": {
+        "x": 774,
+        "y": 452,
+        "w": 372,
+        "h": 43
+      },
+      "visible": true,
+      "step_id": "login_submit",
+      "step_key": "webclick#1",
+      "selector": "#btn-login",
+      "line_number": 8,
+      "url": "http://127.0.0.1:8000/index.html"
+    },
+    "invoices_table_ready": {
+      "tag": "table",
+      "text": "INVOICE #\tCLIENT\tAMOUNT\tISSUE DATE\tDUE DATE\tSTATUS\tACTIONS\n\tINV-2025-0841\tMeridian Logistics Ltd.\t$14,320.00\t2025-01-08\t",
+      "attrs": {},
+      "dom_path": "div.page-wrap > div.table-wrap > table",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Invoice #\n            Client\n            Amount\n            Issue Date\n         "
+      },
+      "geometry": {
+        "x": 59,
+        "y": 360,
+        "w": 1162,
+        "h": 444
+      },
+      "visible": true,
+      "step_id": "invoices_table_ready",
+      "step_key": "webwait#1",
+      "selector": ".table-wrap table",
+      "line_number": 9,
+      "url": "http://127.0.0.1:8000/invoices.html"
+    },
+    "export_csv": {
+      "tag": "button",
+      "text": "Download CSV",
+      "attrs": {
+        "id": "btn-export",
+        "class": "btn secondary",
+        "type": "button"
+      },
+      "dom_path": "div#toolbar > button.btn.secondary",
+      "neighbors": {
+        "prev_label": "",
+        "parent_text": "Download CSV\n        \n        Bulk actions ▾\n        New payment"
+      },
+      "geometry": {
+        "x": 845,
+        "y": 97,
+        "w": 123,
+        "h": 36
+      },
+      "visible": true,
+      "step_id": "export_csv",
+      "step_key": "webclick#2",
+      "selector": "#btn-export",
+      "line_number": 10,
+      "url": "http://127.0.0.1:8000/invoices.html"
+    }
+  }
+}

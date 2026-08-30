@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorthShore Bank – New Payment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Loaded without blocking first paint: an RPA bot waits one second for
+       these fields, and a render-blocking webfont request was costing five. -->
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" />
+  <noscript>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" />
+  </noscript>
+  <link rel="stylesheet" href="portal.css" />
+</head>
+<body>
+
+  <header>
+    <span class="bank-logo">NorthShore Bank</span>
+    <nav>
+      <a href="invoices.html">Invoices</a>
+      <a href="payment.html" class="active">Payments</a>
+      <a href="#">Accounts</a>
+      <a href="#">Reports</a>
+    </nav>
+    <div class="session">
+      <span>Meridian Holdings · Treasury</span>
+      <span class="avatar">JS</span>
+    </div>
+  </header>
+
+  <div class="page-wrap" style="max-width: 880px;">
+
+    <div class="breadcrumb">
+      <a href="invoices.html">Invoices</a>
+      <span>›</span>
+      New Payment
+    </div>
+
+    <div class="card">
+      <h1>Submit a Payment</h1>
+      <p class="subtitle">
+        Funds will be processed within 1–2 business days. Review all details before
+        submitting — a released payment cannot be recalled from this screen.
+      </p>
+
+      <div class="alert-box">
+        <span aria-hidden="true">⚠</span>
+        <span>Payments over $25,000 require a secondary approval from your account manager.</span>
+      </div>
+
+      <form id="payment-form">
+
+        <div class="form-section">
+          <h2>Recipient</h2>
+          <div class="form-group">
+            <label for="recipient">Recipient name or account number <span class="required">*</span></label>
+            <input type="text" id="recipient" name="recipient" placeholder="e.g. Meridian Logistics Ltd. or ACC-00291" />
+            <div class="hint">Start typing to search registered payees, or enter a new account number.</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bank-code">Bank routing number</label>
+              <input type="text" id="bank-code" name="bank-code" placeholder="9-digit ABA number" />
+            </div>
+            <div class="form-group">
+              <label for="account-num">Account number</label>
+              <input type="text" id="account-num" name="account-num" placeholder="10–12 digits" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Payment Details</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="amount">Amount <span class="required">*</span></label>
+              <div class="amount-wrap">
+                <span class="currency-prefix">$</span>
+                <input type="number" id="amount" name="amount" placeholder="0.00" min="0.01" step="0.01" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="USD" selected>USD – US Dollar</option>
+                <option value="EUR">EUR – Euro</option>
+                <option value="GBP">GBP – British Pound</option>
+                <option value="CAD">CAD – Canadian Dollar</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pay-date">Payment date</label>
+              <input type="date" id="pay-date" name="pay-date" />
+            </div>
+            <div class="form-group">
+              <label for="ref-invoice">Reference invoice</label>
+              <input type="text" id="ref-invoice" name="ref-invoice" placeholder="e.g. INV-2025-0848" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="memo">Memo / Notes</label>
+            <textarea id="memo" name="memo" placeholder="Optional internal note…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button id="btn-pay" class="btn primary" type="submit">Submit payment</button>
+          <a href="invoices.html" class="btn secondary">Cancel</a>
+          <span style="margin-left:auto;font-size:12px;color:#5c6b78;">
+            All fields marked <span style="color:#a02a23;">*</span> are required
+          </span>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Confirmation dialog -->
+  <div class="confirm-dialog" id="confirm-dialog">
+    <div class="dialog-box">
+      <h2>Payment submitted</h2>
+      <p>Your payment has been queued for processing. You will receive a confirmation email within 15 minutes.</p>
+      <div class="dialog-actions">
+        <a href="invoices.html" class="btn primary">Back to invoices</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>&copy; 2025 NorthShore Bank N.A.</span>
+    <span>·</span>
+    <span>Member FDIC</span>
+    <span>·</span>
+    <span>Equal Housing Lender</span>
+    <span>·</span>
+    <a href="break.html">System</a>
+  </footer>
+
+  <script>
+    document.getElementById('payment-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('confirm-dialog').classList.add('open');
+    });
+  </script>
+
+</body>
+</html>
