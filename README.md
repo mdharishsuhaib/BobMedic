@@ -1,9 +1,9 @@
-# BotMedic
+# BobMedic
 
 **Team BobVanta** · IBM TechXchange 2026 Pre-conference Dev Day
 
 > Self-healing RPA maintenance. When a target application changes its UI and an
-> IBM RPA bot breaks, BotMedic diagnoses the break, writes a verified patch to
+> IBM RPA bot breaks, BobMedic diagnoses the break, writes a verified patch to
 > the `.wal` script, and hands a human the diff — except where it is not allowed
 > to act at all.
 
